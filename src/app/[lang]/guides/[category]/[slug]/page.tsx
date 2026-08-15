@@ -1,4 +1,5 @@
 import { getGuideBySlug } from '@/lib/cms/sanity'
+import { connectToDatabase } from '@/lib/db/mongodb'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
@@ -7,7 +8,7 @@ export const dynamic = 'force-dynamic'
 export default async function GuideDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
   const guide = await getGuideBySlug(slug, lang)
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = (await import('@/i18n/messages/' + lang + '.json')).default
   const t = (key: string) => messages.common?.[key] || key
 
   if (!guide) {
@@ -15,6 +16,13 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
   }
 
   const data = guide.translations?.[lang] || guide.translations?.en
+
+  const db = await connectToDatabase()
+  const contributions = await db.collection('contributions')
+    .find({ guideId: slug, status: 'published' })
+    .sort({ submittedAt: -1 })
+    .limit(20)
+    .toArray()
 
   return (
     <main className="min-h-screen p-8">
@@ -45,7 +53,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
             {guide.typicalCosts.map((cost: any, index: number) => (
               <li key={index}>
                 {cost.label}: {cost.rangeRWF?.length === 2
-                  ? `${cost.rangeRWF[0].toLocaleString()} – ${cost.rangeRWF[1].toLocaleString()} RWF`
+                  ? cost.rangeRWF[0].toLocaleString() + ' – ' + cost.rangeRWF[1].toLocaleString() + ' RWF'
                   : 'Varies'}
               </li>
             ))}
@@ -64,9 +72,23 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         </section>
       )}
 
+      {contributions.length > 0 && (
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Community Tips</h2>
+          <ul className="space-y-2">
+            {contributions.map((contribution: any) => (
+              <li key={contribution._id} className="p-3 bg-gray-50 rounded border">
+                {contribution.text}
+                {contribution.city && <span className="text-gray-500 text-sm"> — {contribution.city}</span>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <div className="mt-8">
         <Link
-          href={`/${lang}/guides/${guide.category}/${guide.slug?.current}/contribute`}
+          href={'/' + lang + '/guides/' + guide.category + '/' + guide.slug?.current + '/contribute'}
           className="text-blue-600 hover:underline"
         >
           Add a community tip →
