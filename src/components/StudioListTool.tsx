@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { useState, useEffect } from 'react'
 import { createClient } from '@sanity/client'
 
@@ -29,7 +29,7 @@ export default function StudioListTool() {
   async function loadDocuments() {
     setLoading(true)
     try {
-      const docs = await client.fetch('*[_type == ] | order(_createdAt desc)', { type: selectedType })
+      const docs = await client.fetch('*[_type == $type] | order(_createdAt desc)', { type: selectedType })
       setDocuments(docs)
     } catch (e) {
       console.error('Failed to load documents', e)
