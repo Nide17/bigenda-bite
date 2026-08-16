@@ -1,14 +1,8 @@
-'use client'
+﻿import CheckoutForm from './CheckoutForm'
 
-import { useTranslations } from '@/components/I18nProvider'
+export default async function CheckoutPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ plan?: string }> }) {
+  const { lang } = await params
+  const { plan } = await searchParams
 
-export default function CheckoutPage() {
-  const t = useTranslations('common')
-
-  return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
-      <p>MoMo payment flow coming in Phase 3.</p>
-    </main>
-  )
+  return <CheckoutForm planId={plan || 'basic'} />
 }

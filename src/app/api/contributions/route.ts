@@ -1,12 +1,11 @@
 ﻿import { NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
 
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions as any)
-    if (!(session as any)?.user) {
+    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -29,8 +28,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions as any)
-    if (!(session as any)?.user) {
+    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -47,7 +46,7 @@ export async function POST(request: Request) {
     const result = await contributions.insertOne({
       guideId: guideId || null,
       city: city || null,
-      authorId: (session as any).user.id,
+      authorId: session.user.id,
       text: text.trim(),
       photoUrl: null,
       status: 'pending',

@@ -6,8 +6,8 @@ import { useTranslations } from '@/components/I18nProvider'
 
 export default function ContributePage() {
   const params = useParams()
-  const lang = params.lang as string
-  const slug = params.slug as string
+  const lang = params?.lang as string
+  const slug = params?.slug as string
   const [text, setText] = useState('')
   const [city, setCity] = useState('')
   const [submitted, setSubmitted] = useState(false)

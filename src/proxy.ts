@@ -1,15 +1,14 @@
-﻿import createMiddleware from 'next-intl/middleware'
+import createMiddleware from 'next-intl/middleware'
 import { routing } from '@/i18n/routing'
 import { NextRequest, NextResponse } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { getSession } from '@/lib/auth/session'
 
 const createIntlMiddleware = createMiddleware(routing)
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const session = await getServerSession(authOptions as any)
-  const user = (session as any)?.user
+  const session = await getSession(request)
+  const user = session?.user
 
   if (pathname?.startsWith('/membership') && (!user || user.role !== 'business_owner')) {
     const locale = pathname.split('/')[1] || 'en'
@@ -19,6 +18,10 @@ export async function proxy(request: NextRequest) {
   if (pathname.includes('/contribute') && !user) {
     const locale = pathname.split('/')[1] || 'en'
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+  }
+
+  if (pathname?.startsWith('/admin') && (!user || user.role !== 'editor')) {
+    return NextResponse.redirect(new URL('/en/login', request.url))
   }
 
   return createIntlMiddleware(request)

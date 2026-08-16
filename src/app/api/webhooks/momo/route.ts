@@ -1,8 +1,37 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import { connectToDatabase } from '@/lib/db/mongodb'
 
-export async function POST(request: Request) {
-  return NextResponse.json(
-    { message: 'MoMo webhook placeholder — Phase 3 implementation' },
-    { status: 200 }
-  )
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    console.log('MoMo webhook received:', body)
+
+    const transactionId = body.transactionId || body.amount?.transactionId
+    const status = body.status || body.amount?.status
+
+    if (!transactionId || !status) {
+      return NextResponse.json({ error: 'Missing transactionId or status' }, { status: 400 })
+    }
+
+    const db = await connectToDatabase()
+    await db.collection('payments').updateOne(
+      { transactionId },
+      {
+        $set: {
+          status: status.toUpperCase(),
+          updatedAt: new Date(),
+          webhookPayload: body,
+        },
+      }
+    )
+
+    return NextResponse.json({ received: true })
+  } catch (error) {
+    console.error('MoMo webhook error:', error)
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 })
+  }
+}
+
+export async function GET() {
+  return NextResponse.json({ message: 'MoMo webhook endpoint' })
 }

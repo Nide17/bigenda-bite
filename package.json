@@ -6,11 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "scrape": "tsx scripts/worker.ts"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.3",
     "@mux/mux-video": "^0.31.2",
+    "@playwright/test": "^1.62.1",
     "@sanity/client": "^8.0.0",
     "@sanity/image-url": "^1.1.0",
     "@tailwindcss/postcss": "^4.3.3",
@@ -24,6 +26,7 @@
     "next-auth": "^4.24.15",
     "next-intl": "^3.6.0",
     "nodemailer": "^7.0.7",
+    "playwright": "^1.62.1",
     "react": "latest",
     "react-dom": "latest",
     "sanity": "^3.80.0",
@@ -35,11 +38,12 @@
     "@types/nodemailer": "^6.4.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "dotenv": "^17.4.2",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
+    "tsx": "^4.23.12",
     "typescript": "latest"
   }
 }
-

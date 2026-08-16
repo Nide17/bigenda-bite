@@ -1,8 +1,10 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { MongoClient } from 'mongodb'
 import bcrypt from 'bcryptjs'
+import { connectToDatabase } from '@/lib/db/mongodb'
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI!)
+mongoClient.connect().catch((err) => console.error('MongoDB adapter connection error:', err))
 
 export const authOptions = {
   adapter: MongoDBAdapter(mongoClient),
@@ -14,24 +16,37 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
-        const db = mongoClient.db('bigenda-bite')
-        const users = db.collection('users')
-        const user = await users.findOne({ email: credentials?.email })
+        try {
+          const db = await connectToDatabase()
+          const users = db.collection('users')
+          const user = await users.findOne({ email: credentials?.email })
 
-        if (!user) return null
+          if (!user) {
+            console.error('Auth: user not found for email', credentials?.email)
+            return null
+          }
 
-        const passwordMatch = await bcrypt.compare(
-          credentials?.password || '',
-          user.password
-        )
+          const passwordMatch = await bcrypt.compare(
+            credentials?.password || '',
+            user.password
+          )
 
-        if (!passwordMatch) return null
+          if (!passwordMatch) {
+            console.error('Auth: password mismatch for email', credentials?.email)
+            return null
+          }
 
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          displayName: user.displayName,
-          role: user.role,
+          console.error('Auth: login success for email', credentials?.email, 'role', user.role)
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            displayName: user.displayName,
+            role: user.role,
+          }
+        } catch (error) {
+          console.error('Auth authorize error:', error)
+          return null
         }
       },
     },
@@ -54,7 +69,8 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: '/[lang]/login',
+    signIn: '/en/login',
   },
   session: { strategy: 'database' },
+  debug: true,
 } as any

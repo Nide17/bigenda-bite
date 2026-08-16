@@ -1,14 +1,5 @@
-export const scrapeIrembo = async () => {
-  // Phase 2: Playwright scraper for Irembo
-  return []
-}
+export { scrapeIrembo } from './irembo'
+export { scrapeRRA } from './rra'
+export { scrapeRDB } from './rdb'
 
-export const scrapeRRA = async () => {
-  // Phase 2: Playwright scraper for RRA
-  return []
-}
-
-export const scrapeRDB = async () => {
-  // Phase 2: Playwright scraper for RDB
-  return []
-}
+export type { ScrapedProcess } from './types'

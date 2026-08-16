@@ -37,8 +37,9 @@ export async function sendPendingUpdateNotification(update: {
   diffSummary: string
   confidenceScore: number
   detectedAt: string
+  adminUrl?: string
 }) {
-  const embed = {
+  const embed: any = {
     title: '📋 Content Update Pending Review',
     description: update.diffSummary,
     color: 0xf59e0b,
@@ -59,9 +60,17 @@ export async function sendPendingUpdateNotification(update: {
         inline: true,
       },
     ],
-    footer: {
-      text: 'Bigenda Bite — Review in Sanity Studio',
-    },
+  }
+
+  if (update.adminUrl) {
+    embed.url = update.adminUrl
+    embed.footer = {
+      text: 'Bigenda Bite — Review in Admin Panel',
+    }
+  } else {
+    embed.footer = {
+      text: 'Bigenda Bite — Review in Admin Panel',
+    }
   }
 
   await sendDiscordNotification(

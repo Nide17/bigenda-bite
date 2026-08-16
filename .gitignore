@@ -42,3 +42,5 @@ test_*.js
 test-*.txt
 node_test.txt
 /scripts
+tmp-*.js
+test-vars

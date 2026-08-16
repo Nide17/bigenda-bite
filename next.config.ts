@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ['sanity'],
+  serverExternalPackages: ['@sanity/client'],
 }
 
 export default nextConfig
