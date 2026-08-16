@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useTrackEvent } from '@/lib/use-analytics'
 
@@ -65,9 +66,12 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm">
-      <img
+      <Image
         src={ad.imageUrl}
         alt={ad.title}
+        width={600}
+        height={192}
+        unoptimized
         className="w-full h-48 object-cover cursor-pointer"
         onClick={() => handleClick(ad)}
       />

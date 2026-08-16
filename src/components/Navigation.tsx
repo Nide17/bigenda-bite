@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NotificationBell } from './NotificationBell'
 
 export function Navigation({ lang, messages }: { lang: string; messages: any }) {
   const t = (key: string) => {
@@ -12,14 +13,17 @@ export function Navigation({ lang, messages }: { lang: string; messages: any }) 
 
   return (
     <nav className="border-b p-4">
-      <ul className="flex gap-6">
-        <li><Link href={`/${lang}`} className="hover:underline">{t('welcome')}</Link></li>
-        <li><Link href={`/${lang}/processes`} className="hover:underline">{t('processes')}</Link></li>
-        <li><Link href={`/${lang}/guides`} className="hover:underline">{t('guides')}</Link></li>
-        <li><Link href={`/${lang}/directory`} className="hover:underline">{t('directory')}</Link></li>
-        <li><Link href={`/${lang}/alerts`} className="hover:underline">{t('alerts')}</Link></li>
-        <li><Link href={`/${lang}/membership`} className="hover:underline">{t('membership')}</Link></li>
-      </ul>
+      <div className="flex items-center justify-between">
+        <ul className="flex gap-6">
+          <li><Link href={`/${lang}`} className="hover:underline">{t('welcome')}</Link></li>
+          <li><Link href={`/${lang}/processes`} className="hover:underline">{t('processes')}</Link></li>
+          <li><Link href={`/${lang}/guides`} className="hover:underline">{t('guides')}</Link></li>
+          <li><Link href={`/${lang}/directory`} className="hover:underline">{t('directory')}</Link></li>
+          <li><Link href={`/${lang}/alerts`} className="hover:underline">{t('alerts')}</Link></li>
+          <li><Link href={`/${lang}/membership`} className="hover:underline">{t('membership')}</Link></li>
+        </ul>
+        <NotificationBell />
+      </div>
     </nav>
   )
 }

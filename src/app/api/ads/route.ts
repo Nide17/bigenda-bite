@@ -9,7 +9,9 @@ export async function GET(request: Request) {
 
     const ads = await getActiveAds(placement, city)
 
-    return NextResponse.json(ads)
+    const response = NextResponse.json(ads)
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60')
+    return response
   } catch (error) {
     console.error('Error fetching ads:', error)
     return NextResponse.json({ error: 'Failed to fetch ads' }, { status: 500 })

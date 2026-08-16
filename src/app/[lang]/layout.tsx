@@ -7,13 +7,40 @@ import { Navigation } from '@/components/Navigation'
 import { I18nProvider } from '@/components/I18nProvider'
 import { trackEvent } from '@/lib/analytics'
 import { getCityFromCookie } from '@/lib/city'
+import { JsonLd } from '@/components/JsonLd'
+import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import '../globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
+const baseUrl = 'https://bigendabite.com'
 
-export const metadata: Metadata = {
-  title: 'Bigenda Bite - Rwanda Life Guide',
-  description: 'Your everyday guide to life and administrative processes in Rwanda.',
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  const headersList = await headers()
+  const requestUrl = headersList.get('x-invoke-path') || `/${lang}`
+  const pathname = new URL(requestUrl, 'http://localhost').pathname
+  const url = `${baseUrl}${pathname}`
+
+  return {
+    title: 'Bigenda Bite - Rwanda Life Guide',
+    description: 'Your everyday guide to life and administrative processes in Rwanda.',
+    openGraph: {
+      title: 'Bigenda Bite - Rwanda Life Guide',
+      description: 'Your everyday guide to life and administrative processes in Rwanda.',
+      type: 'website',
+      url,
+      siteName: 'Bigenda Bite',
+      locale: lang === 'rw' ? 'rw_RW' : lang === 'fr' ? 'fr_FR' : 'en_US',
+    },
+    twitter: {
+      card: 'summary',
+      title: 'Bigenda Bite - Rwanda Life Guide',
+      description: 'Your everyday guide to life and administrative processes in Rwanda.',
+    },
+    alternates: {
+      canonical: url,
+    },
+  }
 }
 
 export function generateStaticParams() {
@@ -44,9 +71,14 @@ export default async function RootLayout({
     metadata: { path: pathname, lang, city },
   }).catch(() => {})
 
+  const orgLd = organizationJsonLd(baseUrl)
+  const websiteLd = websiteJsonLd(baseUrl)
+
   return (
     <I18nProvider messages={messages} locale={lang}>
       <Navigation lang={lang} messages={messages} />
+      <JsonLd data={orgLd} />
+      <JsonLd data={websiteLd} />
       {children}
     </I18nProvider>
   )

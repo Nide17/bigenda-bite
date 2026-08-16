@@ -1,46 +1,101 @@
 import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
+import { getProcesses, getGuides } from '@/lib/cms/sanity'
+import { connectToDatabase } from '@/lib/db/mongodb'
+
+const baseUrl = 'https://bigendabite.com'
+const locales = routing.locales
+
+const staticRoutes = [
+  { path: '/', priority: 1, changeFrequency: 'daily' as const },
+  { path: '/processes', priority: 0.8, changeFrequency: 'weekly' as const },
+  { path: '/guides', priority: 0.8, changeFrequency: 'weekly' as const },
+  { path: '/directory', priority: 0.8, changeFrequency: 'weekly' as const },
+  { path: '/alerts', priority: 0.7, changeFrequency: 'daily' as const },
+]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://bigendabite.com'
-
   const urls: MetadataRoute.Sitemap = []
 
-  for (const locale of routing.locales) {
-    urls.push({
-      url: `${baseUrl}/${locale}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    })
+  for (const locale of locales) {
+    for (const route of staticRoutes) {
+      const localizedPath = route.path === '/' ? `/${locale}` : `/${locale}${route.path}`
+      urls.push({
+        url: `${baseUrl}${localizedPath}`,
+        lastModified: new Date(),
+        changeFrequency: route.changeFrequency,
+        priority: route.priority,
+        alternates: {
+          languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}${route.path === '/' ? `/${l}` : `/${l}${route.path}`}`])),
+        },
+      })
+    }
+  }
 
-    urls.push({
-      url: `${baseUrl}/${locale}/processes`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    })
+  try {
+    const processes = await getProcesses('en')
+    const guides = await getGuides('en')
 
-    urls.push({
-      url: `${baseUrl}/${locale}/guides`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    })
+    for (const process of processes) {
+      const slug = process.slug?.current
+      if (!slug) continue
+      const category = process.category || ''
+      const lastModified = process._updatedAt ? new Date(process._updatedAt) : new Date()
+      for (const locale of locales) {
+        urls.push({
+          url: `${baseUrl}/${locale}/processes/${category}/${slug}`,
+          lastModified,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+          alternates: {
+            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/processes/${category}/${slug}`])),
+          },
+        })
+      }
+    }
 
-    urls.push({
-      url: `${baseUrl}/${locale}/directory`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    })
+    for (const guide of guides) {
+      const slug = guide.slug?.current
+      if (!slug) continue
+      const category = guide.category || ''
+      const lastModified = guide._updatedAt ? new Date(guide._updatedAt) : new Date()
+      for (const locale of locales) {
+        urls.push({
+          url: `${baseUrl}/${locale}/guides/${category}/${slug}`,
+          lastModified,
+          changeFrequency: 'weekly',
+          priority: 0.7,
+          alternates: {
+            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/guides/${category}/${slug}`])),
+          },
+        })
+      }
+    }
+  } catch (error) {
+    console.error('Failed to fetch Sanity sitemap entries:', error)
+  }
 
-    urls.push({
-      url: `${baseUrl}/${locale}/alerts`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.7,
-    })
+  try {
+    const db = await connectToDatabase()
+    const businesses = await db.collection('businesses').find({}).sort({ name: 1 }).limit(500).toArray()
+
+    for (const business of businesses) {
+      const slug = business.slug
+      if (!slug) continue
+      for (const locale of locales) {
+        urls.push({
+          url: `${baseUrl}/${locale}/directory/${slug}`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.6,
+          alternates: {
+            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/directory/${slug}`])),
+          },
+        })
+      }
+    }
+  } catch (error) {
+    console.error('Failed to fetch business sitemap entries:', error)
   }
 
   return urls
