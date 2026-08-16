@@ -2,6 +2,7 @@ import { getProcesses } from '@/lib/cms/sanity'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import AdBanner from '@/components/AdBanner'
+import { toSlug } from '@/lib/slug'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,7 +25,7 @@ export default async function ProcessesPage({ params, searchParams }: { params: 
               {processes.map((process: any) => (
                 <li key={process._id}>
                   <Link
-                    href={`/${lang}/processes/${process.category}/${process.slug?.current}`}
+                    href={`/${lang}/processes/${process.category}/${toSlug(process.slug?.current || process.translations?.en?.title || process._id)}`}
                     className="text-blue-600 hover:underline"
                   >
                     {process.translations?.[lang]?.title || process.translations?.en?.title}

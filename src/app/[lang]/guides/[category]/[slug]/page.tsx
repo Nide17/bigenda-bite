@@ -2,6 +2,7 @@ import { getGuideBySlug } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import { toSlug } from '@/lib/slug'
 
 export const dynamic = 'force-dynamic'
 
@@ -88,7 +89,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
       <div className="mt-8">
         <Link
-          href={'/' + lang + '/guides/' + guide.category + '/' + guide.slug?.current + '/contribute'}
+          href={'/' + lang + '/guides/' + guide.category + '/' + toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id) + '/contribute'}
           className="text-blue-600 hover:underline"
         >
           Add a community tip →

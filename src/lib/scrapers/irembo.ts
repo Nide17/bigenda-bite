@@ -1,4 +1,4 @@
-import { scrapePage, isValidScrape } from './browser'
+import { scrapePage, scrapeWithPage, isValidScrape } from './browser'
 import type { ScrapedProcess } from './types'
 
 function normalizeIremboService(title: string, content: string): ScrapedProcess {
@@ -51,9 +51,11 @@ function normalizeIremboService(title: string, content: string): ScrapedProcess 
   }
 }
 
-export async function scrapeIrembo(): Promise<ScrapedProcess[]> {
+export async function scrapeIrembo(page?: any): Promise<ScrapedProcess[]> {
   try {
-    const { content, title } = await scrapePage('https://irembo.gov.rw/')
+    const { content, title } = page
+      ? await scrapeWithPage(page, 'https://irembo.gov.rw/')
+      : await scrapePage('https://irembo.gov.rw/')
     if (!isValidScrape(title, content)) {
       console.warn('Irembo scraper: blocked or error page detected, skipping')
       return []

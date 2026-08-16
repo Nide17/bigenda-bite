@@ -6,6 +6,12 @@ export const processType = defineType({
   title: 'Official Process',
   fields: [
     defineField({
+      name: 'slug',
+      type: 'slug',
+      title: 'Slug',
+      options: { source: 'translations.en.title', maxLength: 96 },
+    }),
+    defineField({
       name: 'sourceType',
       type: 'string',
       title: 'Source Type',

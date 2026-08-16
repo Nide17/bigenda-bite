@@ -1,4 +1,4 @@
-import { scrapePage, isValidScrape } from './browser'
+import { scrapePage, scrapeWithPage, isValidScrape } from './browser'
 import type { ScrapedProcess } from './types'
 
 function normalizeRRAService(title: string, content: string): ScrapedProcess {
@@ -50,9 +50,11 @@ function normalizeRRAService(title: string, content: string): ScrapedProcess {
   }
 }
 
-export async function scrapeRRA(): Promise<ScrapedProcess[]> {
+export async function scrapeRRA(page?: any): Promise<ScrapedProcess[]> {
   try {
-    const { content, title } = await scrapePage('https://www.rra.gov.rw/')
+    const { content, title } = page
+      ? await scrapeWithPage(page, 'https://www.rra.gov.rw/')
+      : await scrapePage('https://www.rra.gov.rw/')
     if (!isValidScrape(title, content)) {
       console.warn('RRA scraper: blocked or error page detected, skipping')
       return []

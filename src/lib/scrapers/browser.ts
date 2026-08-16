@@ -1,6 +1,4 @@
-import { chromium, type Page } from 'playwright'
-
-const CHROMIUM_EXECUTABLE = `C:\\Users\\Parmenide\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe`
+import { chromium, type Browser, type Page } from 'playwright'
 
 const BLOCKED_PATTERNS = [
   /blocked/i,
@@ -24,21 +22,30 @@ export function isValidScrape(title: string, content: string): boolean {
   return !BLOCKED_PATTERNS.some((pattern) => pattern.test(text))
 }
 
+export async function launchBrowser(): Promise<Browser> {
+  return await chromium.launch({ headless: true })
+}
+
+export async function createPage(browser: Browser): Promise<Page> {
+  return await browser.newPage()
+}
+
+export async function scrapeWithPage(page: Page, url: string): Promise<{ title: string; content: string }> {
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
+  await page.waitForTimeout(3000)
+
+  const title = await page.title()
+  const content = await page.evaluate(() => document.body.innerText)
+
+  return { title, content }
+}
+
 export async function scrapePage(url: string): Promise<{ title: string; content: string }> {
-  const browser = await chromium.launch({
-    headless: true,
-    executablePath: CHROMIUM_EXECUTABLE,
-  })
-  const page: Page = await browser.newPage()
+  const browser = await launchBrowser()
+  const page = await createPage(browser)
 
   try {
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 })
-    await page.waitForTimeout(3000)
-
-    const title = await page.title()
-    const content = await page.evaluate(() => document.body.innerText)
-
-    return { title, content }
+    return await scrapeWithPage(page, url)
   } finally {
     await browser.close()
   }

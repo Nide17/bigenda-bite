@@ -2,6 +2,7 @@ import { getProcesses } from '@/lib/cms/sanity'
 import { getGuides } from '@/lib/cms/sanity'
 import { resolveCity } from '@/lib/city'
 import AdBanner from '@/components/AdBanner'
+import CitySelector from '@/components/CitySelector'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,23 +26,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
         </div>
         <form method="get" className="flex gap-2">
           <input type="hidden" name="city" value={cityName} />
-          <select
-            name="city"
-            defaultValue={cityName || 'Kigali'}
-            className="border rounded p-2"
-            onChange={(e) => {
-              const url = new URL(window.location.href)
-              url.searchParams.set('city', e.target.value)
-              document.cookie = `bigenda-city=${e.target.value}; path=/; max-age=${30 * 24 * 60 * 60}`
-              window.location.href = url.toString()
-            }}
-          >
-            <option value="Kigali">Kigali</option>
-            <option value="Musanze">Musanze</option>
-            <option value="Rubavu">Rubavu</option>
-            <option value="Huye">Huye</option>
-            <option value="Mombasa">Mombasa</option>
-          </select>
+          <CitySelector cityName={cityName} lang={lang} />
         </form>
       </div>
 
@@ -56,8 +41,8 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 {processes.slice(0, 5).map((process: any) => (
                   <li key={process._id} className="border-b pb-2">
                     <span className="font-medium">{process.translations?.[lang]?.title || process.translations?.en?.title}</span>
-                    {process.translations?.[lang]?.summary && (
-                      <p className="text-gray-600 text-sm mt-1">{process.translations?.[lang]?.summary}</p>
+                    {(process.translations?.[lang]?.summary || process.translations?.en?.summary) && (
+                      <p className="text-gray-600 text-sm mt-1">{process.translations?.[lang]?.summary || process.translations?.en?.summary}</p>
                     )}
                   </li>
                 ))}
@@ -74,8 +59,8 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 {guides.slice(0, 5).map((guide: any) => (
                   <li key={guide._id} className="border-b pb-2">
                     <span className="font-medium">{guide.translations?.[lang]?.title || guide.translations?.en?.title}</span>
-                    {guide.translations?.[lang]?.summary && (
-                      <p className="text-gray-600 text-sm mt-1">{guide.translations?.[lang]?.summary}</p>
+                    {(guide.translations?.[lang]?.summary || guide.translations?.en?.summary) && (
+                      <p className="text-gray-600 text-sm mt-1">{guide.translations?.[lang]?.summary || guide.translations?.en?.summary}</p>
                     )}
                   </li>
                 ))}

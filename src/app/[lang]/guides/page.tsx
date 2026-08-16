@@ -2,6 +2,8 @@ import { getGuides } from '@/lib/cms/sanity'
 import Link from 'next/link'
 import { resolveCity } from '@/lib/city'
 import AdBanner from '@/components/AdBanner'
+import CitySelector from '@/components/CitySelector'
+import { toSlug } from '@/lib/slug'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,23 +21,7 @@ export default async function GuidesPage({ params, searchParams }: { params: Pro
         <h1 className="text-3xl font-bold">{t('guides')}</h1>
         <form method="get" className="flex gap-2">
           <input type="hidden" name="city" value={cityName || ''} />
-          <select
-            name="city"
-            defaultValue={cityName || 'Kigali'}
-            className="border rounded p-2"
-            onChange={(e) => {
-              const url = new URL(window.location.href)
-              url.searchParams.set('city', e.target.value)
-              document.cookie = `bigenda-city=${e.target.value}; path=/; max-age=${30 * 24 * 60 * 60}`
-              window.location.href = url.toString()
-            }}
-          >
-            <option value="Kigali">Kigali</option>
-            <option value="Musanze">Musanze</option>
-            <option value="Rubavu">Rubavu</option>
-            <option value="Huye">Huye</option>
-            <option value="Mombasa">Mombasa</option>
-          </select>
+          <CitySelector cityName={cityName || 'Kigali'} lang={lang} />
           <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Filter</button>
         </form>
       </div>
@@ -49,7 +35,7 @@ export default async function GuidesPage({ params, searchParams }: { params: Pro
               {guides.map((guide: any) => (
                 <li key={guide._id}>
                   <Link
-                    href={`/${lang}/guides/${guide.category}/${guide.slug?.current}`}
+                    href={`/${lang}/guides/${guide.category}/${toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id)}`}
                     className="text-blue-600 hover:underline"
                   >
                     {guide.translations?.[lang]?.title || guide.translations?.en?.title}

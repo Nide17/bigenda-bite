@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
 import { getProcesses, getGuides } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { toSlug } from '@/lib/slug'
 
 const baseUrl = 'https://bigendabite.com'
 const locales = routing.locales
@@ -37,8 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const guides = await getGuides('en')
 
     for (const process of processes) {
-      const slug = process.slug?.current
-      if (!slug) continue
+      const slug = toSlug(process.slug?.current || process.translations?.en?.title || process._id)
       const category = process.category || ''
       const lastModified = process._updatedAt ? new Date(process._updatedAt) : new Date()
       for (const locale of locales) {
@@ -55,8 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const guide of guides) {
-      const slug = guide.slug?.current
-      if (!slug) continue
+      const slug = toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id)
       const category = guide.category || ''
       const lastModified = guide._updatedAt ? new Date(guide._updatedAt) : new Date()
       for (const locale of locales) {
