@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from 'react'
+import { useTrackEvent } from '@/lib/use-analytics'
 
 const PLANS: Record<string, { id: string; name: string; price: number; features: string[] }> = {
   basic: { id: 'basic', name: 'Basic', price: 2000, features: ['Verified badge', 'Contact button', 'Better placement'] },
@@ -15,9 +16,11 @@ export default function CheckoutForm({ planId }: { planId: string }) {
   const [error, setError] = useState('')
 
   const plan = PLANS[planId] || PLANS.basic
+  const trackPayment = useTrackEvent('payment_initiated', { planId: plan.id, amount: plan.price })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    trackPayment()
     setLoading(true)
     setError('')
 

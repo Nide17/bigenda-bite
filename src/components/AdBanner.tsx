@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTrackEvent } from '@/lib/use-analytics'
 
 interface Ad {
   _id: string
@@ -21,6 +22,7 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
   const [ads, setAds] = useState<Ad[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const trackAdClick = useTrackEvent('ad_click', { placement, city })
 
   useEffect(() => {
     const params = new URLSearchParams({ placement })
@@ -48,6 +50,7 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
   }
 
   const handleClick = async (ad: Ad) => {
+    trackAdClick()
     await fetch('/api/ads/click', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
