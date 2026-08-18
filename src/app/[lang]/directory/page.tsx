@@ -1,6 +1,8 @@
 ﻿import { connectToDatabase } from '@/lib/db/mongodb'
 import { notFound } from 'next/navigation'
-import AdBanner from '@/components/AdBanner'
+import Link from 'next/link'
+import PageContainer from '@/components/PageContainer'
+import EmptyState from '@/components/ui/EmptyState'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,13 +21,15 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
   const t = (key: string) => messages.common?.[key] || key
 
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">{t('directory')}</h1>
+    <PageContainer>
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('directory')}</h1>
+        <p className="text-neutral-600">Discover businesses and services across Rwanda.</p>
+      </div>
 
-      <form method="get" className="mb-6 flex gap-4 items-end">
-        <div>
-          <label className="block text-sm font-medium">City</label>
-          <select name="city" defaultValue={city || 'all'} className="mt-1 block border rounded p-2">
+      <form method="get" className="mb-8">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <select name="city" defaultValue={city || 'all'} className="appearance-none pl-4 pr-10 py-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-medium text-neutral-900 shadow-sm hover:border-primary hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-150">
             <option value="all">All Cities</option>
             <option value="Kigali">Kigali</option>
             <option value="Musanze">Musanze</option>
@@ -33,31 +37,39 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
             <option value="Huye">Huye</option>
             <option value="Mombasa">Mombasa</option>
           </select>
+          <button type="submit" className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors">
+            Filter
+          </button>
         </div>
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-          Filter
-        </button>
       </form>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2">
-          {businesses.length === 0 ? (
-            <p>No businesses found.</p>
-          ) : (
-            <ul className="space-y-4">
-              {businesses.map((business: any) => (
-                <li key={business._id.toString()} className="border p-4 rounded">
-                  <h2 className="text-xl font-semibold">{business.name}</h2>
-                  <p className="text-gray-600">{business.category} · {business.city || 'Nationwide'}</p>
-                </li>
-              ))}
-            </ul>
-          )}
+      {businesses.length === 0 ? (
+        <EmptyState
+          icon="🏢"
+          title="No businesses found"
+          description="Try adjusting your filters or check back later."
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {businesses.map((business: any) => (
+            <Link
+              key={business._id.toString()}
+              href={`/${lang}/directory/${business.slug || business._id.toString()}`}
+              className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <h2 className="text-lg font-semibold text-primary group-hover:text-primary-hover transition-colors mb-2">
+                {business.name}
+              </h2>
+              <p className="text-sm text-neutral-600 mb-1">
+                {business.category}
+              </p>
+              <p className="text-sm text-neutral-500">
+                {business.city || 'Nationwide'}
+              </p>
+            </Link>
+          ))}
         </div>
-        <div>
-          <AdBanner placement="sidebar" city={city} />
-        </div>
-      </div>
-    </main>
+      )}
+    </PageContainer>
   )
 }

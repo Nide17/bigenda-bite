@@ -78,3 +78,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to approve update' }, { status: 500 })
   }
 }
+

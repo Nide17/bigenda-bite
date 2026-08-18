@@ -81,3 +81,5 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
     </div>
   )
 }
+
+

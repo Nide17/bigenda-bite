@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
 
@@ -62,4 +62,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to create contribution' }, { status: 500 })
   }
 }
+
 

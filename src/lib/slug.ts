@@ -5,3 +5,4 @@ export function toSlug(text: string): string {
     .replace(/^-+|-+$/g, '')
     .slice(0, 96) || 'untitled'
 }
+

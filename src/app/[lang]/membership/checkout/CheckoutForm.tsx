@@ -2,6 +2,10 @@
 
 import { useState } from 'react'
 import { useTrackEvent } from '@/lib/use-analytics'
+import Card from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
+import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
 
 const PLANS: Record<string, { id: string; name: string; price: number; features: string[] }> = {
   basic: { id: 'basic', name: 'Basic', price: 2000, features: ['Verified badge', 'Contact button', 'Better placement'] },
@@ -66,37 +70,82 @@ export default function CheckoutForm({ planId }: { planId: string }) {
   }
 
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout - {plan.name}</h1>
-      {status === 'success' && (
-        <div className="max-w-md p-4 bg-green-50 border border-green-200 rounded">
-          <p className="text-green-800">Payment successful! Redirecting...</p>
-        </div>
-      )}
-      {status === 'failed' && (
-        <div className="max-w-md p-4 bg-red-50 border border-red-200 rounded">
-          <p className="text-red-800">Payment failed or cancelled. Please try again.</p>
-        </div>
-      )}
-      {status === 'idle' && (
-        <form onSubmit={handleSubmit} className="max-w-md space-y-4">
-          <div>
-            <h2 className="text-xl font-semibold">{plan.name} Plan</h2>
-            <p className="text-2xl font-bold">{plan.price.toLocaleString()} RWF</p>
-            <ul className="mt-2 list-disc list-inside text-sm text-gray-600">
-              {plan.features.map((feature) => (<li key={feature}>{feature}</li>))}
-            </ul>
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-8">
+      <Card className="w-full max-w-md">
+        {status === 'success' && (
+          <div className="text-center py-8">
+            <div className="text-5xl mb-4">🎉</div>
+            <h2 className="text-2xl font-bold text-primary mb-2">Payment Successful!</h2>
+            <p className="text-neutral-600 mb-6">Your membership is being activated. Redirecting...</p>
+            <div className="w-full bg-neutral-200 rounded-full h-2 overflow-hidden">
+              <div className="bg-emerald-600 h-2 rounded-full animate-pulse" style={{ width: '100%' }} />
+            </div>
           </div>
-          {error && <p className="text-red-500">{error}</p>}
-          <div>
-            <label className="block text-sm font-medium">Phone Number (MTN MoMo)</label>
-            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+250788000000" className="mt-1 block w-full border rounded p-2" required disabled={loading} />
+        )}
+
+        {status === 'failed' && (
+          <div className="text-center py-8">
+            <div className="text-5xl mb-4">😔</div>
+            <h2 className="text-2xl font-bold text-primary mb-2">Payment Failed</h2>
+            <p className="text-neutral-600 mb-6">The transaction was cancelled or failed. Please try again.</p>
+            <Button onClick={() => setStatus('idle')} variant="outline">
+              Try Again
+            </Button>
           </div>
-          <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded" disabled={loading}>
-            {loading ? 'Processing...' : `Pay ${plan.price.toLocaleString()} RWF`}
-          </button>
-        </form>
-      )}
-    </main>
+        )}
+
+        {status === 'idle' && (
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <h1 className="text-2xl font-bold text-primary mb-1">Checkout</h1>
+              <p className="text-sm text-neutral-600">Complete your payment to activate your membership</p>
+            </div>
+
+            <div className="bg-primary-light border border-primary/10 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-lg font-semibold text-primary">{plan.name} Plan</h2>
+                <Badge variant="info">Popular</Badge>
+              </div>
+              <p className="text-3xl font-bold text-primary mb-3">{plan.price.toLocaleString()} RWF</p>
+              <ul className="space-y-1.5">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2 text-sm text-neutral-700">
+                    <svg className="w-4 h-4 text-emerald-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+                {error}
+              </div>
+            )}
+
+            <Input
+              label="Phone Number (MTN MoMo)"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+250788000000"
+              required
+              disabled={loading}
+              helperText="Enter the phone number linked to your MTN MoMo account"
+            />
+
+            <Button type="submit" className="w-full" size="lg" loading={loading}>
+              {loading ? 'Processing...' : `Pay ${plan.price.toLocaleString()} RWF`}
+            </Button>
+
+            <p className="text-xs text-neutral-500 text-center">
+              Secured by MTN Mobile Money. You will receive a prompt on your phone to authorize the payment.
+            </p>
+          </form>
+        )}
+      </Card>
+    </div>
   )
 }

@@ -12,3 +12,4 @@ declare module '@next/bundle-analyzer' {
 
   export = withBundleAnalyzer
 }
+

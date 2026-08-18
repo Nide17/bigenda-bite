@@ -67,3 +67,4 @@ export async function scrapeIrembo(page?: any): Promise<ScrapedProcess[]> {
     return []
   }
 }
+

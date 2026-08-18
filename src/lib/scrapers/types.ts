@@ -16,3 +16,4 @@ export interface ScrapedProcess {
   lastVerifiedDate: string
   confidenceScore: number
 }
+

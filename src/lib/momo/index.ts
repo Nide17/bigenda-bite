@@ -1,4 +1,4 @@
-﻿export interface MoMoConfig {
+export interface MoMoConfig {
   apiUser: string
   apiKey: string
   subscriptionKey: string

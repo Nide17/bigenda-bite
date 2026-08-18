@@ -47,3 +47,5 @@ export function useLocale() {
   const context = useContext(I18nContext)
   return context?.locale || 'en'
 }
+
+

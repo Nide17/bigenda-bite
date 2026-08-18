@@ -36,3 +36,4 @@ export async function getSession(requestOrCookie: NextRequest | string | null) {
     return null
   }
 }
+

@@ -15,3 +15,4 @@ export async function connectToDatabase() {
 
   return client.db('bigenda-bite')
 }
+

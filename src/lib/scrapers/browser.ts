@@ -50,3 +50,4 @@ export async function scrapePage(url: string): Promise<{ title: string; content:
     await browser.close()
   }
 }
+

@@ -2,16 +2,21 @@
 
 import { useState } from 'react'
 import { useTranslations } from '@/components/I18nProvider'
+import Card from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
 
 export default function RegisterForm({ lang }: { lang: string }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
     setError('')
 
     const res = await fetch('/api/register', {
@@ -21,52 +26,57 @@ export default function RegisterForm({ lang }: { lang: string }) {
     })
 
     if (!res.ok) {
-      setError('Registration failed')
+      setError('Registration failed. Please try again.')
+      setLoading(false)
       return
     }
 
-    window.location.href = '/' + lang + '/login'
+    window.location.href = `/${lang}/login`
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8">
-      <form onSubmit={handleSubmit} className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold">{t('register')}</h1>
-        {error && <p className="text-red-500">{error}</p>}
-        <div>
-          <label className="block text-sm font-medium">Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full border rounded p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full border rounded p-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full border rounded p-2"
-            required
-          />
-        </div>
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
+    <Card className="p-6 sm:p-8">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+            {error}
+          </div>
+        )}
+        <Input
+          label="Full Name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          autoComplete="name"
+        />
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          autoComplete="new-password"
+          helperText="At least 6 characters"
+        />
+        <Button type="submit" className="w-full" loading={loading}>
           {t('register')}
-        </button>
+        </Button>
+        <p className="text-sm text-neutral-600 text-center">
+          Already have an account?{' '}
+          <a href={`/${lang}/login`} className="text-primary font-medium hover:underline">
+            Sign in
+          </a>
+        </p>
       </form>
-    </div>
+    </Card>
   )
 }

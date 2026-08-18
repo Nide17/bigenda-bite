@@ -16,3 +16,4 @@ export async function getRequestConfig(request: Request) {
     messages: (await import(`./messages/${locale}.json`)).default,
   }
 }
+

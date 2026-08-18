@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { useTranslations } from '@/components/I18nProvider'
+import Card from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
+import Input from '@/components/ui/Input'
 
 export default function LoginForm({ lang }: { lang: string }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [csrfToken, setCsrfToken] = useState('')
+  const [loading, setLoading] = useState(false)
   const t = useTranslations('common')
 
   useEffect(() => {
@@ -17,43 +21,66 @@ export default function LoginForm({ lang }: { lang: string }) {
       .catch(() => setCsrfToken(''))
   }, [])
 
-  return (
-    <form
-      action="/api/auth/callback/credentials"
-      method="POST"
-      className="w-full max-w-md space-y-4"
-    >
-      <input type="hidden" name="csrfToken" value={csrfToken} />
-      <input type="hidden" name="callbackUrl" value={'/' + lang} />
-      <input type="hidden" name="redirect" value="false" />
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
 
-      <h1 className="text-2xl font-bold">{t('login')}</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      <div>
-        <label className="block text-sm font-medium">Email</label>
-        <input
+    const res = await fetch('/api/auth/callback/credentials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        csrfToken,
+        email,
+        password,
+        callbackUrl: `/${lang}`,
+        redirect: 'false',
+      }),
+    })
+
+    if (res.ok) {
+      window.location.href = `/${lang}`
+    } else {
+      setError('Invalid email or password')
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Card className="p-6 sm:p-8">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <input type="hidden" name="csrfToken" value={csrfToken} />
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+            {error}
+          </div>
+        )}
+        <Input
+          label="Email"
           type="email"
-          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full border rounded p-2"
           required
+          autoComplete="email"
         />
-      </div>
-      <div>
-        <label className="block text-sm font-medium">Password</label>
-        <input
+        <Input
+          label="Password"
           type="password"
-          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full border rounded p-2"
           required
+          autoComplete="current-password"
         />
-      </div>
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
-        {t('login')}
-      </button>
-    </form>
+        <Button type="submit" className="w-full" loading={loading}>
+          {t('login')}
+        </Button>
+        <p className="text-sm text-neutral-600 text-center">
+          Don&apos;t have an account?{' '}
+          <a href={`/${lang}/register`} className="text-primary font-medium hover:underline">
+            Sign up
+          </a>
+        </p>
+      </form>
+    </Card>
   )
 }

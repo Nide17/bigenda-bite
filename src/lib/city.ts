@@ -31,3 +31,4 @@ export async function resolveCity(request: Request): Promise<string> {
   }
   return getCityFromCookie()
 }
+

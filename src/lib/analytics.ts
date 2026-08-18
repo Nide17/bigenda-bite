@@ -1,4 +1,4 @@
-﻿import { connectToDatabase } from '@/lib/db/mongodb'
+import { connectToDatabase } from '@/lib/db/mongodb'
 
 export type EventType = 'page_view' | 'ad_impression' | 'ad_click' | 'payment_initiated' | 'payment_success' | 'contribution_submitted' | 'lead_submitted'
 

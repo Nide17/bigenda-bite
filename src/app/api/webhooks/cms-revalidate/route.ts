@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { revalidateTag } from 'next/cache'
 
 export async function POST(request: Request) {
@@ -17,4 +17,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to revalidate' }, { status: 500 })
   }
 }
+
 

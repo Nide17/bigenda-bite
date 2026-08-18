@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState, useEffect } from 'react'
 import { createClient } from '@sanity/client'
 
@@ -100,3 +100,5 @@ export default function StudioListTool() {
     </div>
   )
 }
+
+

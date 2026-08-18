@@ -89,3 +89,4 @@ export const getAlerts = cache(async () => {
     `*[_type == "alert" && expiresAt > now()] | order(severity desc, _createdAt desc)`
   )
 })
+

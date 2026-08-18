@@ -1,7 +1,10 @@
-﻿import { getSession } from '@/lib/auth/session'
+import { getSession } from '@/lib/auth/session'
 import { getAnalyticsSummary, getTopPages, getRevenueStats } from '@/lib/analytics'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
+import PageContainer from '@/components/PageContainer'
+import Card from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,102 +22,103 @@ export default async function AdminAnalyticsPage() {
     getRevenueStats(30),
   ])
 
-  return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Analytics Dashboard</h1>
+  const metrics = [
+    { label: 'Page Views', value: summary.pageViews.toLocaleString(), sub: `Last ${summary.days} days`, icon: '???' },
+    { label: 'Ad Clicks', value: summary.adClicks.toLocaleString(), sub: `Last ${summary.days} days`, icon: '???' },
+    { label: 'Payments', value: summary.payments.toLocaleString(), sub: `Last ${summary.days} days`, icon: '??' },
+    { label: 'Contributions', value: summary.contributions.toLocaleString(), sub: `Last ${summary.days} days`, icon: '??' },
+    { label: 'Leads', value: summary.leads.toLocaleString(), sub: `Last ${summary.days} days`, icon: '??' },
+  ]
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-        <div className="border p-6 rounded">
-          <h3 className="text-sm font-semibold text-gray-600">Page Views</h3>
-          <p className="text-3xl font-bold">{summary.pageViews.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">Last {summary.days} days</p>
-        </div>
-        <div className="border p-6 rounded">
-          <h3 className="text-sm font-semibold text-gray-600">Ad Clicks</h3>
-          <p className="text-3xl font-bold">{summary.adClicks.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">Last {summary.days} days</p>
-        </div>
-        <div className="border p-6 rounded">
-          <h3 className="text-sm font-semibold text-gray-600">Payments</h3>
-          <p className="text-3xl font-bold">{summary.payments.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">Last {summary.days} days</p>
-        </div>
-        <div className="border p-6 rounded">
-          <h3 className="text-sm font-semibold text-gray-600">Contributions</h3>
-          <p className="text-3xl font-bold">{summary.contributions.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">Last {summary.days} days</p>
-        </div>
-        <div className="border p-6 rounded">
-          <h3 className="text-sm font-semibold text-gray-600">Leads</h3>
-          <p className="text-3xl font-bold">{summary.leads.toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">Last {summary.days} days</p>
-        </div>
+  return (
+    <PageContainer>
+      <h1 className="text-3xl font-bold text-[#1e1b4b] mb-8">Analytics Dashboard</h1>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        {metrics.map((metric) => (
+          <Card key={metric.label} className="p-5">
+            <div className="text-2xl mb-2">{metric.icon}</div>
+            <h3 className="text-sm font-medium text-neutral-600 mb-1">{metric.label}</h3>
+            <p className="text-2xl font-bold text-[#1e1b4b]">{metric.value}</p>
+            <p className="text-xs text-neutral-500 mt-1">{metric.sub}</p>
+          </Card>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="border rounded">
-          <div className="p-4 border-b">
-            <h2 className="text-xl font-semibold">Top Pages</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="overflow-hidden">
+          <div className="px-6 py-4 border-b border-neutral-200">
+            <h2 className="text-lg font-semibold text-[#1e1b4b]">Top Pages</h2>
           </div>
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="text-left p-3">Path</th>
-                <th className="text-left p-3">Event Type</th>
-                <th className="text-left p-3">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topPages.length === 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-neutral-50">
                 <tr>
-                  <td colSpan={3} className="p-4 text-gray-500 text-center">No page views yet</td>
+                  <th className="text-left p-3 font-semibold text-neutral-700">Path</th>
+                  <th className="text-left p-3 font-semibold text-neutral-700">Event Type</th>
+                  <th className="text-left p-3 font-semibold text-neutral-700">Date</th>
                 </tr>
-              ) : (
-                topPages.map((page: any) => (
-                  <tr key={page._id.toString()} className="border-t">
-                    <td className="p-3">{page.metadata?.path || '/'}</td>
-                    <td className="p-3">{page.type}</td>
-                    <td className="p-3">{new Date(page.createdAt).toLocaleDateString()}</td>
+              </thead>
+              <tbody className="divide-y divide-neutral-200">
+                {topPages.length === 0 ? (
+                  <tr>
+                    <td colSpan={3} className="p-6 text-neutral-500 text-center">No page views yet</td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                ) : (
+                  topPages.map((page: any) => (
+                    <tr key={page._id.toString()} className="hover:bg-neutral-50 transition-colors">
+                      <td className="p-3 font-mono text-xs">{page.metadata?.path || '/'}</td>
+                      <td className="p-3">
+                        <Badge variant="info">{page.type}</Badge>
+                      </td>
+                      <td className="p-3 text-neutral-600">{new Date(page.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </Card>
 
-        <div className="border rounded">
-          <div className="p-4 border-b">
-            <h2 className="text-xl font-semibold">Revenue</h2>
+        <Card className="overflow-hidden">
+          <div className="px-6 py-4 border-b border-neutral-200">
+            <h2 className="text-lg font-semibold text-[#1e1b4b]">Revenue</h2>
           </div>
           <div className="p-6">
-            <div className="mb-4">
-              <p className="text-sm text-gray-600">Total Revenue (30 days)</p>
-              <p className="text-4xl font-bold">{revenue.total.toLocaleString()} RWF</p>
-              <p className="text-sm text-gray-500 mt-1">{revenue.count} successful payments</p>
+            <div className="mb-6">
+              <p className="text-sm text-neutral-600 mb-1">Total Revenue (30 days)</p>
+              <p className="text-4xl font-bold text-[#1e1b4b]">{revenue.total.toLocaleString()} RWF</p>
+              <p className="text-sm text-neutral-500 mt-1">{revenue.count} successful payments</p>
             </div>
             {revenue.payments.length > 0 && (
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="text-left p-2">Amount</th>
-                    <th className="text-left p-2">Plan</th>
-                    <th className="text-left p-2">Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {revenue.payments.map((payment: any) => (
-                    <tr key={payment._id.toString()} className="border-t">
-                      <td className="p-2">{Number(payment.metadata?.amount || 0).toLocaleString()} RWF</td>
-                      <td className="p-2">{payment.metadata?.planId || '-'}</td>
-                      <td className="p-2">{new Date(payment.createdAt).toLocaleDateString()}</td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-neutral-50">
+                    <tr>
+                      <th className="text-left p-3 font-semibold text-neutral-700">Amount</th>
+                      <th className="text-left p-3 font-semibold text-neutral-700">Plan</th>
+                      <th className="text-left p-3 font-semibold text-neutral-700">Date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-neutral-200">
+                    {revenue.payments.map((payment: any) => (
+                      <tr key={payment._id.toString()} className="hover:bg-neutral-50 transition-colors">
+                        <td className="p-3 font-semibold text-[#1e1b4b]">{Number(payment.metadata?.amount || 0).toLocaleString()} RWF</td>
+                        <td className="p-3">
+                          <Badge variant="info">{payment.metadata?.planId || '-'}</Badge>
+                        </td>
+                        <td className="p-3 text-neutral-600">{new Date(payment.createdAt).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
-        </div>
+        </Card>
       </div>
-    </div>
+    </PageContainer>
   )
 }
+
+

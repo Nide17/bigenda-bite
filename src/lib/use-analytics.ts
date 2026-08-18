@@ -47,3 +47,4 @@ export function usePageView() {
     sendBeaconPayload('page_view', { path: pathname })
   }, [pathname])
 }
+

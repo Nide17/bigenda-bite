@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import { routing } from '@/i18n/routing'
-import { Navigation } from '@/components/Navigation'
+import Navigation from '@/components/Navigation'
 import { I18nProvider } from '@/components/I18nProvider'
 import { trackEvent } from '@/lib/analytics'
 import { getCityFromCookie } from '@/lib/city'
@@ -23,10 +23,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
   return {
     title: 'Bigenda Bite - Rwanda Life Guide',
-    description: 'Your everyday guide to life and administrative processes in Rwanda.',
+    description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
     openGraph: {
       title: 'Bigenda Bite - Rwanda Life Guide',
-      description: 'Your everyday guide to life and administrative processes in Rwanda.',
+      description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
       type: 'website',
       url,
       siteName: 'Bigenda Bite',
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     twitter: {
       card: 'summary',
       title: 'Bigenda Bite - Rwanda Life Guide',
-      description: 'Your everyday guide to life and administrative processes in Rwanda.',
+      description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
     },
     alternates: {
       canonical: url,

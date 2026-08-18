@@ -71,3 +71,4 @@ export async function getUnreadCount(userId: string) {
     .collection(NOTIFICATIONS_COLLECTION)
     .countDocuments({ userId, read: false })
 }
+

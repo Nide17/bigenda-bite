@@ -1,7 +1,26 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { NotificationBell } from './NotificationBell'
 
-export function Navigation({ lang, messages }: { lang: string; messages: any }) {
+interface NavItem {
+  href: string
+  label: string
+}
+
+const navItems: NavItem[] = [
+  { href: '/en/processes', label: 'Processes' },
+  { href: '/en/guides', label: 'Guides' },
+  { href: '/en/directory', label: 'Directory' },
+  { href: '/en/alerts', label: 'Alerts' },
+  { href: '/en/membership', label: 'Membership' },
+]
+
+export default function Navigation({ lang, messages }: { lang: string; messages: any }) {
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const pathname = usePathname() || ''
   const t = (key: string) => {
     const keys = key.split('.')
     let value: any = messages.common
@@ -11,19 +30,92 @@ export function Navigation({ lang, messages }: { lang: string; messages: any }) 
     return value || key
   }
 
-  return (
-    <nav className="border-b p-4">
-      <div className="flex items-center justify-between">
-        <ul className="flex gap-6">
-          <li><Link href={`/${lang}`} className="hover:underline">{t('welcome')}</Link></li>
-          <li><Link href={`/${lang}/processes`} className="hover:underline">{t('processes')}</Link></li>
-          <li><Link href={`/${lang}/guides`} className="hover:underline">{t('guides')}</Link></li>
-          <li><Link href={`/${lang}/directory`} className="hover:underline">{t('directory')}</Link></li>
-          <li><Link href={`/${lang}/alerts`} className="hover:underline">{t('alerts')}</Link></li>
-          <li><Link href={`/${lang}/membership`} className="hover:underline">{t('membership')}</Link></li>
-        </ul>
-        <NotificationBell />
+  const isActive = (href: string) => {
+    const prefix = `/${lang}`
+    if (href === prefix) return pathname === prefix
+    return pathname.startsWith(href)
+  }
+
+    return (
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center gap-8">
+            <Link
+              href={`/${lang}`}
+              className="flex items-center gap-2.5 group"
+            >
+              <div className="w-8 h-8 bg-[#1e1b4b] rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-[#312e6b] transition-colors">
+                BB
+              </div>
+              <span className="font-bold text-lg text-[#1e1b4b] tracking-tight hidden sm:block">
+                Bigenda Bite
+              </span>
+            </Link>
+            <nav className="hidden md:flex items-center gap-1" aria-label="Main">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`
+                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
+                    ${isActive(item.href)
+                      ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                      : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                    }
+                  `}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-neutral-100 transition-colors"
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+            >
+              {mobileOpen ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
-    </nav>
+
+      {mobileOpen && (
+        <div className="md:hidden border-t border-neutral-200 bg-white">
+          <nav className="px-4 py-3 space-y-1" aria-label="Mobile">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`
+                  block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  ${isActive(item.href)
+                    ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                    : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                  }
+                `}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
+    </header>
   )
 }
+
+

@@ -92,3 +92,4 @@ export function businessJsonLd(baseUrl: string, data: {
     ...(data.contact?.phone && { telephone: data.contact.phone }),
   }
 }
+

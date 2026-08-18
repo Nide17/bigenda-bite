@@ -21,3 +21,5 @@ export function JsonLd({ data }: JsonLdProps) {
 
   return null
 }
+
+

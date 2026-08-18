@@ -1,4 +1,7 @@
 import { getAlerts } from '@/lib/cms/sanity'
+import PageContainer from '@/components/PageContainer'
+import EmptyState from '@/components/ui/EmptyState'
+import Badge from '@/components/ui/Badge'
 
 export const dynamic = 'force-dynamic'
 
@@ -8,21 +11,53 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
   const messages = (await import(`@/i18n/messages/${lang}.json`)).default
   const t = (key: string) => messages.common?.[key] || key
 
+  const severityColors: Record<string, 'error' | 'warning' | 'info' | 'success'> = {
+    high: 'error',
+    medium: 'warning',
+    low: 'info',
+    critical: 'error',
+  }
+
   return (
-    <main className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">{t('alerts')}</h1>
+    <PageContainer>
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('alerts')}</h1>
+        <p className="text-neutral-600">Important updates and announcements from official sources.</p>
+      </div>
       {alerts.length === 0 ? (
-        <p>No active alerts.</p>
+        <EmptyState
+          icon="🔔"
+          title="No active alerts"
+          description="All clear! Check back later for updates."
+        />
       ) : (
-        <ul className="space-y-4">
+        <div className="space-y-4">
           {alerts.map((alert: any) => (
-            <li key={alert._id} className="border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold">{alert.translations?.[lang] || alert.translations?.en}</p>
-              <p className="text-sm text-gray-500">Severity: {alert.severity}</p>
-            </li>
+            <div
+              key={alert._id}
+              className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h2 className="text-lg font-semibold text-primary">
+                      {alert.translations?.[lang]?.title || alert.translations?.en?.title}
+                    </h2>
+                    {alert.severity && (
+                      <Badge variant={severityColors[alert.severity] || 'info'}>
+                        {alert.severity}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {alert.translations?.[lang]?.summary || alert.translations?.en?.summary}
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
-    </main>
+    </PageContainer>
   )
 }

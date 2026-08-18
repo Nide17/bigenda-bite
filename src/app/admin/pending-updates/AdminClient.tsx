@@ -115,3 +115,5 @@ export default function AdminClient({ updates }: { updates: PendingUpdate[] }) {
     </div>
   )
 }
+
+

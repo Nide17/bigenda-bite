@@ -1,4 +1,4 @@
-﻿import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/session'
 import { getAnalyticsSummary, getTopPages, getRevenueStats } from '@/lib/analytics'
 
