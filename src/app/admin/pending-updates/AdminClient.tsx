@@ -59,7 +59,7 @@ export default function AdminClient({ updates }: { updates: PendingUpdate[] }) {
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-xl font-semibold">
-                {(update.update as any)?.translations?.en?.title || update.documentId}
+                {(update.update as unknown as { translations?: { en?: { title?: string } } })?.translations?.en?.title || update.documentId}
               </h3>
               <p className="text-sm text-gray-500 mt-1">
                 Detected: {new Date(update.detectedAt).toLocaleString()} | Confidence:{' '}

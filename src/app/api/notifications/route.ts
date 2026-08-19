@@ -1,11 +1,17 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
-import { createNotification, getUserNotifications, markAllNotificationsRead } from '@/lib/notifications'
+import { createNotification } from '@/lib/notifications'
+
+interface CookiesRequest extends Request {
+  cookies?: {
+    get(name: string): { value?: string }
+  }
+}
 
 export async function GET(request: Request) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -55,13 +61,13 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
-    const { type, title, body: bodyText, metadata } = body
+    const { type, title, body: bodyText, metadata } = body as { type: string; title: string; body: string; metadata?: Record<string, unknown> }
 
     if (!type || !title || !bodyText) {
       return NextResponse.json({ error: 'type, title, and body are required' }, { status: 400 })

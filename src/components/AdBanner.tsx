@@ -25,6 +25,14 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
   const router = useRouter()
   const trackAdClick = useTrackEvent('ad_click', { placement, city })
 
+  const trackImpression = async (adId: string) => {
+    await fetch('/api/ads/impression', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ adId }),
+    })
+  }
+
   useEffect(() => {
     const params = new URLSearchParams({ placement })
     if (city) params.set('city', city)
@@ -41,14 +49,6 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
       })
       .catch(() => setLoading(false))
   }, [placement, city])
-
-  const trackImpression = async (adId: string) => {
-    await fetch('/api/ads/impression', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ adId }),
-    })
-  }
 
   const handleClick = async (ad: Ad) => {
     trackAdClick()

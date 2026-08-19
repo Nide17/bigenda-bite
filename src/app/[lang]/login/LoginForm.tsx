@@ -1,12 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 export default function LoginForm({ lang }: { lang: string }) {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -39,7 +41,7 @@ export default function LoginForm({ lang }: { lang: string }) {
     })
 
     if (res.ok) {
-      window.location.href = `/${lang}`
+      router.push(`/${lang}`)
     } else {
       setError('Invalid email or password')
       setLoading(false)

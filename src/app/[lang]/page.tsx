@@ -5,6 +5,11 @@ import AdBanner from '@/components/AdBanner'
 import CitySelector from '@/components/CitySelector'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
+
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
 
 export const dynamic = 'force-dynamic'
 
@@ -16,7 +21,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
     getProcesses(lang),
     getGuides(lang),
   ])
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages.common?.[key] || key
 
   const quickLinks = [
@@ -68,7 +73,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span className="font-medium">Your city:</span>
-                <CitySelector cityName={cityName} lang={lang} />
+                <CitySelector cityName={cityName} />
               </div>
             </div>
           </div>
@@ -112,7 +117,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {processes.slice(0, 5).map((process: any) => (
+                    {processes.slice(0, 5).map((process: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
                       <Link
                         key={process._id}
                         href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}
@@ -142,7 +147,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {guides.slice(0, 5).map((guide: any) => (
+                    {guides.slice(0, 5).map((guide: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
                       <Link
                         key={guide._id}
                         href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide.translations?.en?.title || guide._id}`}

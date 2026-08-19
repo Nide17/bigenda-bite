@@ -2,13 +2,18 @@ import { getAlerts } from '@/lib/cms/sanity'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
 import Badge from '@/components/ui/Badge'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
+
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
 
 export const dynamic = 'force-dynamic'
 
 export default async function AlertsPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
   const alerts = await getAlerts()
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages.common?.[key] || key
 
   const severityColors: Record<string, 'error' | 'warning' | 'info' | 'success'> = {
@@ -32,7 +37,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
         />
       ) : (
         <div className="space-y-4">
-          {alerts.map((alert: any) => (
+          {alerts.map((alert: { _id: string; severity?: string; translations?: Record<string, { title?: string; summary?: string }> }) => (
             <div
               key={alert._id}
               className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200"

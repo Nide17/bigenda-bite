@@ -102,7 +102,6 @@ export async function POST(request: NextRequest) {
       const email = params.get('email')
       const password = params.get('password')
       const callbackUrl = params.get('callbackUrl') || '/en'
-      const csrfToken = params.get('csrfToken') || request.cookies.get('next-auth.csrf-token')?.value
 
       if (!email || !password) {
         return NextResponse.redirect(new URL('/api/auth/error?error=MissingCredentials', request.url))

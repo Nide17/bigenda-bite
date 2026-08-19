@@ -1,17 +1,21 @@
 import { getProcessBySlug } from '@/lib/cms/sanity'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
+
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
 
 export const dynamic = 'force-dynamic'
 
 export default async function ProcessDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
   const process = await getProcessBySlug(slug, lang)
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages.common?.[key] || key
 
   if (!process) {
@@ -65,7 +69,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">Steps</h2>
           <div className="space-y-4">
-            {process.steps.map((step: any, index: number) => (
+            {process.steps.map((step: { order?: number; text?: Record<string, string>; estimatedTime?: string }, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {step.order || index + 1}
@@ -102,7 +106,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
-                {process.fees.map((fee: any, index: number) => (
+                {process.fees.map((fee: { label: string; amountRWF: number; conditions?: string }, index: number) => (
                   <tr key={index} className="hover:bg-neutral-50 transition-colors">
                     <td className="p-4 font-medium text-neutral-900">{fee.label}</td>
                     <td className="p-4">

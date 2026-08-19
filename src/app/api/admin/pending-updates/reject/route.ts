@@ -1,12 +1,18 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 import { sendDiscordNotification } from '@/lib/discord'
 
+interface CookiesRequest extends Request {
+  cookies?: {
+    get(name: string): { value?: string }
+  }
+}
+
 export async function POST(request: Request) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user || session.user.role !== 'editor') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -36,13 +42,13 @@ export async function POST(request: Request) {
       { $set: { status: 'rejected', rejectedAt: new Date() } }
     )
 
-    const doc = update.update as any
+    const doc = update.update as unknown as Record<string, unknown>
     await sendDiscordNotification(
-      `Update rejected for ${doc.translations?.en?.title || update.documentId}`,
+      `Update rejected for ${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}`,
       [
         {
           title: '❌ Content Update Rejected',
-          description: `The update for "${doc.translations?.en?.title || update.documentId}" has been rejected.`,
+          description: `The update for "${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}" has been rejected.`,
           color: 0xef4444,
         },
       ]

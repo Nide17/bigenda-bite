@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Button from '@/components/ui/Button'
+import Link from 'next/link'
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
@@ -20,12 +21,12 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           <Button onClick={reset} variant="primary">
             Try Again
           </Button>
-          <a
+          <Link
             href="/en"
             className="inline-flex items-center justify-center px-6 py-2.5 bg-white border border-neutral-300 text-[#1e1b4b] font-semibold rounded-lg hover:bg-neutral-50 transition-all"
           >
             Go Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

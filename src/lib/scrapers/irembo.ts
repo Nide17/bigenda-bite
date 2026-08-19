@@ -1,5 +1,6 @@
 import { scrapePage, scrapeWithPage, isValidScrape } from './browser'
 import type { ScrapedProcess } from './types'
+import type { Page } from 'playwright'
 
 function normalizeIremboService(title: string, content: string): ScrapedProcess {
   const lowerContent = content.toLowerCase()
@@ -51,7 +52,7 @@ function normalizeIremboService(title: string, content: string): ScrapedProcess 
   }
 }
 
-export async function scrapeIrembo(page?: any): Promise<ScrapedProcess[]> {
+export async function scrapeIrembo(page?: Page): Promise<ScrapedProcess[]> {
   try {
     const { content, title } = page
       ? await scrapeWithPage(page, 'https://irembo.gov.rw/')

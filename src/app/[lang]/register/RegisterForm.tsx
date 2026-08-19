@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
 export default function RegisterForm({ lang }: { lang: string }) {
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,7 +33,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
       return
     }
 
-    window.location.href = `/${lang}/login`
+    router.push(`/${lang}/login`)
   }
 
   return (

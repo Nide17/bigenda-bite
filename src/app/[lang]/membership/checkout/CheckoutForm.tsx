@@ -1,6 +1,7 @@
 ﻿'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTrackEvent } from '@/lib/use-analytics'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
@@ -13,10 +14,10 @@ const PLANS: Record<string, { id: string; name: string; price: number; features:
 }
 
 export default function CheckoutForm({ planId }: { planId: string }) {
+  const router = useRouter()
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<'idle' | 'pending' | 'success' | 'failed'>('idle')
-  const [transactionId, setTransactionId] = useState('')
   const [error, setError] = useState('')
 
   const plan = PLANS[planId] || PLANS.basic
@@ -40,7 +41,6 @@ export default function CheckoutForm({ planId }: { planId: string }) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Payment initiation failed')
-      setTransactionId(data.transactionId)
       setStatus('pending')
       pollStatus(data.transactionId)
     } catch (err) {
@@ -58,7 +58,7 @@ export default function CheckoutForm({ planId }: { planId: string }) {
           clearInterval(interval)
           setStatus('success')
           setLoading(false)
-          setTimeout(() => { window.location.href = '/en/membership' }, 2000)
+          setTimeout(() => { router.push('/en/membership') }, 2000)
         } else if (data.status === 'FAILED' || data.status === 'CANCELLED') {
           clearInterval(interval)
           setStatus('failed')

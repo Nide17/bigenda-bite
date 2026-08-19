@@ -22,6 +22,9 @@ export default async function AdminAnalyticsPage() {
     getRevenueStats(30),
   ])
 
+  const typedTopPages = topPages as unknown as Array<{ _id: { toString(): string }; metadata?: { path?: string }; type: string; createdAt: string }>
+  const typedPayments = revenue.payments as unknown as Array<{ _id: { toString(): string }; metadata?: { amount?: number; planId?: string }; createdAt: string }>
+
   const metrics = [
     { label: 'Page Views', value: summary.pageViews.toLocaleString(), sub: `Last ${summary.days} days`, icon: '???' },
     { label: 'Ad Clicks', value: summary.adClicks.toLocaleString(), sub: `Last ${summary.days} days`, icon: '???' },
@@ -65,7 +68,7 @@ export default async function AdminAnalyticsPage() {
                     <td colSpan={3} className="p-6 text-neutral-500 text-center">No page views yet</td>
                   </tr>
                 ) : (
-                  topPages.map((page: any) => (
+                  typedTopPages.map((page) => (
                     <tr key={page._id.toString()} className="hover:bg-neutral-50 transition-colors">
                       <td className="p-3 font-mono text-xs">{page.metadata?.path || '/'}</td>
                       <td className="p-3">
@@ -101,7 +104,7 @@ export default async function AdminAnalyticsPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-neutral-200">
-                    {revenue.payments.map((payment: any) => (
+                    {typedPayments.map((payment) => (
                       <tr key={payment._id.toString()} className="hover:bg-neutral-50 transition-colors">
                         <td className="p-3 font-semibold text-[#1e1b4b]">{Number(payment.metadata?.amount || 0).toLocaleString()} RWF</td>
                         <td className="p-3">

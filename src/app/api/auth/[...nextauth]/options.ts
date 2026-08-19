@@ -2,9 +2,26 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { MongoClient } from 'mongodb'
 import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import type { User } from 'next-auth'
+import type { JWT } from 'next-auth/jwt'
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI!)
 mongoClient.connect().catch((err) => console.error('MongoDB adapter connection error:', err))
+
+interface CustomUser extends User {
+  id: string
+  role: string
+  displayName: string
+}
+
+interface CustomJWT extends JWT {
+  role?: string
+  displayName?: string
+}
+
+interface ExtendedSession {
+  user?: CustomUser
+}
 
 export const authOptions = {
   adapter: MongoDBAdapter(mongoClient),
@@ -15,28 +32,28 @@ export const authOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any) {
+      async authorize(credentials: unknown) {
         try {
           const db = await connectToDatabase()
           const users = db.collection('users')
-          const user = await users.findOne({ email: credentials?.email })
+          const user = await users.findOne({ email: (credentials as Record<string, unknown>)?.email })
 
           if (!user) {
-            console.error('Auth: user not found for email', credentials?.email)
+            console.error('Auth: user not found for email', (credentials as Record<string, unknown>)?.email)
             return null
           }
 
           const passwordMatch = await bcrypt.compare(
-            credentials?.password || '',
+            String((credentials as Record<string, unknown>)?.password || ''),
             user.password
           )
 
           if (!passwordMatch) {
-            console.error('Auth: password mismatch for email', credentials?.email)
+            console.error('Auth: password mismatch for email', (credentials as Record<string, unknown>)?.email)
             return null
           }
 
-          console.error('Auth: login success for email', credentials?.email, 'role', user.role)
+          console.error('Auth: login success for email', (credentials as Record<string, unknown>)?.email, 'role', user.role)
 
           return {
             id: user._id.toString(),
@@ -52,18 +69,18 @@ export const authOptions = {
     },
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }: { token: CustomJWT; user?: CustomUser }) {
       if (user) {
         token.role = user.role
         token.displayName = user.displayName
       }
       return token
     },
-    async session({ session, token }: any) {
+    async session({ session, token }: { session: ExtendedSession; token: CustomJWT }) {
       if (session.user) {
-        ;(session.user as any).id = token.sub
-        ;(session.user as any).role = token.role as string
-        ;(session.user as any).displayName = token.displayName as string
+        session.user.id = token.sub!
+        session.user.role = token.role as string
+        session.user.displayName = token.displayName as string
       }
       return session
     },
@@ -73,4 +90,4 @@ export const authOptions = {
   },
   session: { strategy: 'database' },
   debug: true,
-} as any
+}

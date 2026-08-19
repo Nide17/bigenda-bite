@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
       - run: npm run lint
@@ -26,10 +26,12 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
+      - run: rm -rf .next
       - run: npm run build
+      - run: 'test -d .next || (echo "Build failed: .next missing" && exit 1)'
 
   test:
     name: Test
@@ -38,10 +40,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: rm -rf .next
+      - run: npm run build
+      - run: 'test -d .next || (echo "Build failed: .next missing" && exit 1)'
+      - run: npx playwright install chromium
       - run: npm run test:e2e
         env:
           CI: true
@@ -55,17 +60,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
+      - run: rm -rf .next
       - run: npm run build
-      - uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-args: '--prod'
+      - run: 'test -d .next || (echo "Build failed: .next missing" && exit 1)'
+      - run: npm i -g vercel@latest
+      - run: vercel --prod --yes --token ${{ secrets.VERCEL_TOKEN }} --project ${{ secrets.VERCEL_PROJECT_ID }}
 
   deploy-production:
     name: Deploy Production
@@ -76,14 +78,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci
+      - run: rm -rf .next
       - run: npm run build
-      - uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-args: '--prod'
+      - run: 'test -d .next || (echo "Build failed: .next missing" && exit 1)'
+      - run: npm i -g vercel@latest
+      - run: vercel --prod --yes --token ${{ secrets.VERCEL_TOKEN }} --project ${{ secrets.VERCEL_PROJECT_ID }}

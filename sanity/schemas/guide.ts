@@ -1,5 +1,4 @@
 import { defineType, defineField } from 'sanity'
-import { localizedTitleType } from './process'
 
 export const guideType = defineType({
   name: 'guide',

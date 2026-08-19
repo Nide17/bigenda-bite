@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@sanity/client'
 
 const client = createClient({
@@ -17,16 +17,12 @@ const DOCUMENT_TYPES = [
 ]
 
 export default function StudioListTool() {
-  const [documents, setDocuments] = useState<Array<{_id: string, translations?: any}>>([])
+  const [documents, setDocuments] = useState<Array<{_id: string; translations?: Record<string, { title?: string }>}>>([])
   const [loading, setLoading] = useState(true)
   const [selectedType, setSelectedType] = useState('process')
   const [creating, setCreating] = useState(false)
 
-  useEffect(() => {
-    loadDocuments()
-  }, [selectedType])
-
-  async function loadDocuments() {
+  const loadDocuments = useCallback(async () => {
     setLoading(true)
     try {
       const docs = await client.fetch('*[_type == $type] | order(_createdAt desc)', { type: selectedType })
@@ -36,7 +32,12 @@ export default function StudioListTool() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedType])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDocuments()
+  }, [loadDocuments])
 
   async function createDocument() {
     setCreating(true)
