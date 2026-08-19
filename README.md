@@ -43,7 +43,7 @@
 | Testing | Playwright |
 | Deployment | Vercel |
 | CI/CD | GitHub Actions |
-| i18n | next-intl |
+| i18n | custom provider |
 
 ## Project Structure
 

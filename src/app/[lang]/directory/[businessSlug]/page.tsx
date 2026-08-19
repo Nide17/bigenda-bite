@@ -10,7 +10,7 @@ import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
 
-const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
+const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
 
@@ -19,7 +19,7 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
   const db = await connectToDatabase()
   const business = await db.collection('businesses').findOne({ slug: businessSlug })
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages.common?.[key] || key
+  const t = (key: string) => messages[key] || key
 
   if (!business) {
     notFound()

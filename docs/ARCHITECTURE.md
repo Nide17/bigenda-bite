@@ -7,7 +7,7 @@ Bigenda Bite is a full-stack web application built with Next.js 15, serving as a
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         Client (Browser)                     │
-│  Next.js 15 App Router + Tailwind CSS + next-intl (i18n)   │
+│  Next.js 15 App Router + Tailwind CSS + custom i18n provider  │
 └─────────────────────────────────────────────────────────────┘
                             │
                             ▼
@@ -50,7 +50,7 @@ Bigenda Bite is a full-stack web application built with Next.js 15, serving as a
 | Framework | Next.js 15 (App Router) | SSR, SSG, API routes |
 | Language | TypeScript | Type safety |
 | Styling | Tailwind CSS 3 | Utility-first CSS |
-| i18n | next-intl | Multi-language (EN/FR/RW) |
+| i18n | custom provider | Multi-language (EN/FR/RW) |
 | Database | MongoDB (native driver) | User data, sessions, ads, payments |
 | CMS | Sanity v3 | Published content (processes, guides, alerts) |
 | Auth | Custom credentials auth | Session-based auth with MongoDB |
@@ -135,7 +135,7 @@ src/
 
 ### 3. i18n Architecture
 
-- next-intl for routing and translations
+- Custom lightweight i18n provider for routing and translations
 - Server components load messages via dynamic import
 - URL structure: `/{lang}/...`
 - Supported locales: English (`en`), French (`fr`), Kinyarwanda (`rw`)

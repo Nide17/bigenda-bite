@@ -3,24 +3,26 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from '@/components/I18nProvider'
 import { NotificationBell } from './NotificationBell'
 
 interface NavItem {
   href: string
-  label: string
+  labelKey: string
 }
 
 const navItems: NavItem[] = [
-  { href: '/en/processes', label: 'Processes' },
-  { href: '/en/guides', label: 'Guides' },
-  { href: '/en/directory', label: 'Directory' },
-  { href: '/en/alerts', label: 'Alerts' },
-  { href: '/en/membership', label: 'Membership' },
+  { href: '/processes', labelKey: 'processes' },
+  { href: '/guides', labelKey: 'guides' },
+  { href: '/directory', labelKey: 'directory' },
+  { href: '/alerts', labelKey: 'alerts' },
+  { href: '/membership', labelKey: 'membership' },
 ]
 
 export default function Navigation({ lang }: { lang: string }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname() || ''
+  const t = useTranslations()
 
   const isActive = (href: string) => {
     const prefix = `/${lang}`
@@ -28,7 +30,7 @@ export default function Navigation({ lang }: { lang: string }) {
     return pathname.startsWith(href)
   }
 
-    return (
+  return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -48,16 +50,16 @@ export default function Navigation({ lang }: { lang: string }) {
               {navItems.map((item) => (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={`/${lang}${item.href}`}
                   className={`
                     px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
-                    ${isActive(item.href)
+                    ${isActive(`/${lang}${item.href}`)
                       ? 'bg-[#eef2ff] text-[#1e1b4b]'
                       : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
                     }
                   `}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Link>
               ))}
             </nav>
@@ -90,17 +92,17 @@ export default function Navigation({ lang }: { lang: string }) {
             {navItems.map((item) => (
               <Link
                 key={item.href}
-                href={item.href}
+                href={`/${lang}${item.href}`}
                 onClick={() => setMobileOpen(false)}
                 className={`
                   block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                  ${isActive(item.href)
+                  ${isActive(`/${lang}${item.href}`)
                     ? 'bg-[#eef2ff] text-[#1e1b4b]'
                     : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
                   }
                 `}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             ))}
           </nav>

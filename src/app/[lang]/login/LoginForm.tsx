@@ -14,7 +14,7 @@ export default function LoginForm({ lang }: { lang: string }) {
   const [error, setError] = useState('')
   const [csrfToken, setCsrfToken] = useState('')
   const [loading, setLoading] = useState(false)
-  const t = useTranslations('common')
+  const t = useTranslations()
 
   useEffect(() => {
     fetch('/api/auth/csrf')

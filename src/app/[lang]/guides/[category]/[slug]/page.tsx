@@ -14,7 +14,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
   const { lang, slug } = await params
   const guide = await getGuideBySlug(slug, lang)
   const messages = (await import('@/i18n/messages/' + lang + '.json')).default
-  const t = (key: string) => messages.common?.[key] || key
+  const t = (key: string) => messages[key] || key
 
   if (!guide) {
     notFound()
