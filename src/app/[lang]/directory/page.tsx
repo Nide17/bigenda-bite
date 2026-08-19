@@ -1,8 +1,12 @@
 ﻿import { connectToDatabase } from '@/lib/db/mongodb'
-import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
+
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
 
 export const dynamic = 'force-dynamic'
 
@@ -16,8 +20,8 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
     query.city = city
   }
 
-  const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray()
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray() as unknown as Array<{ _id: { toString(): string }; name: string; category: string; city?: string; slug?: string }>
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages.common?.[key] || key
 
   return (
@@ -51,7 +55,7 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {businesses.map((business: any) => (
+          {businesses.map((business) => (
             <Link
               key={business._id.toString()}
               href={`/${lang}/directory/${business.slug || business._id.toString()}`}

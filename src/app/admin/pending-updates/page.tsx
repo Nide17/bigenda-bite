@@ -17,6 +17,42 @@ function createSanityClient() {
   })
 }
 
+async function getPendingUpdates() {
+  const db = await connectToDatabase()
+  const pendingUpdates = db.collection('pendingUpdates')
+
+  const rawUpdates = await pendingUpdates
+    .find({ status: 'pending' })
+    .sort({ detectedAt: -1 })
+    .limit(50)
+    .toArray()
+
+  const updates = rawUpdates.map((update) => ({
+    ...update,
+    _id: update._id.toString(),
+  })) as Array<{ _id: string; documentId?: string; [key: string]: unknown }>
+
+  const sanityClient = createSanityClient()
+  const updatesWithCurrent = await Promise.all(
+    updates.map(async (update) => {
+      if (update.documentId && update.documentId.startsWith('process_')) {
+        try {
+          const current = await sanityClient.fetch(
+            `*[_type == "process" && _id == $id][0]`,
+            { id: update.documentId }
+          )
+          return { ...update, currentSanityDoc: current || null }
+        } catch {
+          return { ...update, currentSanityDoc: null }
+        }
+      }
+      return { ...update, currentSanityDoc: null }
+    })
+  )
+
+  return updatesWithCurrent
+}
+
 export default async function AdminPendingUpdatesPage() {
   const cookieStore = await cookies()
   const session = await getSession(cookieStore.get('next-auth.session-token')?.value || null)
@@ -26,54 +62,12 @@ export default async function AdminPendingUpdatesPage() {
     redirect('/en/login')
   }
 
-  try {
-    const db = await connectToDatabase()
-    const pendingUpdates = db.collection('pendingUpdates')
+  const updatesWithCurrent = await getPendingUpdates()
 
-    const rawUpdates = await pendingUpdates
-      .find({ status: 'pending' })
-      .sort({ detectedAt: -1 })
-      .limit(50)
-      .toArray()
-
-    const updates = rawUpdates.map((update: any) => ({
-      ...update,
-      _id: update._id.toString(),
-    }))
-
-    const sanityClient = createSanityClient()
-    const updatesWithCurrent = await Promise.all(
-      updates.map(async (update: any) => {
-        if (update.documentId && update.documentId.startsWith('process_')) {
-          try {
-            const current = await sanityClient.fetch(
-              `*[_type == "process" && _id == $id][0]`,
-              { id: update.documentId }
-            )
-            return { ...update, currentSanityDoc: current || null }
-          } catch {
-            return { ...update, currentSanityDoc: null }
-          }
-        }
-        return { ...update, currentSanityDoc: null }
-      })
-    )
-
-    return (
-      <div className="min-h-screen p-8">
-        <h1 className="text-3xl font-bold mb-8">Pending Content Updates</h1>
-        <AdminClient updates={JSON.parse(JSON.stringify(updatesWithCurrent))} />
-      </div>
-    )
-  } catch (error) {
-    console.error('Admin page error:', error)
-    return (
-      <div className="min-h-screen p-8">
-        <h1 className="text-3xl font-bold mb-8">Pending Content Updates</h1>
-        <p className="text-red-500">Error loading pending updates. Check server logs.</p>
-      </div>
-    )
-  }
+  return (
+    <div className="min-h-screen p-8">
+      <h1 className="text-3xl font-bold mb-8">Pending Content Updates</h1>
+      <AdminClient updates={JSON.parse(JSON.stringify(updatesWithCurrent))} />
+    </div>
+  )
 }
-
-

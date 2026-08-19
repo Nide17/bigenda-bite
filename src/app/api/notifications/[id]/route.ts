@@ -3,9 +3,15 @@ import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { markNotificationRead } from '@/lib/notifications'
 
+interface CookiesRequest extends Request {
+  cookies?: {
+    get(name: string): { value?: string }
+  }
+}
+
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

@@ -3,7 +3,7 @@ import { cache } from 'react'
 
 function createSanityClient() {
   if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
-    throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID')
+    return null
   }
   return createClient({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -16,12 +16,11 @@ function createSanityClient() {
 export const getProcesses = cache(
   async (locale: string, category?: string) => {
     const client = createSanityClient()
+    if (!client) return []
     const query = category
       ? `*[_type == "process" && status == "published" && category == $category] | order(_createdAt desc)`
       : `*[_type == "process" && status == "published"] | order(_createdAt desc)`
-    
     const params = category ? { category } : {}
-    
     return client.fetch(query, params)
   }
 )
@@ -29,18 +28,17 @@ export const getProcesses = cache(
 export const getProcessBySlug = cache(
   async (slug: string, locale: string) => {
     const client = createSanityClient()
+    if (!client) return null
     const result = await client.fetch(
       `*[_type == "process" && slug.current == $slug && status == "published"][0]`,
       { slug }
     )
     if (result) return result
-
     const byId = await client.fetch(
       `*[_type == "process" && _id == $slug && status == "published"][0]`,
       { slug }
     )
     if (byId) return byId
-
     return client.fetch(
       `*[_type == "process" && translations.${locale}.title match $title && status == "published"][0]`,
       { title: `*${slug.replace(/-/g, ' ')}*` }
@@ -51,12 +49,11 @@ export const getProcessBySlug = cache(
 export const getGuides = cache(
   async (locale: string, category?: string) => {
     const client = createSanityClient()
+    if (!client) return []
     const query = category
       ? `*[_type == "guide" && status == "published" && category == $category] | order(_createdAt desc)`
       : `*[_type == "guide" && status == "published"] | order(_createdAt desc)`
-    
     const params = category ? { category } : {}
-    
     return client.fetch(query, params)
   }
 )
@@ -64,18 +61,17 @@ export const getGuides = cache(
 export const getGuideBySlug = cache(
   async (slug: string, locale: string) => {
     const client = createSanityClient()
+    if (!client) return null
     const result = await client.fetch(
       `*[_type == "guide" && slug.current == $slug && status == "published"][0]`,
       { slug }
     )
     if (result) return result
-
     const byId = await client.fetch(
       `*[_type == "guide" && _id == $slug && status == "published"][0]`,
       { slug }
     )
     if (byId) return byId
-
     return client.fetch(
       `*[_type == "guide" && translations.${locale}.title match $title && status == "published"][0]`,
       { title: `*${slug.replace(/-/g, ' ')}*` }
@@ -85,6 +81,7 @@ export const getGuideBySlug = cache(
 
 export const getAlerts = cache(async () => {
   const client = createSanityClient()
+  if (!client) return []
   return client.fetch(
     `*[_type == "alert" && expiresAt > now()] | order(severity desc, _createdAt desc)`
   )

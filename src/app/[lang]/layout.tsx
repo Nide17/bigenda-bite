@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { headers } from 'next/headers'
 import { routing } from '@/i18n/routing'
@@ -10,8 +9,12 @@ import { getCityFromCookie } from '@/lib/city'
 import { JsonLd } from '@/components/JsonLd'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import '../globals.css'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
 
-const inter = Inter({ subsets: ['latin'] })
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
+
 const baseUrl = 'https://bigendabite.com'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -59,7 +62,7 @@ export default async function RootLayout({
     notFound()
   }
 
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
 
   const headersList = await headers()
   const requestUrl = headersList.get('x-invoke-path') || `/${lang}`
@@ -76,7 +79,7 @@ export default async function RootLayout({
 
   return (
     <I18nProvider messages={messages} locale={lang}>
-      <Navigation lang={lang} messages={messages} />
+      <Navigation lang={lang} />
       <JsonLd data={orgLd} />
       <JsonLd data={websiteLd} />
       {children}

@@ -1,5 +1,6 @@
 import { scrapePage, scrapeWithPage, isValidScrape } from './browser'
 import type { ScrapedProcess } from './types'
+import type { Page } from 'playwright'
 
 function normalizeRDBService(title: string, content: string): ScrapedProcess {
   const lowerContent = content.toLowerCase()
@@ -50,7 +51,7 @@ function normalizeRDBService(title: string, content: string): ScrapedProcess {
   }
 }
 
-export async function scrapeRDB(page?: any): Promise<ScrapedProcess[]> {
+export async function scrapeRDB(page?: Page): Promise<ScrapedProcess[]> {
   try {
     const { content, title } = page
       ? await scrapeWithPage(page, 'https://rdb.rw/')

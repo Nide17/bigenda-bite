@@ -1,4 +1,4 @@
-export async function sendDiscordNotification(message: string, embeds?: any[]) {
+export async function sendDiscordNotification(message: string, embeds?: Array<{ title?: string; description?: string; color?: number; fields?: Array<{ name: string; value: string; inline?: boolean }>; url?: string; footer?: { text: string } }>) {
   const webhookUrl = process.env.DISCORD_WEBHOOK_URL
 
   if (!webhookUrl) {
@@ -7,7 +7,7 @@ export async function sendDiscordNotification(message: string, embeds?: any[]) {
   }
 
   try {
-    const body: any = {
+    const body: Record<string, unknown> = {
       content: message,
     }
 
@@ -39,7 +39,7 @@ export async function sendPendingUpdateNotification(update: {
   detectedAt: string
   adminUrl?: string
 }) {
-  const embed: any = {
+  const embed: Record<string, unknown> = {
     title: '📋 Content Update Pending Review',
     description: update.diffSummary,
     color: 0xf59e0b,

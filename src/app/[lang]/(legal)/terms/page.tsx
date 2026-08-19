@@ -1,10 +1,6 @@
 'use client'
 
-import { useTranslations } from '@/components/I18nProvider'
-
 export default function TermsPage() {
-  const t = useTranslations('common')
-
   return (
     <main className="min-h-screen p-8">
       <h1 className="text-3xl font-bold mb-8">Terms of Service</h1>

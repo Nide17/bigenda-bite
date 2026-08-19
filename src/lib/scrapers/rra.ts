@@ -1,5 +1,6 @@
 import { scrapePage, scrapeWithPage, isValidScrape } from './browser'
 import type { ScrapedProcess } from './types'
+import type { Page } from 'playwright'
 
 function normalizeRRAService(title: string, content: string): ScrapedProcess {
   const lowerContent = content.toLowerCase()
@@ -50,7 +51,7 @@ function normalizeRRAService(title: string, content: string): ScrapedProcess {
   }
 }
 
-export async function scrapeRRA(page?: any): Promise<ScrapedProcess[]> {
+export async function scrapeRRA(page?: Page): Promise<ScrapedProcess[]> {
   try {
     const { content, title } = page
       ? await scrapeWithPage(page, 'https://www.rra.gov.rw/')

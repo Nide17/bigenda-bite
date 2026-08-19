@@ -37,7 +37,7 @@ export function useTrackEvent(type: string, metadata: Record<string, unknown> = 
 
   return useCallback(() => {
     sendBeaconPayload(type, metadataRef)
-  }, [type])
+  }, [type, metadataRef])
 }
 
 export function usePageView() {

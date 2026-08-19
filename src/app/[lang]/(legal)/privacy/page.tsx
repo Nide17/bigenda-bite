@@ -1,10 +1,6 @@
 'use client'
 
-import { useTranslations } from '@/components/I18nProvider'
-
 export default function PrivacyPage() {
-  const t = useTranslations('common')
-
   return (
     <main className="min-h-screen p-8">
       <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1>

@@ -2,18 +2,15 @@
 
 import { useState } from 'react'
 import { useParams } from 'next/navigation'
-import { useTranslations } from '@/components/I18nProvider'
 import { useTrackEvent } from '@/lib/use-analytics'
 
 export default function ContributePage() {
   const params = useParams()
-  const lang = params?.lang as string
   const slug = params?.slug as string
   const [text, setText] = useState('')
   const [city, setCity] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
-  const t = useTranslations('common')
   const trackContribution = useTrackEvent('contribution_submitted', { guideId: slug, city })
 
   const handleSubmit = async (e: React.FormEvent) => {

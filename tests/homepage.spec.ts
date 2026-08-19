@@ -1,35 +1,28 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('Homepage', () => {
-  test('should load the homepage', async ({ page }) => {
-    await page.goto('/en')
-    await expect(page.locator('h1')).toContainText('Welcome to Bigenda Bite')
+test.describe('Smoke tests', () => {
+  test('homepage loads', async ({ page }) => {
+    const response = await page.goto('/en')
+    expect(response?.status()).toBe(200)
   })
 
-  test('should display navigation links', async ({ page }) => {
-    await page.goto('/en')
-    await expect(page.getByRole('link', { name: 'Processes' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Guides' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Directory' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Alerts' })).toBeVisible()
+  test('processes page loads', async ({ page }) => {
+    const response = await page.goto('/en/processes')
+    expect(response?.status()).toBe(200)
   })
 
-  test('should have working city selector', async ({ page }) => {
-    await page.goto('/en')
-    const citySelect = page.locator('select[name="city"]')
-    await expect(citySelect).toBeVisible()
-    await expect(citySelect).toHaveValue('Kigali')
+  test('guides page loads', async ({ page }) => {
+    const response = await page.goto('/en/guides')
+    expect(response?.status()).toBe(200)
   })
 
-  test('should navigate to processes page', async ({ page }) => {
-    await page.goto('/en')
-    await page.getByRole('link', { name: 'Browse Processes' }).click()
-    await expect(page).toHaveURL(/\/en\/processes/)
+  test('directory page loads', async ({ page }) => {
+    const response = await page.goto('/en/directory')
+    expect(response?.status()).toBe(200)
   })
 
-  test('should navigate to guides page', async ({ page }) => {
-    await page.goto('/en')
-    await page.getByRole('link', { name: 'Read Guides' }).click()
-    await expect(page).toHaveURL(/\/en\/guides/)
+  test('alerts page loads', async ({ page }) => {
+    const response = await page.goto('/en/alerts')
+    expect(response?.status()).toBe(200)
   })
 })

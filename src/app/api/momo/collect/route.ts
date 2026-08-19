@@ -3,15 +3,21 @@ import { getSession } from '@/lib/auth/session'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { createPayment, MoMoConfig } from '@/lib/momo'
 
+interface CookiesRequest extends Request {
+  cookies?: {
+    get(name: string): { value?: string }
+  }
+}
+
 export async function POST(request: Request) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const body = await request.json()
-    const { planId, amount, phoneNumber } = body
+    const { planId, amount, phoneNumber } = body as { planId: string; amount: number; phoneNumber: string }
 
     if (!planId || !amount || !phoneNumber) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })

@@ -59,7 +59,7 @@ npm run lint
 # Build
 npm run build
 
-# Tests
+# Tests (requires .env.local with valid vars)
 npm run test:e2e
 ```
 
@@ -76,7 +76,7 @@ To run tests locally:
 
 ```bash
 # Install Playwright browsers
-npx playwright install --with-deps chromium
+npx playwright install chromium
 
 # Run tests
 npm run test:e2e
@@ -87,6 +87,18 @@ npm run test:e2e:ui
 # Run in debug mode
 npm run test:e2e:debug
 ```
+
+**Note:** E2E tests require a `.env.local` file with valid credentials. The test server will start even without Sanity/MongoDB credentials — pages will render with empty content states.
+
+## CI Environment
+
+The GitHub Actions test job runs without secrets. The app is designed to handle missing environment variables gracefully:
+
+- **Missing Sanity credentials:** Pages render with empty content states instead of throwing errors
+- **Missing MongoDB:** API routes return empty results
+- **Missing MoMo/Discord:** Payment/notification features are skipped
+
+This allows E2E smoke tests to verify routing, UI components, and page structure without exposing secrets.
 
 ## Deployment Flow
 
@@ -117,7 +129,7 @@ Push to main / Open PR
 
 ### Build fails on CI but works locally
 
-- Ensure you're using Node.js 20+ (CI uses `node-version: '20'`)
+- Ensure you're using Node.js 22+ (CI uses `node-version: '22'`)
 - Check that all environment variables are set in GitHub Secrets
 - Run `npm ci` instead of `npm install` for clean installs
 

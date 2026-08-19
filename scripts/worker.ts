@@ -6,6 +6,8 @@ import { scrapeIrembo, scrapeRRA, scrapeRDB } from '../src/lib/scrapers'
 import { computeDiff } from '../src/lib/scrapers/diff'
 import { sendPendingUpdateNotification } from '../src/lib/discord'
 import { launchBrowser, createPage } from '../src/lib/scrapers/browser'
+import type { Page } from 'playwright'
+import type { ScrapedProcess } from '../src/lib/scrapers/types'
 
 const CONFIDENCE_THRESHOLD = 0.7
 const ADMIN_URL = process.env.NEXT_PUBLIC_BASE_URL
@@ -24,8 +26,8 @@ function createSanityClient() {
 
 async function runScraperWithPage(
   name: string,
-  scraper: (page: any) => Promise<any[]>,
-  page: any
+  scraper: (page: Page) => Promise<unknown[]>,
+  page: Page
 ) {
   try {
     console.log(`[worker] Running ${name} scraper...`)
@@ -50,9 +52,9 @@ async function main() {
   console.log('[worker] Starting scraper worker...')
 
   const scrapers = [
-    { name: 'Irembo', fn: (page: any) => scrapeIrembo(page) },
-    { name: 'RRA', fn: (page: any) => scrapeRRA(page) },
-    { name: 'RDB', fn: (page: any) => scrapeRDB(page) },
+    { name: 'Irembo', fn: (page: Page) => scrapeIrembo(page) },
+    { name: 'RRA', fn: (page: Page) => scrapeRRA(page) },
+    { name: 'RDB', fn: (page: Page) => scrapeRDB(page) },
   ]
 
   const browser = await launchBrowser()
@@ -63,7 +65,7 @@ async function main() {
       scrapers.map((s, i) => runScraperWithPage(s.name, s.fn, pages[i]))
     )
 
-    const flatResults = allScraped.flat()
+    const flatResults = allScraped.flat() as ScrapedProcess[]
     if (flatResults.length === 0) {
       console.log('[worker] No scraped results. Exiting.')
       return

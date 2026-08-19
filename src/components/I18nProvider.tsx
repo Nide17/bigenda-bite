@@ -2,7 +2,7 @@
 
 import { createContext, useContext, ReactNode } from 'react'
 
-type Messages = Record<string, any>
+type Messages = Record<string, Record<string, string>>
 type TranslationFunction = (key: string) => string
 
 const I18nContext = createContext<{
@@ -14,11 +14,15 @@ const I18nContext = createContext<{
 export function I18nProvider({ children, messages, locale }: { children: ReactNode; messages: Messages; locale: string }) {
   const t = (key: string) => {
     const keys = key.split('.')
-    let value: any = messages.common
+    let value: unknown = messages.common
     for (const k of keys) {
-      value = value?.[k]
+      if (typeof value === 'object' && value !== null) {
+        value = (value as Record<string, unknown>)[k]
+      } else {
+        return key
+      }
     }
-    return value || key
+    return typeof value === 'string' ? value : key
   }
 
   return (
@@ -35,11 +39,15 @@ export function useTranslations(namespace = 'common') {
   }
   return (key: string) => {
     const keys = key.split('.')
-    let value: any = context.messages[namespace]
+    let value: unknown = context.messages[namespace]
     for (const k of keys) {
-      value = value?.[k]
+      if (typeof value === 'object' && value !== null) {
+        value = (value as Record<string, unknown>)[k]
+      } else {
+        return key
+      }
     }
-    return value || key
+    return typeof value === 'string' ? value : key
   }
 }
 

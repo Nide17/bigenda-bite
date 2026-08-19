@@ -1,11 +1,8 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function CitySelector({ cityName, lang }: { cityName: string; lang: string }) {
-  const pathname = usePathname()
-
+export default function CitySelector({ cityName }: { cityName: string }) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const city = params.get('city') || cityName || 'Kigali'

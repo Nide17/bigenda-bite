@@ -2,14 +2,18 @@ import { getProcesses } from '@/lib/cms/sanity'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
+import messagesEn from '@/i18n/messages/en.json'
+import messagesFr from '@/i18n/messages/fr.json'
+import messagesRw from '@/i18n/messages/rw.json'
+
+const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
 
 export const dynamic = 'force-dynamic'
 
-export default async function ProcessesPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string }> }) {
+export default async function ProcessesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const { city } = await searchParams
   const processes = await getProcesses(lang)
-  const messages = (await import(`@/i18n/messages/${lang}.json`)).default
+  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages.common?.[key] || key
 
   return (
@@ -28,7 +32,7 @@ export default async function ProcessesPage({ params, searchParams }: { params: 
             />
           </div>
         ) : (
-          processes.map((process: any) => (
+          processes.map((process: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
             <Link
               key={process._id}
               href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}

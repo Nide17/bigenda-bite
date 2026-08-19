@@ -2,9 +2,15 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/session'
 import { getAnalyticsSummary, getTopPages, getRevenueStats } from '@/lib/analytics'
 
+interface CookiesRequest extends Request {
+  cookies?: {
+    get(name: string): { value?: string }
+  }
+}
+
 export async function GET(request: Request) {
   try {
-    const session = await getSession((request as any).cookies?.get('next-auth.session-token')?.value || null)
+    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
     if (!session?.user || session.user.role !== 'editor') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }

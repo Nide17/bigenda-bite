@@ -1,15 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0)
-  const [notifications, setNotifications] = useState<any[]>([])
+  const [notifications, setNotifications] = useState<{ id: string; title: string; body: string; read: boolean; createdAt: string }[]>([])
   const [isOpen, setIsOpen] = useState(false)
-
-  useEffect(() => {
-    fetchNotifications()
-  }, [])
 
   async function fetchNotifications() {
     try {
@@ -38,7 +34,7 @@ export function NotificationBell() {
   return (
     <div className="relative">
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => { fetchNotifications(); setIsOpen(!isOpen) }}
         className="relative p-2 hover:bg-gray-100 rounded-full"
       >
         <svg

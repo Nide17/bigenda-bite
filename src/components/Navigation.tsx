@@ -18,17 +18,9 @@ const navItems: NavItem[] = [
   { href: '/en/membership', label: 'Membership' },
 ]
 
-export default function Navigation({ lang, messages }: { lang: string; messages: any }) {
+export default function Navigation({ lang }: { lang: string }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname() || ''
-  const t = (key: string) => {
-    const keys = key.split('.')
-    let value: any = messages.common
-    for (const k of keys) {
-      value = value?.[k]
-    }
-    return value || key
-  }
 
   const isActive = (href: string) => {
     const prefix = `/${lang}`
