@@ -5,6 +5,7 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Guide } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -32,7 +33,7 @@ export default async function GuidesPage({ params }: { params: Promise<{ lang: s
             />
           </div>
         ) : (
-          guides.map((guide: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
+          guides.map((guide: Guide) => (
             <Link
               key={guide._id}
               href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide.translations?.en?.title || guide._id}`}

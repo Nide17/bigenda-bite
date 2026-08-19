@@ -7,6 +7,7 @@ import Card from '@/components/ui/Card'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { ProcessStep, Fee } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -69,7 +70,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">Steps</h2>
           <div className="space-y-4">
-            {process.steps.map((step: { order?: number; text?: Record<string, string>; estimatedTime?: string }, index: number) => (
+            {process.steps.map((step: ProcessStep, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {step.order || index + 1}
@@ -106,12 +107,12 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
-                {process.fees.map((fee: { label: string; amountRWF: number; conditions?: string }, index: number) => (
+                {process.fees.map((fee: Fee, index: number) => (
                   <tr key={index} className="hover:bg-neutral-50 transition-colors">
                     <td className="p-4 font-medium text-neutral-900">{fee.label}</td>
                     <td className="p-4">
-                      <span className={`font-semibold ${fee.amountRWF > 0 ? 'text-primary' : 'text-emerald-700'}`}>
-                        {fee.amountRWF > 0 ? `${fee.amountRWF.toLocaleString()} RWF` : 'Free'}
+                      <span className={`font-semibold ${fee.amountRWF ? (fee.amountRWF > 0 ? 'text-primary' : 'text-emerald-700') : ''}`}>
+                        {fee.amountRWF ? (fee.amountRWF > 0 ? `${fee.amountRWF.toLocaleString()} RWF` : 'Free') : '—'}
                       </span>
                     </td>
                     <td className="p-4 text-neutral-600">{fee.conditions || '—'}</td>

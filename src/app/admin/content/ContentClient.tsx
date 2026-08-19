@@ -1,20 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import type { PendingUpdate } from '@/types'
 
-export interface ContentItem {
-  _id: string
-  collection: string
-  documentId: string
-  status: string
-  confidenceScore: number
-  diffSummary: string
-  detectedAt: string
-  approvedAt: string | null
-  rejectedAt: string | null
-}
-
-export default function ContentClient({ items }: { items: ContentItem[] }) {
+export default function ContentClient({ items }: { items: PendingUpdate[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -82,13 +71,13 @@ export default function ContentClient({ items }: { items: ContentItem[] }) {
                 <tr key={item._id} className="border-t">
                   <td className="p-3 font-mono text-xs">{item.documentId}</td>
                   <td className="p-3">{item.collection}</td>
-                  <td className="p-3">
-                    <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status)}`}>
-                      {item.status}
-                    </span>
-                  </td>
-                  <td className="p-3">{Math.round((item.confidenceScore || 0) * 100)}%</td>
-                  <td className="p-3">{new Date(item.detectedAt).toLocaleString()}</td>
+                   <td className="p-3">
+                     <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status || 'pending')}`}>
+                       {item.status}
+                     </span>
+                   </td>
+                   <td className="p-3">{Math.round((item.confidenceScore ?? 0) * 100)}%</td>
+                   <td className="p-3">{new Date(item.detectedAt ?? new Date().toISOString()).toLocaleString()}</td>
                   <td className="p-3">
                     {item.status === 'pending' && (
                       <div className="flex gap-2">

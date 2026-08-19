@@ -1,5 +1,4 @@
-import { getProcesses } from '@/lib/cms/sanity'
-import { getGuides } from '@/lib/cms/sanity'
+import { getProcesses, getGuides } from '@/lib/cms/sanity'
 import { resolveCity } from '@/lib/city'
 import AdBanner from '@/components/AdBanner'
 import CitySelector from '@/components/CitySelector'
@@ -8,6 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Process, Guide } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -117,7 +117,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {processes.slice(0, 5).map((process: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
+                    {processes.slice(0, 5).map((process: Process) => (
                       <Link
                         key={process._id}
                         href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}
@@ -147,7 +147,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    {guides.slice(0, 5).map((guide: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
+                    {guides.slice(0, 5).map((guide: Guide) => (
                       <Link
                         key={guide._id}
                         href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide.translations?.en?.title || guide._id}`}

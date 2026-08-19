@@ -5,6 +5,7 @@ import Badge from '@/components/ui/Badge'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Alert } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -37,7 +38,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
         />
       ) : (
         <div className="space-y-4">
-          {alerts.map((alert: { _id: string; severity?: string; translations?: Record<string, { title?: string; summary?: string }> }) => (
+          {alerts.map((alert: Alert) => (
             <div
               key={alert._id}
               className="bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200"
@@ -46,7 +47,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <h2 className="text-lg font-semibold text-primary">
-                      {alert.translations?.[lang]?.title || alert.translations?.en?.title}
+                      {alert.translations?.[lang] || alert.translations?.en}
                     </h2>
                     {alert.severity && (
                       <Badge variant={severityColors[alert.severity] || 'info'}>
@@ -55,7 +56,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
                     )}
                   </div>
                   <p className="text-neutral-600 leading-relaxed">
-                    {alert.translations?.[lang]?.summary || alert.translations?.en?.summary}
+                    {alert.translations?.[lang] || alert.translations?.en}
                   </p>
                 </div>
               </div>

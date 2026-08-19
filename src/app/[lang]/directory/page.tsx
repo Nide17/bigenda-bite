@@ -5,6 +5,7 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Business } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -20,7 +21,7 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
     query.city = city
   }
 
-  const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray() as unknown as Array<{ _id: { toString(): string }; name: string; category: string; city?: string; slug?: string }>
+  const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray() as unknown as Business[]
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key
 
