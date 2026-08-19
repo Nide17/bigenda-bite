@@ -9,6 +9,7 @@ import Input from '@/components/ui/Input'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Business } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -17,7 +18,7 @@ export const dynamic = 'force-dynamic'
 export default async function BusinessDetailPage({ params }: { params: Promise<{ lang: string; businessSlug: string }> }) {
   const { lang, businessSlug } = await params
   const db = await connectToDatabase()
-  const business = await db.collection('businesses').findOne({ slug: businessSlug })
+  const business = await db.collection('businesses').findOne({ slug: businessSlug }) as Business | null
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key
 
@@ -42,14 +43,14 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
             <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{business.name}</h1>
             <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span className="flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
                 {business.category}
               </span>
               <span className="text-neutral-300">·</span>
               <span className="flex items-center gap-1">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>

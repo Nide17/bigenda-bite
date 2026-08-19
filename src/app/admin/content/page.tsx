@@ -3,10 +3,11 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import ContentClient from './ContentClient'
+import type { PendingUpdate } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
-async function getPendingContent() {
+async function getPendingContent(): Promise<PendingUpdate[]> {
   const db = await connectToDatabase()
   const pendingUpdates = await db.collection('pendingUpdates').find({}).sort({ detectedAt: -1 }).limit(50).toArray()
 

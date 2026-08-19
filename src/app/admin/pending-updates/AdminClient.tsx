@@ -1,19 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-
-export interface PendingUpdate {
-  _id: string
-  collection: string
-  documentId: string
-  update: Record<string, unknown>
-  status: string
-  confidenceScore: number
-  diffSummary: string
-  sourceProcessId: string
-  detectedAt: string
-  currentSanityDoc: Record<string, unknown> | null
-}
+import type { PendingUpdate } from '@/types'
 
 export default function AdminClient({ updates }: { updates: PendingUpdate[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
@@ -61,10 +49,10 @@ export default function AdminClient({ updates }: { updates: PendingUpdate[] }) {
               <h3 className="text-xl font-semibold">
                 {(update.update as unknown as { translations?: { en?: { title?: string } } })?.translations?.en?.title || update.documentId}
               </h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Detected: {new Date(update.detectedAt).toLocaleString()} | Confidence:{' '}
-                {Math.round((update.confidenceScore || 0) * 100)}%
-              </p>
+               <p className="text-sm text-gray-500 mt-1">
+                 Detected: {new Date(update.detectedAt ?? new Date().toISOString()).toLocaleString()} | Confidence:{' '}
+                 {Math.round((update.confidenceScore ?? 0) * 100)}%
+               </p>
             </div>
             <span className="px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-800">
               {update.status}

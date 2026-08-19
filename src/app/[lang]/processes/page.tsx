@@ -5,6 +5,7 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Process } from '@/types'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
@@ -32,11 +33,11 @@ export default async function ProcessesPage({ params }: { params: Promise<{ lang
             />
           </div>
         ) : (
-          processes.map((process: { _id: string; category: string; slug?: { current?: string }; translations?: Record<string, { title?: string; summary?: string }> }) => (
+          processes.map((process: Process) => (
             <Link
               key={process._id}
               href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}
-              className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
+              className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">

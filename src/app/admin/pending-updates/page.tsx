@@ -4,6 +4,7 @@ import { createClient } from '@sanity/client'
 import AdminClient from './AdminClient'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
+import type { PendingUpdate, Process } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,7 +18,7 @@ function createSanityClient() {
   })
 }
 
-async function getPendingUpdates() {
+async function getPendingUpdates(): Promise<PendingUpdate[]> {
   const db = await connectToDatabase()
   const pendingUpdates = db.collection('pendingUpdates')
 
@@ -30,14 +31,14 @@ async function getPendingUpdates() {
   const updates = rawUpdates.map((update) => ({
     ...update,
     _id: update._id.toString(),
-  })) as Array<{ _id: string; documentId?: string; [key: string]: unknown }>
+  })) as Array<PendingUpdate>
 
   const sanityClient = createSanityClient()
   const updatesWithCurrent = await Promise.all(
     updates.map(async (update) => {
       if (update.documentId && update.documentId.startsWith('process_')) {
         try {
-          const current = await sanityClient.fetch(
+          const current = await sanityClient.fetch<Process | null>(
             `*[_type == "process" && _id == $id][0]`,
             { id: update.documentId }
           )

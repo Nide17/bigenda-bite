@@ -7,6 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import type { CommunityContribution } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,7 +28,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
     .find({ guideId: slug, status: 'published' })
     .sort({ submittedAt: -1 })
     .limit(20)
-    .toArray() as unknown as Array<{ _id: string; text: string; city?: string }>
+    .toArray() as unknown as CommunityContribution[]
 
   return (
     <PageContainer>
@@ -74,9 +75,9 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">Steps</h2>
           <div className="space-y-4">
-            {guide.steps.map((step: { order?: number; text?: Record<string, string>; estimatedTime?: string }, index: number) => (
+            {guide.steps.map((step, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center font-bold text-sm">
+                <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {step.order || index + 1}
                 </div>
                 <div className="flex-1">
@@ -102,11 +103,11 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
-                {guide.typicalCosts.map((cost: { label: string; rangeRWF?: number[] }, index: number) => (
+                {guide.typicalCosts.map((cost, index: number) => (
                   <tr key={index} className="hover:bg-neutral-50 transition-colors">
-                    <td className="p-4 font-medium text-neutral-900">{cost.label}</td>
+                    <td className="p-4 font-medium text-neutral-900">{cost?.label}</td>
                     <td className="p-4">
-                      {cost.rangeRWF?.length === 2 ? (
+                      {cost?.rangeRWF?.length === 2 ? (
                         <span className="font-semibold text-primary">
                           {cost.rangeRWF[0].toLocaleString()} – {cost.rangeRWF[1].toLocaleString()} RWF
                         </span>
@@ -144,7 +145,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">Community Tips</h2>
           <div className="space-y-4">
-            {contributions.map((contribution: { _id: string; text: string; city?: string }) => (
+            {contributions.map((contribution: CommunityContribution) => (
               <Card key={contribution._id} className="p-5">
                 <p className="text-neutral-900 leading-relaxed">{contribution.text}</p>
                 {contribution.city && (
