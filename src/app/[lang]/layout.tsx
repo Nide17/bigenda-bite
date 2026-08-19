@@ -5,7 +5,6 @@ import { routing } from '@/i18n/routing'
 import Navigation from '@/components/Navigation'
 import { I18nProvider } from '@/components/I18nProvider'
 import { trackEvent } from '@/lib/analytics'
-import { getCityFromCookie } from '@/lib/city'
 import { JsonLd } from '@/components/JsonLd'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import '../globals.css'
@@ -16,33 +15,38 @@ import messagesRw from '@/i18n/messages/rw.json'
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 const baseUrl = 'https://bigendabite.com'
+const locales = routing.locales
+
+function hreflangAlternates(pathname: string) {
+  return {
+    canonical: `${baseUrl}${pathname}`,
+    languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}${pathname === '/en' ? '' : pathname.replace(/^\/(en|fr|rw)/, '')}`])),
+  }
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
   const headersList = await headers()
   const requestUrl = headersList.get('x-invoke-path') || `/${lang}`
-  const pathname = new URL(requestUrl, 'http://localhost').pathname
-  const url = `${baseUrl}${pathname}`
+  const pathname = new URL(requestUrl, 'http://localhost').pathname.replace(/^\/(en|fr|rw)/, '') || '/'
 
   return {
     title: 'Bigenda Bite - Rwanda Life Guide',
-    description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
+    description: 'Official processes, trusted guides, verified businesses, and important alerts — all in one place.',
     openGraph: {
       title: 'Bigenda Bite - Rwanda Life Guide',
-      description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
+      description: 'Official processes, trusted guides, verified businesses, and important alerts — all in one place.',
       type: 'website',
-      url,
+      url: `${baseUrl}/${lang}${pathname}`,
       siteName: 'Bigenda Bite',
       locale: lang === 'rw' ? 'rw_RW' : lang === 'fr' ? 'fr_FR' : 'en_US',
     },
     twitter: {
       card: 'summary',
       title: 'Bigenda Bite - Rwanda Life Guide',
-      description: 'Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.',
+      description: 'Official processes, trusted guides, verified businesses, and important alerts — all in one place.',
     },
-    alternates: {
-      canonical: url,
-    },
+    alternates: hreflangAlternates(pathname === '/' ? '/en' : `/${lang}${pathname}`),
   }
 }
 
@@ -66,12 +70,11 @@ export default async function RootLayout({
 
   const headersList = await headers()
   const requestUrl = headersList.get('x-invoke-path') || `/${lang}`
-  const pathname = new URL(requestUrl, 'http://localhost').pathname
-  const city = await getCityFromCookie()
+  const pathname = new URL(requestUrl, 'http://localhost').pathname.replace(/^\/(en|fr|rw)/, '') || '/'
 
   trackEvent({
     type: 'page_view',
-    metadata: { path: pathname, lang, city },
+    metadata: { path: pathname, lang, city: '' },
   }).catch(() => {})
 
   const orgLd = organizationJsonLd(baseUrl)

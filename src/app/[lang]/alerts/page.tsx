@@ -5,11 +5,24 @@ import Badge from '@/components/ui/Badge'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Alert } from '@/types'
+import { pageMetadata } from '@/lib/seo'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'Alerts | Bigenda Bite',
+    description: 'Important updates and announcements from official sources in Rwanda.',
+    pathname: '/alerts',
+    locale: lang,
+    keywords: ['Rwanda alerts', 'official updates', 'announcements', 'government notices'],
+  })
+}
 
 export default async function AlertsPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params

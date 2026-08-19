@@ -5,11 +5,24 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Guide } from '@/types'
+import { pageMetadata } from '@/lib/seo'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'How-To Guides | Bigenda Bite',
+    description: 'Step-by-step how-to guides for everyday life in Rwanda. Practical advice for living, working, and settling in Rwanda.',
+    pathname: '/guides',
+    locale: lang,
+    keywords: ['Rwanda guides', 'how-to', 'everyday life', 'tips', 'advice'],
+  })
+}
 
 export default async function GuidesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
