@@ -6,7 +6,7 @@ import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
 
-const messagesMap: Record<string, { common: Record<string, string> }> = { en: { common: messagesEn }, fr: { common: messagesFr }, rw: { common: messagesRw } }
+const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
 
@@ -14,7 +14,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
   const { lang } = await params
   const alerts = await getAlerts()
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages.common?.[key] || key
+  const t = (key: string) => messages[key] || key
 
   const severityColors: Record<string, 'error' | 'warning' | 'info' | 'success'> = {
     high: 'error',

@@ -14,7 +14,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const t = useTranslations('common')
+  const t = useTranslations()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
