@@ -24,29 +24,29 @@
     "bcryptjs": "^2.4.3",
     "hls.js": "^1.7.0",
     "mongodb": "^6.0.0",
-    "next": "latest",
+    "next": "15.5.23",
     "next-auth": "^4.24.15",
     "nodemailer": "^7.0.7",
     "playwright": "^1.62.1",
-    "react": "latest",
-    "react-dom": "latest",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "sanity": "^3.80.0",
     "styled-components": "^6.5.2",
     "telegraf": "^4.16.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.5.23",
-    "@types/node": "latest",
+    "@types/node": "26.2.0",
     "@types/nodemailer": "^6.4.0",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
     "autoprefixer": "^10.5.4",
     "dotenv": "^17.4.2",
-    "eslint": "latest",
-    "eslint-config-next": "latest",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.1",
     "postcss": "^8.5.26",
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.12",
-    "typescript": "latest"
+    "typescript": "5.9.3"
   }
 }
