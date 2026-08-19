@@ -2,16 +2,16 @@ import { test, expect } from '@playwright/test'
 
 test.describe('i18n', () => {
   const locales = [
-    { code: 'en', welcome: 'Welcome to Bigenda Bite', processes: 'Official Processes' },
-    { code: 'fr', welcome: 'Bienvenue à Bigenda Bite', processes: 'Processus officiels' },
-    { code: 'rw', welcome: 'Murakaza neza kuri Bigenda Bite', processes: 'Imirimo ya leta' },
+    { code: 'en', hero: 'Find your way in Rwanda', processes: 'Official Processes' },
+    { code: 'fr', hero: 'Trouvez votre chemin au Rwanda', processes: 'Processus officiels' },
+    { code: 'rw', hero: 'Menya inzira mu Rwanda', processes: 'Imirimo ya leta' },
   ]
 
   for (const locale of locales) {
     test(`homepage renders ${locale.code} translations`, async ({ page }) => {
       const response = await page.goto(`/${locale.code}`)
       expect(response?.status()).toBe(200)
-      await expect(page.locator('h1')).toContainText(locale.welcome)
+      await expect(page.locator('h1')).toContainText(locale.hero)
     })
 
     test(`processes page renders ${locale.code} translations`, async ({ page }) => {

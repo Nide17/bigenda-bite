@@ -1,6 +1,6 @@
 {
-  "welcome": "Murakaza neza kuri Bigenda Bite",
-  "tagline": "Ubusobanuro bw'umunsi ku munsi bw'ubuzima n'imiryango ya leta mu Rwanda.",
+  "hero_title": "Menya inzira mu Rwanda",
+  "hero_subtitle": "Imirimo ya leta, ubusobanuro bwemejwe, ubucuruzi bwemewe, n'amenyabose — byose mu rwego rumwe.",
   "processes": "Imirimo ya leta",
   "guides": "Ubusobanuro bw'uburyo",
   "directory": "Urutonde rw'ubucuruzi",
@@ -33,5 +33,13 @@
   "most_popular": "Iri cyane",
   "get_started": "Tangira",
   "choose_basic": "Hitamo Basic",
-  "choose_pro": "Hitamo Pro"
+  "choose_pro": "Hitamo Pro",
+  "popular_things_title": "Ibintu abantu bashaka gukora",
+  "popular_things_subtitle": "Tangira ku mirimo ikunze gushakwa",
+  "view_all": "Reba byose",
+  "latest_processes": "Imirimo ya leta",
+  "latest_guides": "Ubusobanuro bw'uburyo",
+  "lang_en": "English",
+  "lang_fr": "Français",
+  "lang_rw": "Kinyarwanda"
 }
