@@ -1,6 +1,6 @@
 {
-  "welcome": "Welcome to Bigenda Bite",
-  "tagline": "Official processes, how-to guides, business directory, alerts, and membership — everything you need to navigate life in Rwanda.",
+  "hero_title": "Find your way in Rwanda",
+  "hero_subtitle": "Official processes, trusted guides, verified businesses, and important alerts — all in one place.",
   "processes": "Official Processes",
   "guides": "How-To Guides",
   "directory": "Business Directory",
@@ -33,5 +33,13 @@
   "most_popular": "Most Popular",
   "get_started": "Get Started",
   "choose_basic": "Choose Basic",
-  "choose_pro": "Choose Pro"
+  "choose_pro": "Choose Pro",
+  "popular_things_title": "Popular things people want to do",
+  "popular_things_subtitle": "Start with the most common tasks",
+  "view_all": "View all",
+  "latest_processes": "Official Processes",
+  "latest_guides": "How-To Guides",
+  "lang_en": "English",
+  "lang_fr": "Français",
+  "lang_rw": "Kinyarwanda"
 }

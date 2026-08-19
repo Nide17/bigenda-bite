@@ -1,6 +1,6 @@
 {
-  "welcome": "Bienvenue à Bigenda Bite",
-  "tagline": "Votre guide quotidien pour la vie et les processus administratifs au Rwanda.",
+  "hero_title": "Trouvez votre chemin au Rwanda",
+  "hero_subtitle": "Processus officiels, guides pratiques, entreprises vérifiées et alertes importantes — le tout au même endroit.",
   "processes": "Processus officiels",
   "guides": "Guides pratiques",
   "directory": "Annuaire d'entreprises",
@@ -33,5 +33,13 @@
   "most_popular": "Le plus populaire",
   "get_started": "Commencer",
   "choose_basic": "Choisir Basic",
-  "choose_pro": "Choisir Pro"
+  "choose_pro": "Choisir Pro",
+  "popular_things_title": "Ce que les gens veulent faire",
+  "popular_things_subtitle": "Commencez par les tâches les plus courantes",
+  "view_all": "Voir tout",
+  "latest_processes": "Processus officiels",
+  "latest_guides": "Guides pratiques",
+  "lang_en": "English",
+  "lang_fr": "Français",
+  "lang_rw": "Kinyarwanda"
 }
