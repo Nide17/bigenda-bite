@@ -7,11 +7,34 @@ import Card from '@/components/ui/Card'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { ProcessStep, Fee } from '@/types'
+import { pageMetadata, breadcrumbJsonLd } from '@/lib/seo'
+import { JsonLd } from '@/components/JsonLd'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
+const baseUrl = 'https://bigendabite.com'
+
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
+  const { lang, category, slug } = await params
+  const process = await getProcessBySlug(slug, lang)
+  if (!process) return pageMetadata({ title: 'Process Not Found', description: 'The requested process could not be found.', pathname: `/processes/${category}/${slug}`, locale: lang })
+
+  const title = process.translations?.[lang]?.title || process.translations?.en?.title || 'Process Details'
+  const description = process.translations?.[lang]?.summary || process.translations?.en?.summary || 'Official government process in Rwanda.'
+  const pathname = `/processes/${category}/${process.slug?.current || slug}`
+
+  return pageMetadata({
+    title: `${title} | Bigenda Bite`,
+    description,
+    pathname,
+    locale: lang,
+    keywords: [category, 'Rwanda', 'government process', title],
+  })
+}
 
 export default async function ProcessDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
@@ -25,8 +48,14 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
 
   const data = process.translations?.[lang] || process.translations?.en
 
+  const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
+    { name: t('processes'), url: `/${lang}/processes` },
+    { name: data?.title || 'Process Details', url: `/${lang}/processes/${process.category}/${process.slug?.current || slug}` },
+  ])
+
   return (
     <PageContainer>
+      <JsonLd data={breadcrumbLd} />
       <div className="mb-6">
         <Breadcrumbs
           items={[

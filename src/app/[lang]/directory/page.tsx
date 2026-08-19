@@ -5,11 +5,27 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Business } from '@/types'
+import { pageMetadata, breadcrumbJsonLd } from '@/lib/seo'
+import { JsonLd } from '@/components/JsonLd'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
+const baseUrl = 'https://bigendabite.com'
+
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'Business Directory | Bigenda Bite',
+    description: 'Discover businesses and services across Rwanda. Find trusted local vendors, restaurants, clinics, and more.',
+    pathname: '/directory',
+    locale: lang,
+    keywords: ['Rwanda business directory', 'local businesses', 'services', 'Kigali', 'vendors'],
+  })
+}
 
 export default async function DirectoryPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string }> }) {
   const { lang } = await params
@@ -25,8 +41,13 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key
 
+  const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
+    { name: t('directory'), url: `/${lang}/directory` },
+  ])
+
   return (
     <PageContainer>
+      <JsonLd data={breadcrumbLd} />
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('directory')}</h1>
         <p className="text-neutral-600">Discover businesses and services across Rwanda.</p>

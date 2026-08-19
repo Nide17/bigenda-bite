@@ -84,7 +84,7 @@ export const getAlerts = cache(async (): Promise<Alert[]> => {
   const client = createSanityClient()
   if (!client) return []
   return client.fetch(
-    `*[_type == "alert" && expiresAt > now()] | order(severity desc, _createdAt desc)`
+    `*[_type == "alert" && status == "published" && expiresAt > now()] | order(severity desc, _createdAt desc)`
   ) as Promise<Alert[]>
 })
 

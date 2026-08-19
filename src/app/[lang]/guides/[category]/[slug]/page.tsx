@@ -7,9 +7,32 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
+import { pageMetadata, breadcrumbJsonLd, howToJsonLd } from '@/lib/seo'
+import { JsonLd } from '@/components/JsonLd'
+
+const baseUrl = 'https://bigendabite.com'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
+  const { lang, category, slug } = await params
+  const guide = await getGuideBySlug(slug, lang)
+  if (!guide) return pageMetadata({ title: 'Guide Not Found', description: 'The requested guide could not be found.', pathname: `/guides/${category}/${slug}`, locale: lang })
+
+  const title = guide.translations?.[lang]?.title || guide.translations?.en?.title || 'Guide Details'
+  const description = guide.translations?.[lang]?.summary || guide.translations?.en?.summary || 'How-to guide for Rwanda.'
+  const pathname = `/guides/${category}/${guide.slug?.current || slug}`
+
+  return pageMetadata({
+    title: `${title} | Bigenda Bite`,
+    description,
+    pathname,
+    locale: lang,
+    keywords: [category, 'how-to', 'guide', 'Rwanda', title],
+  })
+}
 
 export default async function GuideDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
@@ -23,6 +46,24 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
   const data = guide.translations?.[lang] || guide.translations?.en
 
+  const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
+    { name: t('guides'), url: `/${lang}/guides` },
+    { name: data?.title || 'Guide Details', url: `/${lang}/guides/${guide.category}/${guide.slug?.current || slug}` },
+  ])
+
+  const howToLd = howToJsonLd(baseUrl, {
+    title: data?.title || '',
+    summary: data?.summary || '',
+    slug: guide.slug?.current || slug,
+    category: guide.category,
+    lang,
+    lastReviewedDate: guide.lastReviewedDate,
+    steps: guide.steps?.map((step) => ({
+      text: step.text?.[lang] || step.text?.en || '',
+      estimatedTime: step.estimatedTime,
+    })) || [],
+  })
+
   const db = await connectToDatabase()
   const contributions = await db.collection('contributions')
     .find({ guideId: slug, status: 'published' })
@@ -32,6 +73,8 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
   return (
     <PageContainer>
+      <JsonLd data={breadcrumbLd} />
+      <JsonLd data={howToLd} />
       <div className="mb-6">
         <Breadcrumbs
           items={[

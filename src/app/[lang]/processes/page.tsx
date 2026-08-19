@@ -5,11 +5,24 @@ import EmptyState from '@/components/ui/EmptyState'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Process } from '@/types'
+import { pageMetadata } from '@/lib/seo'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'Official Processes | Bigenda Bite',
+    description: 'Browse official government processes and procedures in Rwanda. Verified and regularly updated.',
+    pathname: '/processes',
+    locale: lang,
+    keywords: ['Rwanda processes', 'government procedures', 'RDB', 'RRA', 'Irembo'],
+  })
+}
 
 export default async function ProcessesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params

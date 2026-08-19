@@ -9,11 +9,35 @@ import Input from '@/components/ui/Input'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Business } from '@/types'
+import { pageMetadata, breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo'
+import { JsonLd } from '@/components/JsonLd'
+
+const baseUrl = 'https://bigendabite.com'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; businessSlug: string }> }): Promise<Metadata> {
+  const { lang, businessSlug } = await params
+  const db = await connectToDatabase()
+  const business = await db.collection('businesses').findOne({ slug: businessSlug }) as Business | null
+  if (!business) return pageMetadata({ title: 'Business Not Found', description: 'The requested business could not be found.', pathname: `/directory/${businessSlug}`, locale: lang })
+
+  const title = business.name
+  const description = business.description || `${business.category} in ${business.city || 'Rwanda'}.`
+  const pathname = `/directory/${business.slug || business._id.toString()}`
+
+  return pageMetadata({
+    title: `${title} | Bigenda Bite`,
+    description,
+    pathname,
+    locale: lang,
+    keywords: [business.category || '', business.city || 'Rwanda', 'business', title],
+  })
+}
 
 export default async function BusinessDetailPage({ params }: { params: Promise<{ lang: string; businessSlug: string }> }) {
   const { lang, businessSlug } = await params
@@ -26,8 +50,24 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
     notFound()
   }
 
+  const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
+    { name: t('directory'), url: `/${lang}/directory` },
+    { name: business.name, url: `/${lang}/directory/${business.slug || business._id.toString()}` },
+  ])
+
+  const localBusinessLd = localBusinessJsonLd(baseUrl, {
+    name: business.name,
+    category: business.category,
+    city: business.city,
+    slug: business.slug || business._id.toString(),
+    lang,
+    contact: business.contact,
+  })
+
   return (
     <PageContainer maxWidth="lg">
+      <JsonLd data={breadcrumbLd} />
+      <JsonLd data={localBusinessLd} />
       <div className="mb-6">
         <Breadcrumbs
           items={[

@@ -7,11 +7,24 @@ import PageContainer from '@/components/PageContainer'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
+import type { Metadata } from 'next'
 import type { Process, Guide } from '@/types'
+import { pageMetadata } from '@/lib/seo'
 
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'Find your way in Rwanda | Bigenda Bite',
+    description: 'Official processes, trusted guides, verified businesses, and important alerts — all in one place.',
+    pathname: '/',
+    locale: lang,
+    keywords: ['Rwanda', 'government processes', 'how-to guides', 'business directory', 'alerts'],
+  })
+}
 
 const LANG_OPTIONS = [
   { code: 'en', labelKey: 'lang_en' },

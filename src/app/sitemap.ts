@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
-import { getProcesses, getGuides } from '@/lib/cms/sanity'
+import { getProcesses, getGuides, getAlerts } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { toSlug } from '@/lib/slug'
 
@@ -34,8 +34,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   try {
-    const processes = await getProcesses('en')
-    const guides = await getGuides('en')
+    const [processes, guides, alerts] = await Promise.all([
+      getProcesses('en'),
+      getGuides('en'),
+      getAlerts(),
+    ])
 
     for (const process of processes) {
       const slug = toSlug(process.slug?.current || process.translations?.en?.title || process._id)
@@ -70,6 +73,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         })
       }
     }
+
+    for (const alert of alerts) {
+      const slug = toSlug(alert.translations?.en || alert._id)
+      const lastModified = alert._updatedAt ? new Date(alert._updatedAt) : new Date()
+      for (const locale of locales) {
+        urls.push({
+          url: `${baseUrl}/${locale}/alerts/${slug}`,
+          lastModified,
+          changeFrequency: 'daily',
+          priority: 0.6,
+          alternates: {
+            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/alerts/${slug}`])),
+          },
+        })
+      }
+    }
   } catch (error) {
     console.error('Failed to fetch Sanity sitemap entries:', error)
   }
@@ -99,4 +118,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return urls
 }
+
 
