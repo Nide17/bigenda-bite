@@ -1,19 +1,13 @@
-import { NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { checkPaymentStatus, MoMoConfig } from '@/lib/momo'
 
-interface CookiesRequest extends Request {
-  cookies?: {
-    get(name: string): { value?: string }
-  }
-}
-
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireAuth(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const { searchParams } = new URL(request.url)
@@ -44,4 +38,5 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Failed to check payment status' }, { status: 500 })
   }
 }
+
 

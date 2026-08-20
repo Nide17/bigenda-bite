@@ -1,7 +1,6 @@
-import { getSession } from '@/lib/auth/session'
+import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
 import AdsClient from './AdsClient'
 
 export const dynamic = 'force-dynamic'
@@ -26,12 +25,10 @@ async function getAds() {
 }
 
 export default async function AdminAdsPage() {
-  const cookieStore = await cookies()
-  const session = await getSession(cookieStore.get('next-auth.session-token')?.value || null)
-  const user = session?.user
-
-  if (!user || user.role !== 'editor') {
+  const auth = await requireEditor()
+  if (auth.error) {
     redirect('/en/login')
+    return
   }
 
   const serializedAds = await getAds()

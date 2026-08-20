@@ -1,21 +1,16 @@
-import { NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { createNotification } from '@/lib/notifications'
 
-interface CookiesRequest extends Request {
-  cookies?: {
-    get(name: string): { value?: string }
-  }
-}
-
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireAuth(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
+    const session = auth.session!
     const db = await connectToDatabase()
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '20', 10)
@@ -59,13 +54,14 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireAuth(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
+    const session = auth.session!
     const body = await request.json()
     const { type, title, body: bodyText, metadata } = body as { type: string; title: string; body: string; metadata?: Record<string, unknown> }
 
@@ -87,4 +83,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to create notification' }, { status: 500 })
   }
 }
+
 

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { requireAuth } from '@/lib/auth/authorize'
 import { isValidLocale, defaultLocale } from '@/i18n/routing'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const session = await getSession(request)
-  const user = session?.user
+  const auth = await requireAuth(request)
+  const user = auth.session?.user
 
   const locale = pathname.split('/')[1]
   const validLocale = isValidLocale(locale) ? locale : defaultLocale

@@ -2,6 +2,7 @@ import { getProcesses, getGuides } from '@/lib/cms/sanity'
 import { resolveCity } from '@/lib/city'
 import AdBanner from '@/components/AdBanner'
 import CitySelector from '@/components/CitySelector'
+import Search from '@/components/Search'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import messagesEn from '@/i18n/messages/en.json'
@@ -98,6 +99,9 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 <p className="text-base md:text-lg text-white/80 leading-relaxed mb-5">
                   {t('hero_subtitle')}
                 </p>
+                <div className="mb-6">
+                  <Search lang={lang} placeholder={t('search_placeholder')} />
+                </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     href={`/${lang}/processes`}

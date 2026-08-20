@@ -1,6 +1,5 @@
-import { getSession } from '@/lib/auth/session'
+import { requireEditor } from '@/lib/auth/authorize'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -18,13 +17,12 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const cookieStore = await cookies()
-  const session = await getSession(cookieStore.get('next-auth.session-token')?.value || null)
-  const user = session?.user
-
-  if (!user || user.role !== 'editor') {
+  const auth = await requireEditor()
+  if (auth.error) {
     redirect('/en/login')
+    return
   }
+  const user = auth.session!.user
 
   return (
     <div className="min-h-screen flex">
@@ -51,5 +49,6 @@ export default async function AdminLayout({
     </div>
   )
 }
+
 
 

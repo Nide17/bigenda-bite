@@ -1,21 +1,16 @@
-import { NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { markNotificationRead } from '@/lib/notifications'
 
-interface CookiesRequest extends Request {
-  cookies?: {
-    get(name: string): { value?: string }
-  }
-}
-
-export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireAuth(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
+    const session = auth.session!
     const { id } = await params
     const db = await connectToDatabase()
 

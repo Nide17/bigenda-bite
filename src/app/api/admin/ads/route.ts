@@ -1,13 +1,13 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getSession(request.cookies.get('next-auth.session-token')?.value || null)
-    if (!session?.user || session.user.role !== 'editor') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const db = await connectToDatabase()
@@ -22,9 +22,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getSession(request.cookies.get('next-auth.session-token')?.value || null)
-    if (!session?.user || session.user.role !== 'editor') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const body = await request.json()
@@ -59,9 +59,9 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const session = await getSession(request.cookies.get('next-auth.session-token')?.value || null)
-    if (!session?.user || session.user.role !== 'editor') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const id = request.nextUrl.searchParams.get('id')
@@ -106,9 +106,9 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const session = await getSession(request.cookies.get('next-auth.session-token')?.value || null)
-    if (!session?.user || session.user.role !== 'editor') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const id = request.nextUrl.searchParams.get('id')
@@ -129,4 +129,5 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to delete ad' }, { status: 500 })
   }
 }
+
 

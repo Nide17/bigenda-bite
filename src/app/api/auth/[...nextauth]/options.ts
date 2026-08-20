@@ -3,7 +3,7 @@ import { MongoClient } from 'mongodb'
 import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import type { User } from 'next-auth'
-import type { JWT } from 'next-auth/jwt'
+import type { AuthOptions } from 'next-auth'
 
 const mongoClient = new MongoClient(process.env.MONGODB_URI!)
 mongoClient.connect().catch((err) => console.error('MongoDB adapter connection error:', err))
@@ -14,19 +14,22 @@ interface CustomUser extends User {
   displayName: string
 }
 
-interface CustomJWT extends JWT {
-  role?: string
-  displayName?: string
+export interface AppSession {
+  user?: {
+    id: string
+    email: string
+    displayName: string
+    role: string
+  }
+  expires: string
 }
 
-interface ExtendedSession {
-  user?: CustomUser
-}
-
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(mongoClient),
   providers: [
     {
+      type: 'credentials' as const,
+      id: 'credentials',
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
@@ -69,18 +72,20 @@ export const authOptions = {
     },
   ],
   callbacks: {
-    async jwt({ token, user }: { token: CustomJWT; user?: CustomUser }) {
+    async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
-        token.displayName = user.displayName
+        const customUser = user as CustomUser
+        token.role = customUser.role
+        token.displayName = customUser.displayName
       }
       return token
     },
-    async session({ session, token }: { session: ExtendedSession; token: CustomJWT }) {
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.sub!
-        session.user.role = token.role as string
-        session.user.displayName = token.displayName as string
+        const customUser = session.user as unknown as CustomUser
+        customUser.id = token.sub!
+        customUser.role = token.role as string
+        customUser.displayName = token.displayName as string
       }
       return session
     },
@@ -88,6 +93,6 @@ export const authOptions = {
   pages: {
     signIn: '/en/login',
   },
-  session: { strategy: 'database' },
+  session: { strategy: 'database' as const },
   debug: true,
 }

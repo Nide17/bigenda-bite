@@ -1,20 +1,14 @@
-import { NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth/session'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 import { sendDiscordNotification } from '@/lib/discord'
 
-interface CookiesRequest extends Request {
-  cookies?: {
-    get(name: string): { value?: string }
-  }
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const session = await getSession((request as CookiesRequest).cookies?.get('next-auth.session-token')?.value || null)
-    if (!session?.user || session.user.role !== 'editor') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
     const body = await request.json()
@@ -60,4 +54,5 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Failed to reject update' }, { status: 500 })
   }
 }
+
 

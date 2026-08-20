@@ -1,7 +1,6 @@
-import { getSession } from '@/lib/auth/session'
+import { requireEditor } from '@/lib/auth/authorize'
 import { getAnalyticsSummary, getTopPages, getRevenueStats } from '@/lib/analytics'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
 import PageContainer from '@/components/PageContainer'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
@@ -9,11 +8,10 @@ import Badge from '@/components/ui/Badge'
 export const dynamic = 'force-dynamic'
 
 export default async function AdminAnalyticsPage() {
-  const cookieStore = await cookies()
-  const session = await getSession(cookieStore.get('next-auth.session-token')?.value || null)
-
-  if (!session?.user || session.user.role !== 'editor') {
+  const auth = await requireEditor()
+  if (auth.error) {
     redirect('/en/login')
+    return
   }
 
   const [summary, topPages, revenue] = await Promise.all([
