@@ -18,9 +18,8 @@ test.describe('Search', () => {
 
     await page.waitForTimeout(5000)
 
-    const resultsHeading = page.locator('text=/results for "business"/i')
-    const hasResults = page.locator('[data-testid="search-result"], .search-result, article, h3, h4').first()
-    await expect(resultsHeading.or(hasResults)).toBeVisible({ timeout: 30000 })
+    const resultsText = page.getByText('results for "business"', { exact: false })
+    await expect(resultsText).toBeVisible({ timeout: 30000 })
   })
 
   test('search shows empty state for no results', async ({ page }) => {
