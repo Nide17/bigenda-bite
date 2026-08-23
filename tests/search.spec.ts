@@ -12,7 +12,7 @@ test.describe('Search', () => {
     const response = await page.goto('/en')
     expect(response?.status()).toBe(200)
 
-    await page.route('/api/search', async (route) => {
+    await page.route('**/api/search*', async (route) => {
       const url = new URL(route.request().url())
       const query = url.searchParams.get('q') || ''
       await route.fulfill({
@@ -40,8 +40,9 @@ test.describe('Search', () => {
     await searchInput.fill('business')
     await searchInput.press('Enter')
 
-    const resultsText = page.getByText('results for "business"', { exact: false })
-    await expect(resultsText).toBeVisible({ timeout: 30000 })
+    await page.waitForTimeout(1000)
+
+    await expect(page.getByText('Business Registration Process')).toBeVisible({ timeout: 30000 })
   })
 
   test('search shows empty state for no results', async ({ page }) => {
