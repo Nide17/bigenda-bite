@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Clear Next.js cache
-        run: Remove-Item -Recurse -Force .next
+        run: if (Test-Path .next) { Remove-Item -Recurse -Force .next }
       - name: Build
         run: npm run build
       - name: Test
