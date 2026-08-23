@@ -23,7 +23,7 @@ export type AuthResult = {
 }
 
 export async function requireAuth(request?: NextRequest): Promise<AuthResult> {
-  const session = await getSession()
+  const session = await getSession(request)
 
   if (!session?.user) {
     if (request) {

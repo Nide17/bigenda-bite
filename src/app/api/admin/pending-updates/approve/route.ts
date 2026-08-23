@@ -61,12 +61,13 @@ export async function POST(request: NextRequest) {
       { $set: { status: 'approved', approvedAt: new Date() } }
     )
 
+    const title = update.documentId || 'Unknown update'
     await sendDiscordNotification(
-      `Update approved for ${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}`,
+      `Update approved for ${title}`,
       [
         {
           title: '✅ Content Update Approved',
-          description: `The update for "${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}" has been approved and published to Sanity.`,
+          description: `The update for "${title}" has been approved and published to Sanity.`,
           color: 0x10b981,
         },
       ]

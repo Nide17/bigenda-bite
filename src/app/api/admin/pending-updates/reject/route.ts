@@ -36,13 +36,13 @@ export async function POST(request: NextRequest) {
       { $set: { status: 'rejected', rejectedAt: new Date() } }
     )
 
-    const doc = update.update as unknown as Record<string, unknown>
+    const title = update.documentId || 'Unknown update'
     await sendDiscordNotification(
-      `Update rejected for ${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}`,
+      `Update rejected for ${title}`,
       [
         {
           title: '❌ Content Update Rejected',
-          description: `The update for "${(() => { const t = (doc as Record<string, unknown>).translations as Record<string, unknown> | undefined; const en = (t as Record<string, unknown> | undefined)?.en as Record<string, unknown> | undefined; return en?.title || update.documentId })()}" has been rejected.`,
+          description: `The update for "${title}" has been rejected.`,
           color: 0xef4444,
         },
       ]

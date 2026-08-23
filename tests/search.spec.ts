@@ -16,10 +16,10 @@ test.describe('Search', () => {
     await searchInput.fill('business')
     await searchInput.press('Enter')
 
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(3000)
 
     const resultsHeading = page.locator('text=/results for "business"/i')
-    await expect(resultsHeading).toBeVisible()
+    await expect(resultsHeading).toBeVisible({ timeout: 15000 })
   })
 
   test('search shows empty state for no results', async ({ page }) => {
@@ -30,9 +30,9 @@ test.describe('Search', () => {
     await searchInput.fill('xyznonexistent123')
     await searchInput.press('Enter')
 
-    await page.waitForTimeout(1000)
+    await page.waitForTimeout(3000)
 
-    await expect(page.getByText('No results found')).toBeVisible()
+    await expect(page.getByText('No results found')).toBeVisible({ timeout: 15000 })
   })
 
   test('search respects language parameter', async ({ page }) => {

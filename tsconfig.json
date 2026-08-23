@@ -29,7 +29,7 @@
     }
   },
   "include": [
-    "next-env.d.ts",
+    "local_tests/next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.d.ts",

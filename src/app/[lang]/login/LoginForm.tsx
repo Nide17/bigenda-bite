@@ -52,15 +52,13 @@ function LoginFormContent({ lang }: { lang: string }) {
       .catch(() => setCsrfToken(''))
   }, [])
 
-  useEffect(() => {
-    if (oauthError === 'OAuthAccountNotLinked') {
-      setError('This Google account is already linked to a different sign-in method. Please use your original sign-in method.')
-    } else if (oauthError === 'AccessDenied') {
-      setError(t('oauth_cancelled'))
-    } else if (oauthError) {
-      setError(t('oauth_error'))
-    }
-  }, [oauthError, t])
+  const oauthErrorMessage = oauthError === 'OAuthAccountNotLinked'
+    ? 'This Google account is already linked to a different sign-in method. Please use your original sign-in method.'
+    : oauthError === 'AccessDenied'
+      ? t('oauth_cancelled')
+      : oauthError
+        ? t('oauth_error')
+        : null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -97,9 +95,9 @@ function LoginFormContent({ lang }: { lang: string }) {
     <Card className="p-6 sm:p-8">
       <form onSubmit={handleSubmit} className="space-y-5">
         <input type="hidden" name="csrfToken" value={csrfToken} />
-        {error && (
+        {(oauthErrorMessage || error) && (
           <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
-            {error}
+            {oauthErrorMessage || error}
           </div>
         )}
         <Input

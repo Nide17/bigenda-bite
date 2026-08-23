@@ -49,3 +49,10 @@ test-vars
 
 # dist
 dist/
+
+# Misc
+dev.log
+eslintcache
+/playwright-report
+/test-results
+/local_tests
