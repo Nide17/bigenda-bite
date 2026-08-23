@@ -20,5 +20,7 @@ jobs:
         run: if (Test-Path .next) { Remove-Item -Recurse -Force .next }
       - name: Build
         run: npm run build
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
       - name: Test
         run: npx playwright test
