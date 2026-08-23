@@ -22,6 +22,10 @@ This document lists all environment variables used in Bigenda Bite.
 |----------|-------------|---------|
 | `NEXTAUTH_URL` | Application URL | `http://localhost:3000` |
 | `NEXTAUTH_SECRET` | Secret key for session encryption | Generate with `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | `xxx.apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | `GOCSPX-...` |
+
+> **Note:** The legacy names `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` are still supported as fallbacks for backward compatibility, but `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are preferred.
 
 ### Sanity CMS
 

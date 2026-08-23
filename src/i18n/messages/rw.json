@@ -42,5 +42,9 @@
   "lang_en": "English",
   "lang_fr": "Français",
   "lang_rw": "Kinyarwanda",
-  "search_placeholder": "Uko wowe ushaka gukora mu Rwanda?"
+  "search_placeholder": "Uko wowe ushaka gukora mu Rwanda?",
+  "continue_with_google": "Komeza na Google",
+  "or_continue_with_google": "Cyangwa komeza na Google",
+  "oauth_error": "Kwinjira byanze. Ongera ugerageze.",
+  "oauth_cancelled": "Kwinjira byahagaritswe."
 }

@@ -1,7 +1,8 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import GoogleProvider from 'next-auth/providers/google'
 import type { User } from 'next-auth'
 import type { AuthOptions } from 'next-auth'
 
@@ -27,6 +28,17 @@ export interface AppSession {
 export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(mongoClient),
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID || '',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || process.env.AUTH_GOOGLE_SECRET || '',
+      authorization: {
+        params: {
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code',
+        },
+      },
+    }),
     {
       type: 'credentials' as const,
       id: 'credentials',
@@ -88,6 +100,22 @@ export const authOptions: AuthOptions = {
         customUser.displayName = token.displayName as string
       }
       return session
+    },
+  },
+  events: {
+    async signIn({ user, account }) {
+      if (account?.provider === 'google' && user?.id) {
+        const db = await connectToDatabase()
+        await db.collection('users').updateOne(
+          { _id: new ObjectId(user.id) },
+          {
+            $set: {
+              role: 'reader',
+              displayName: user.name || user.email || 'Google User',
+            },
+          }
+        )
+      }
     },
   },
   pages: {

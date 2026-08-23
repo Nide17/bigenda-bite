@@ -42,5 +42,9 @@
   "lang_en": "English",
   "lang_fr": "Français",
   "lang_rw": "Kinyarwanda",
-  "search_placeholder": "What do you need to do in Rwanda?"
+  "search_placeholder": "What do you need to do in Rwanda?",
+  "continue_with_google": "Continue with Google",
+  "or_continue_with_google": "Or continue with Google",
+  "oauth_error": "Authentication failed. Please try again.",
+  "oauth_cancelled": "Authentication was cancelled."
 }
