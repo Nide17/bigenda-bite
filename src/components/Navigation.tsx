@@ -19,6 +19,36 @@ const navItems: NavItem[] = [
   { href: '/membership', labelKey: 'membership' },
 ]
 
+const LANG_OPTIONS = [
+  { code: 'en', labelKey: 'lang_en' },
+  { code: 'fr', labelKey: 'lang_fr' },
+  { code: 'rw', labelKey: 'lang_rw' },
+] as const
+
+function LangSwitcher({ currentLang }: { currentLang: string }) {
+  return (
+    <div className="inline-flex items-center gap-1 bg-neutral-100 rounded-lg p-1" role="group" aria-label="Language">
+      {LANG_OPTIONS.map((lang) => {
+        const isActive = currentLang === lang.code
+        return (
+          <Link
+            key={lang.code}
+            href={`/${lang.code}`}
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+              isActive
+                ? 'bg-white text-[#1e1b4b] shadow-sm'
+                : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+            }`}
+            aria-current={isActive ? 'true' : undefined}
+          >
+            {lang.code.toUpperCase()}
+          </Link>
+        )
+      })}
+    </div>
+  )
+}
+
 export default function Navigation({ lang }: { lang: string }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname() || ''
@@ -65,6 +95,7 @@ export default function Navigation({ lang }: { lang: string }) {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            <LangSwitcher currentLang={lang} />
             <NotificationBell />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}

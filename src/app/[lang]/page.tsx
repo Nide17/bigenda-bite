@@ -27,36 +27,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   })
 }
 
-const LANG_OPTIONS = [
-  { code: 'en', labelKey: 'lang_en' },
-  { code: 'fr', labelKey: 'lang_fr' },
-  { code: 'rw', labelKey: 'lang_rw' },
-] as const
-
-function LangSwitcher({ currentLang }: { currentLang: string }) {
-  return (
-    <div className="inline-flex items-center gap-1 bg-white/10 rounded-lg p-1" role="group" aria-label="Language">
-      {LANG_OPTIONS.map((lang) => {
-        const isActive = currentLang === lang.code
-        return (
-          <Link
-            key={lang.code}
-            href={`/${lang.code}`}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
-              isActive
-                ? 'bg-white text-[#1e1b4b] shadow-sm'
-                : 'text-white/80 hover:text-white hover:bg-white/10'
-            }`}
-            aria-current={isActive ? 'true' : undefined}
-          >
-            {lang.code.toUpperCase()}
-          </Link>
-        )
-      })}
-    </div>
-  )
-}
-
 function PopularActionLink({ title, href, currentLang }: { title: string; href: string; currentLang: string }) {
   return (
     <li>
@@ -121,7 +91,6 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 </div>
               </div>
               <div className="flex flex-col items-start md:items-end gap-4">
-                <LangSwitcher currentLang={lang} />
                 <div className="flex items-center gap-2 text-white/90">
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
