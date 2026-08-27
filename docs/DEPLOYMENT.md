@@ -25,22 +25,7 @@ This guide covers deploying Bigenda Bite to production.
 4. Deploy Sanity Studio: `npx sanity deploy`
 5. See [docs/SANITY_SETUP.md](SANITY_SETUP.md) for detailed instructions
 
-## 3. Google OAuth Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select an existing one
-3. Enable the Google+ API (or Google Identity Services)
-4. Go to **Credentials** → **Create Credentials** → **OAuth client ID**
-5. Choose **Web application**
-6. Add authorized JavaScript origins:
-   - Local: `http://localhost:3000`
-   - Production: `https://yourdomain.com`
-7. Add authorized redirect URIs:
-   - Local: `http://localhost:3000/api/auth/callback/google`
-   - Production: `https://yourdomain.com/api/auth/callback/google`
-8. Copy the **Client ID** and **Client Secret**
-
-## 4. MTN MoMo Setup
+## 3. MTN MoMo Setup
 
 1. Create an account at [MTN MoMo Developer Portal](https://momodeveloper.mtn.com/)
 2. Create an API product
@@ -100,14 +85,6 @@ SANITY_API_TOKEN=your_sanity_token
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
 ```
 
-### Optional (for authentication)
-
-```env
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-```
-
 ### Optional (for payments)
 
 ```env
@@ -124,16 +101,6 @@ MTN_MOMO_PAYEE_CODE=your_payee_code
 
 ```env
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
-```
-
-### Optional (for email)
-
-```env
-EMAIL_SERVER_HOST=smtp.gmail.com
-EMAIL_SERVER_PORT=587
-EMAIL_SERVER_USER=your_email@gmail.com
-EMAIL_SERVER_PASSWORD=your_app_password
-EMAIL_FROM=noreply@yourdomain.com
 ```
 
 ## 7. Post-Deployment Checklist

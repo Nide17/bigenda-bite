@@ -1,6 +1,6 @@
 ﻿import { defineConfig } from 'sanity'
 import { schemaTypes } from './sanity/schemas/index'
-import StudioListTool from '@/components/StudioListTool'
+import StudioListTool from './sanity/StudioListTool'
 import { DocumentsIcon } from '@sanity/icons'
 import { route } from 'sanity/router'
 

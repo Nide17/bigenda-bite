@@ -96,7 +96,7 @@ src/
 │   └── sitemap.ts         # sitemap.xml
 ├── components/            # Reusable components
 │   ├── ui/                # Design system components
-│   ├── Navigation.tsx     # Main navigation
+│   ├── Navigation.tsx     # Main navigation with language switcher
 │   ├── Footer.tsx         # Site footer
 │   ├── AdBanner.tsx       # Ad display component
 │   ├── CitySelector.tsx   # City dropdown
@@ -131,14 +131,16 @@ src/
 - NextAuth v4 was replaced with a minimal custom credentials auth
 - Sessions stored in MongoDB `sessions` collection
 - Server-side `getSession()` accepts `NextRequest | string | null`
+- Google OAuth is available as a secondary sign-in option
 - Rationale: NextAuth v4 had compatibility issues with Next.js 15 App Router
 
 ### 3. i18n Architecture
 
 - Custom lightweight i18n provider for routing and translations
-- Server components load messages via dynamic import
+- Server components load translation JSON files directly
 - URL structure: `/{lang}/...`
 - Supported locales: English (`en`), French (`fr`), Kinyarwanda (`rw`)
+- Language switcher is global in the site header
 
 ### 4. Scraper Worker Pattern
 
@@ -219,7 +221,7 @@ src/
 
 - **Static pages**: SSG where possible (`generateStaticParams`)
 - **Dynamic pages**: `force-dynamic` for fresh data
-- **Sanity content**: Cached with `next: { revalidate }` where applicable
+- **Sanity content**: Fetched server-side on each request; no client-side caching
 - **API routes**: No caching by default, explicit headers where appropriate
 - **CDN**: Vercel Edge Network for static assets
 

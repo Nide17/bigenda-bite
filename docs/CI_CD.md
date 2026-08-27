@@ -4,7 +4,7 @@ Bigenda Bite uses GitHub Actions for continuous integration and deployment to Ve
 
 ## Workflows
 
-### CI/CD Pipeline (`.github/workflows/ci-cd.yml`)
+### CI Pipeline (`.github/workflows/ci.yml`)
 
 The main workflow runs on every push to `main` and every pull request.
 
@@ -71,6 +71,8 @@ Playwright smoke tests are located in `tests/`. They cover:
 - Navigation links are visible
 - City selector works
 - Process/guide pages load
+- Search functionality
+- i18n translations
 
 To run tests locally:
 

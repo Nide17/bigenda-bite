@@ -22,10 +22,6 @@ This document lists all environment variables used in Bigenda Bite.
 |----------|-------------|---------|
 | `NEXTAUTH_URL` | Application URL | `http://localhost:3000` |
 | `NEXTAUTH_SECRET` | Secret key for session encryption | Generate with `openssl rand -base64 32` |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID | `xxx.apps.googleusercontent.com` |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | `GOCSPX-...` |
-
-> **Note:** The legacy names `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` are still supported as fallbacks for backward compatibility, but `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are preferred.
 
 ### Sanity CMS
 
@@ -44,6 +40,15 @@ This document lists all environment variables used in Bigenda Bite.
 
 ## Optional Variables
 
+### Google OAuth
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID | `xxx.apps.googleusercontent.com` |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | `GOCSPX-...` |
+
+> **Note:** Google OAuth is a secondary sign-in option. Email/password is the primary authentication method.
+
 ### MTN MoMo Payments
 
 | Variable | Description | Example |
@@ -60,16 +65,6 @@ This document lists all environment variables used in Bigenda Bite.
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `DISCORD_WEBHOOK_URL` | Discord webhook URL for notifications | `https://discord.com/api/webhooks/...` |
-
-### Email (Nodemailer)
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `EMAIL_SERVER_HOST` | SMTP server host | `smtp.gmail.com` |
-| `EMAIL_SERVER_PORT` | SMTP server port | `587` |
-| `EMAIL_SERVER_USER` | SMTP username | `your_email@gmail.com` |
-| `EMAIL_SERVER_PASSWORD` | SMTP password/app password | `your_app_password` |
-| `EMAIL_FROM` | From email address | `noreply@bigendabite.com` |
 
 ## Security Notes
 
@@ -99,4 +94,3 @@ openssl rand -hex 24
 | `MONGODB_URI` | Private (server) | Database connection |
 | `MTN_MOMO_*` | Private (server) | Payment integration |
 | `DISCORD_WEBHOOK_URL` | Private (server) | Notifications |
-| `EMAIL_*` | Private (server) | Email sending |

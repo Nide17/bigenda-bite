@@ -163,7 +163,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## CI/CD
 
-GitHub Actions workflows are configured in `.github/workflows/ci-cd.yml`:
+GitHub Actions workflows are configured in `.github/workflows/ci.yml`:
 
 - **Lint** — ESLint check on every PR/push
 - **Build** — Next.js build verification

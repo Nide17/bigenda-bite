@@ -192,8 +192,8 @@ The app uses GROQ (Graph-Relational Object Queries) to fetch content:
 
 ### Images not loading
 
-- Install `@sanity/image-url` package
-- Configure image URL builder in `src/lib/cms/sanity.ts`
+- Verify the image URL is correct and accessible
+- Check that `NEXT_PUBLIC_SANITY_PROJECT_ID` is set correctly for CDN URLs
 
 ### CORS errors
 

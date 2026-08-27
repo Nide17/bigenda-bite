@@ -77,154 +77,6 @@ Get CSRF token for authentication.
 
 ---
 
-### Processes
-
-#### GET `/api/processes`
-
-Get all published processes.
-
-**Query Parameters:**
-- `category` (optional) — Filter by category
-
-**Response:**
-```json
-[
-  {
-    "_id": "string",
-    "category": "immigration",
-    "translations": {
-      "en": { "title": "Passport Application", "summary": "..." }
-    }
-  }
-]
-```
-
----
-
-#### GET `/api/processes/[category]/[slug]`
-
-Get a single process by slug.
-
-**Response:**
-```json
-{
-  "_id": "string",
-  "category": "immigration",
-  "slug": { "current": "passport-application" },
-  "translations": {
-    "en": {
-      "title": "Passport Application",
-      "summary": "...",
-      "steps": [...]
-    }
-  },
-  "steps": [...],
-  "fees": [...],
-  "requiredDocuments": [...],
-  "officialPortal": "https://...",
-  "lastVerifiedDate": "2024-01-01"
-}
-```
-
----
-
-### Guides
-
-#### GET `/api/guides`
-
-Get all published guides.
-
-**Query Parameters:**
-- `category` (optional) — Filter by category
-
-**Response:** Same structure as processes.
-
----
-
-#### GET `/api/guides/[category]/[slug]`
-
-Get a single guide by slug.
-
-**Response:** Same structure as processes with guide-specific fields.
-
----
-
-### Businesses
-
-#### GET `/api/businesses`
-
-Get businesses from the directory.
-
-**Query Parameters:**
-- `city` (optional) — Filter by city
-
-**Response:**
-```json
-[
-  {
-    "_id": "string",
-    "name": "Business Name",
-    "category": "Restaurant",
-    "city": "Kigali",
-    "contact": { "phone": "+250788000000" },
-    "description": "..."
-  }
-]
-```
-
----
-
-### Contributions
-
-#### POST `/api/contributions`
-
-Submit a community contribution for a guide.
-
-**Request:**
-```json
-{
-  "guideId": "passport-application",
-  "text": "I recommend doing this early in the morning...",
-  "city": "Kigali"
-}
-```
-
-**Response:**
-```json
-{
-  "id": "string",
-  "status": "pending"
-}
-```
-
----
-
-### Leads
-
-#### POST `/api/leads`
-
-Submit a lead for a business.
-
-**Request:**
-```json
-{
-  "businessId": "string",
-  "name": "string",
-  "phone": "string",
-  "message": "string"
-}
-```
-
-**Response:**
-```json
-{
-  "id": "string",
-  "status": "submitted"
-}
-```
-
----
-
 ### Ads
 
 #### GET `/api/ads`
@@ -278,6 +130,88 @@ Record an ad click.
 ```
 
 **Response:** `200 OK`
+
+---
+
+### Search
+
+#### GET `/api/search`
+
+Search processes, guides, and alerts.
+
+**Query Parameters:**
+- `q` — Search query
+- `lang` — Language code (`en`, `fr`, `rw`)
+
+**Response:**
+```json
+{
+  "results": [
+    {
+      "type": "process",
+      "title": "Business Registration",
+      "description": "...",
+      "category": "business",
+      "language": "en",
+      "url": "/en/processes/business/registration"
+    }
+  ],
+  "query": "business",
+  "language": "en",
+  "total": 1
+}
+```
+
+---
+
+### Contributions
+
+#### POST `/api/contributions`
+
+Submit a community contribution for a guide.
+
+**Request:**
+```json
+{
+  "guideId": "passport-application",
+  "text": "I recommend doing this early in the morning...",
+  "city": "Kigali"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "string",
+  "status": "pending"
+}
+```
+
+---
+
+### Leads
+
+#### POST `/api/leads`
+
+Submit a lead for a business.
+
+**Request:**
+```json
+{
+  "businessId": "string",
+  "name": "string",
+  "phone": "string",
+  "message": "string"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "string",
+  "status": "submitted"
+}
+```
 
 ---
 
