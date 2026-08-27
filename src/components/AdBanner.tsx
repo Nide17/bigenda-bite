@@ -22,6 +22,7 @@ interface AdBannerProps {
 export default function AdBanner({ placement, city }: AdBannerProps) {
   const [ads, setAds] = useState<Ad[]>([])
   const [loading, setLoading] = useState(true)
+  const [imageError, setImageError] = useState(false)
   const router = useRouter()
   const trackAdClick = useTrackEvent('ad_click', { placement, city })
 
@@ -42,6 +43,7 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
       .then((data) => {
         setAds(data)
         setLoading(false)
+        setImageError(false)
 
         if (data.length > 0) {
           trackImpression(data[0]._id)
@@ -66,15 +68,28 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm">
-      <Image
-        src={ad.imageUrl}
-        alt={ad.title}
-        width={600}
-        height={192}
-        unoptimized
-        className="w-full h-48 object-cover cursor-pointer"
-        onClick={() => handleClick(ad)}
-      />
+      {imageError ? (
+        <div
+          className="w-full h-48 bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center cursor-pointer"
+          onClick={() => handleClick(ad)}
+        >
+          <div className="text-center p-4">
+            <div className="text-3xl mb-2">📢</div>
+            <p className="text-sm font-medium text-neutral-700 line-clamp-2">{ad.title}</p>
+          </div>
+        </div>
+      ) : (
+        <Image
+          src={ad.imageUrl}
+          alt={ad.title}
+          width={600}
+          height={192}
+          unoptimized
+          className="w-full h-48 object-cover cursor-pointer"
+          onClick={() => handleClick(ad)}
+          onError={() => setImageError(true)}
+        />
+      )}
       <div className="p-3">
         <h3 className="font-semibold text-sm">{ad.title}</h3>
       </div>
