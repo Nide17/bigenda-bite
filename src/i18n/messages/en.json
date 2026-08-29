@@ -62,5 +62,9 @@
   "footer_account": "Account",
   "footer_tagline": "Your everyday guide to life and administrative processes in Rwanda. Built with care for Rwandans, by Rwandans.",
   "footer_built": "Built for Rwanda · Made with ☕ and 💻",
-  "footer_rights": "All rights reserved."
+  "footer_rights": "All rights reserved.",
+  "error_title": "Something went wrong",
+  "error_message": "We couldn't load this information right now. Please try again.",
+  "error_retry": "Try Again",
+  "error_home": "Go Home"
 }

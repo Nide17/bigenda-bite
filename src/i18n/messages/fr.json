@@ -62,5 +62,9 @@
   "footer_account": "Compte",
   "footer_tagline": "Votre guide quotidien pour la vie administrative au Rwanda. Conçu avec soin pour les Rwandais, par les Rwandais.",
   "footer_built": "Conçu pour le Rwanda · Fait avec ☕ et 💻",
-  "footer_rights": "Tous droits réservés."
+  "footer_rights": "Tous droits réservés.",
+  "error_title": "Une erreur s'est produite",
+  "error_message": "Nous n'avons pas pu charger ces informations pour le moment. Veuillez réessayer.",
+  "error_retry": "Réessayer",
+  "error_home": "Accueil"
 }

@@ -62,5 +62,9 @@
   "footer_account": "Konti",
   "footer_tagline": "Ubusobanuro bwawe bw'umunsi ku munsi ku buzima n'imirimo ya leta mu Rwanda. Bwubatswe n'ubunyangamutima ku Rwanda, n'abanyarwanda.",
   "footer_built": "Kubw'u Rwanda · Byakozwe na ☕ na 💻",
-  "footer_rights": "Uburenganzira bwose bufite."
+  "footer_rights": "Uburenganzira bwose bufite.",
+  "error_title": "Hari ikibazo cyabaye",
+  "error_message": "Ntabwo dushoboye gufungura iyi makuru ubu. Ongera ugerageze.",
+  "error_retry": "Ongera ugerageze",
+  "error_home": "Ahabanza"
 }
