@@ -83,6 +83,10 @@ MONGODB_URI=your_mongodb_connection_string
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=your_secret_key
 
+# Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
 # Sanity
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
@@ -91,6 +95,8 @@ SANITY_API_TOKEN=your_api_token
 # App
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
+
+> **Production:** In Vercel, set `NEXTAUTH_URL` to your production domain (e.g. `https://bigendabite.com`). Also update your Google OAuth client authorized redirect URIs to match.
 
 ### Development
 
