@@ -3,6 +3,7 @@ import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 import { sendDiscordNotification } from '@/lib/discord'
+import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,12 +12,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
-    const body = await request.json()
-    const { updateId } = body
+    const parsed = await parseJson<{ updateId: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!updateId) {
-      return NextResponse.json({ error: 'updateId is required' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['updateId'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { updateId } = parsed.data
 
     const db = await connectToDatabase()
     const pendingUpdates = db.collection('pendingUpdates')
@@ -24,11 +26,11 @@ export async function POST(request: NextRequest) {
     const update = await pendingUpdates.findOne({ _id: new ObjectId(updateId) })
 
     if (!update) {
-      return NextResponse.json({ error: 'Pending update not found' }, { status: 404 })
+      return NextResponse.json(fail('Pending update not found', 404), { status: 404 })
     }
 
     if (update.status !== 'pending') {
-      return NextResponse.json({ error: 'Update is not pending' }, { status: 400 })
+      return NextResponse.json(fail('Update is not pending'), { status: 400 })
     }
 
     await pendingUpdates.updateOne(

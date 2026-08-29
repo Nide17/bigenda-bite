@@ -1,16 +1,22 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
+import { requireEditor } from '@/lib/auth/authorize'
+import { parseJson, requireFields } from '@/lib/api/validate'
 import { sendDiscordNotification } from '@/lib/discord'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { message } = body
-
-    if (!message) {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+    const auth = await requireEditor(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
-    await sendDiscordNotification(message)
+    const parsed = await parseJson<{ message?: string }>(request)
+    if (!parsed.ok) return parsed.response
+
+    const missing = requireFields(parsed.data, ['message'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    await sendDiscordNotification(parsed.data.message!)
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -1,14 +1,16 @@
 import { NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { parseJson, requireFields } from '@/lib/api/validate'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { businessId, contactName, contactPhone, message, source } = body
+    const parsed = await parseJson<{ businessId: string; contactName: string; contactPhone: string; message?: string; source?: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!businessId || !contactName || !contactPhone) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['businessId', 'contactName', 'contactPhone'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { businessId, contactName, contactPhone, message, source } = parsed.data
 
     const db = await connectToDatabase()
     const leads = db.collection('leads')

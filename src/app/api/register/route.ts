@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { name, email, password } = body
+    const parsed = await parseJson<{ name: string; email: string; password: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    const missing = requireFields(parsed.data, ['name', 'email', 'password'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { name, email, password } = parsed.data
+
+    if (password.length < 8) {
+      return NextResponse.json(fail('Password must be at least 8 characters'), { status: 400 })
     }
 
     const db = await connectToDatabase()
@@ -16,7 +22,7 @@ export async function POST(request: Request) {
 
     const existing = await users.findOne({ email })
     if (existing) {
-      return NextResponse.json({ error: 'User already exists' }, { status: 409 })
+      return NextResponse.json(fail('User already exists', 409), { status: 409 })
     }
 
     const hashedPassword = await bcrypt.hash(password, 10)

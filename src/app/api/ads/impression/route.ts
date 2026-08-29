@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server'
 import { trackImpression } from '@/lib/ads'
+import { parseJson, requireFields } from '@/lib/api/validate'
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const { adId } = body
+    const parsed = await parseJson<{ adId: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!adId) {
-      return NextResponse.json({ error: 'adId is required' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['adId'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
 
-    await trackImpression(adId)
+    await trackImpression(parsed.data.adId)
 
     return NextResponse.json({ success: true })
   } catch (error) {

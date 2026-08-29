@@ -1,6 +1,6 @@
 import { getProcesses, getGuides, getAlerts } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
-import { resolveCity } from '@/lib/city'
+import { getCityFromCookie } from '@/lib/city'
 import AdBanner from '@/components/AdBanner'
 import CitySelector from '@/components/CitySelector'
 import Search from '@/components/Search'
@@ -32,19 +32,32 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function HomePage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string }> }) {
   const { lang } = await params
   const { city } = await searchParams
-  const cityName = city || await resolveCity(new Request('http://localhost:3000'))
-  const [processes, guides, alerts] = await Promise.all([
-    getProcesses(lang),
-    getGuides(lang),
-    getAlerts(),
-  ])
+  const cityName = city || await getCityFromCookie()
 
-  const db = await connectToDatabase()
-  const businesses = await db.collection('businesses')
-    .find({ city: cityName, status: 'approved' })
-    .sort({ name: 1 })
-    .limit(6)
-    .toArray() as unknown as Business[]
+  let processes: Process[] = []
+  let guides: Guide[] = []
+  let alerts: Alert[] = []
+  let businesses: Business[] = []
+
+  try {
+    const [processesResult, guidesResult, alertsResult] = await Promise.all([
+      getProcesses(lang),
+      getGuides(lang),
+      getAlerts(),
+    ])
+    processes = processesResult
+    guides = guidesResult
+    alerts = alertsResult
+
+    const db = await connectToDatabase()
+    businesses = (await db.collection('businesses')
+      .find({ city: cityName, status: 'approved' })
+      .sort({ name: 1 })
+      .limit(6)
+      .toArray()) as unknown as Business[]
+  } catch (error) {
+    console.error('Home page data fetch error:', error)
+  }
 
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key

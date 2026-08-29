@@ -1,10 +1,11 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { requireEditor } from '@/lib/auth/authorize'
+import { requireAdmin } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function GET(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireAdmin(request)
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -21,16 +22,21 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireAdmin(request)
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
-    const body = await request.json()
-    const { userId, role, banned } = body
+    const parsed = await parseJson<{ userId: string; role?: string; banned?: boolean }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!userId) {
-      return NextResponse.json({ error: 'userId is required' }, { status: 400 })
+    const missing = requireFields(parsed.data, ['userId'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { userId, role, banned } = parsed.data
+
+    if (role && !['reader', 'editor', 'admin', 'superadmin'].includes(role)) {
+      return NextResponse.json(fail('Invalid role'), { status: 400 })
     }
 
     const db = await connectToDatabase()
@@ -40,7 +46,7 @@ export async function PATCH(request: NextRequest) {
     if (typeof banned === 'boolean') update.banned = banned
 
     if (Object.keys(update).length === 0) {
-      return NextResponse.json({ error: 'No fields to update' }, { status: 400 })
+      return NextResponse.json(fail('No fields to update'), { status: 400 })
     }
 
     const result = await db.collection('users').updateOne(
@@ -49,7 +55,7 @@ export async function PATCH(request: NextRequest) {
     )
 
     if (result.matchedCount === 0) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json(fail('User not found', 404), { status: 404 })
     }
 
     return NextResponse.json({ success: true })

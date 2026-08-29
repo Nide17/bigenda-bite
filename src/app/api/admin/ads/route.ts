@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
+import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function GET(request: NextRequest) {
   try {
@@ -27,12 +28,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
-    const body = await request.json()
-    const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = body
+    const parsed = await parseJson<{ title: string; placement?: string; city?: string; linkUrl: string; imageUrl: string; active?: boolean; startDate?: string; endDate?: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!title || !linkUrl || !imageUrl) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['title', 'linkUrl', 'imageUrl'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = parsed.data
 
     const db = await connectToDatabase()
 
@@ -66,11 +68,13 @@ export async function PATCH(request: NextRequest) {
 
     const id = request.nextUrl.searchParams.get('id')
     if (!id) {
-      return NextResponse.json({ error: 'id is required' }, { status: 400 })
+      return NextResponse.json(fail('id is required'), { status: 400 })
     }
 
-    const body = await request.json()
-    const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = body
+    const parsed = await parseJson<{ title?: string; placement?: string; city?: string; linkUrl?: string; imageUrl?: string; active?: boolean; startDate?: string; endDate?: string }>(request)
+    if (!parsed.ok) return parsed.response
+
+    const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = parsed.data
 
     const db = await connectToDatabase()
     const update: Record<string, unknown> = {}
@@ -85,7 +89,7 @@ export async function PATCH(request: NextRequest) {
     if (endDate !== undefined) update.endDate = endDate ? new Date(endDate) : undefined
 
     if (Object.keys(update).length === 0) {
-      return NextResponse.json({ error: 'No fields to update' }, { status: 400 })
+      return NextResponse.json(fail('No fields to update'), { status: 400 })
     }
 
     const result = await db.collection('ads').updateOne(
@@ -94,7 +98,7 @@ export async function PATCH(request: NextRequest) {
     )
 
     if (result.matchedCount === 0) {
-      return NextResponse.json({ error: 'Ad not found' }, { status: 404 })
+      return NextResponse.json(fail('Ad not found', 404), { status: 404 })
     }
 
     return NextResponse.json({ success: true })
@@ -113,14 +117,14 @@ export async function DELETE(request: NextRequest) {
 
     const id = request.nextUrl.searchParams.get('id')
     if (!id) {
-      return NextResponse.json({ error: 'id is required' }, { status: 400 })
+      return NextResponse.json(fail('id is required'), { status: 400 })
     }
 
     const db = await connectToDatabase()
     const result = await db.collection('ads').deleteOne({ _id: new ObjectId(id) })
 
     if (result.deletedCount === 0) {
-      return NextResponse.json({ error: 'Ad not found' }, { status: 404 })
+      return NextResponse.json(fail('Ad not found', 404), { status: 404 })
     }
 
     return NextResponse.json({ success: true })

@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { createPayment, MoMoConfig } from '@/lib/momo'
+import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,11 +12,16 @@ export async function POST(request: NextRequest) {
     }
 
     const session = auth.session!
-    const body = await request.json()
-    const { planId, amount, phoneNumber } = body as { planId: string; amount: number; phoneNumber: string }
+    const parsed = await parseJson<{ planId: string; amount: number; phoneNumber: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!planId || !amount || !phoneNumber) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    const missing = requireFields(parsed.data, ['planId', 'amount', 'phoneNumber'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { planId, amount, phoneNumber } = parsed.data
+
+    if (amount <= 0) {
+      return NextResponse.json(fail('Amount must be greater than 0'), { status: 400 })
     }
 
     const config: MoMoConfig = {

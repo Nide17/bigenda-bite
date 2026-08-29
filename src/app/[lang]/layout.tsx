@@ -72,10 +72,19 @@ export default async function RootLayout({
   const requestUrl = headersList.get('x-invoke-path') || `/${lang}`
   const pathname = new URL(requestUrl, 'http://localhost').pathname.replace(/^\/(en|fr|rw)/, '') || '/'
 
-  trackEvent({
-    type: 'page_view',
-    metadata: { path: pathname, lang, city: '' },
-  }).catch(() => {})
+  let pageViewError: unknown = null
+  try {
+    trackEvent({
+      type: 'page_view',
+      metadata: { path: pathname, lang, city: '' },
+    })
+  } catch (error) {
+    pageViewError = error
+  } finally {
+    if (pageViewError) {
+      console.error('Analytics page_view failed:', pageViewError)
+    }
+  }
 
   const orgLd = organizationJsonLd(baseUrl)
   const websiteLd = websiteJsonLd(baseUrl)

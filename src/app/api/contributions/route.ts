@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { parseJson, requireFields } from '@/lib/api/validate'
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,12 +35,13 @@ export async function POST(request: NextRequest) {
     }
 
     const session = auth.session!
-    const body = await request.json()
-    const { guideId, text, city } = body as { guideId?: string; text: string; city?: string }
+    const parsed = await parseJson<{ guideId?: string; text: string; city?: string }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!text || text.trim().length === 0) {
-      return NextResponse.json({ error: 'Text is required' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['text'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { guideId, text, city } = parsed.data
 
     const db = await connectToDatabase()
     const contributions = db.collection('contributions')
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest) {
       submittedAt: new Date(),
     })
 
-    return NextResponse.json({ id: result.insertedId }, { status: 201 })
+    return NextResponse.json({ id: result.insertedId.toString() }, { status: 201 })
   } catch (error) {
     console.error('Error creating contribution:', error)
     return NextResponse.json({ error: 'Failed to create contribution' }, { status: 500 })

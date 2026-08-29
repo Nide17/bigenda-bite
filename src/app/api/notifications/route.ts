@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { createNotification } from '@/lib/notifications'
+import { parseJson, requireFields } from '@/lib/api/validate'
 
 export async function GET(request: NextRequest) {
   try {
@@ -62,12 +63,13 @@ export async function POST(request: NextRequest) {
     }
 
     const session = auth.session!
-    const body = await request.json()
-    const { type, title, body: bodyText, metadata } = body as { type: string; title: string; body: string; metadata?: Record<string, unknown> }
+    const parsed = await parseJson<{ type: string; title: string; body: string; metadata?: Record<string, unknown> }>(request)
+    if (!parsed.ok) return parsed.response
 
-    if (!type || !title || !bodyText) {
-      return NextResponse.json({ error: 'type, title, and body are required' }, { status: 400 })
-    }
+    const missing = requireFields(parsed.data, ['type', 'title', 'body'])
+    if (missing) return NextResponse.json(missing, { status: missing.status })
+
+    const { type, title, body: bodyText, metadata } = parsed.data
 
     const notificationId = await createNotification(
       session.user.id,

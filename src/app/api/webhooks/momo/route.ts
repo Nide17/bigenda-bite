@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { parseJson } from '@/lib/api/validate'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    console.log('MoMo webhook received:', body)
+    const parsed = await parseJson<{ transactionId?: string; status?: string; amount?: { transactionId?: string; status?: string } }>(request)
+    if (!parsed.ok) return parsed.response
 
+    const body = parsed.data
     const transactionId = body.transactionId || body.amount?.transactionId
     const status = body.status || body.amount?.status
 
