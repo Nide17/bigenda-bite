@@ -12,12 +12,13 @@
 
 ## Features
 
-- **Official Processes** — Step-by-step guides for government services (IRRDB, RRA, RDB, immigration)
+- **Official Processes** — Step-by-step guides for government services
 - **How-To Guides** — Practical guides for everyday life in Rwanda
 - **Business Directory** — City-based business listings with contact and lead capture
 - **Alerts** — Real-time official announcements with severity levels
+- **Search** — Universal search across processes, guides, businesses, and alerts
 - **Membership** — Subscription plans with MTN MoMo payment integration
-- **City Routing** — Content personalized by city (Kigali, Musanze, Rubavu, Huye)
+- **City Routing** — Content personalized by city
 - **Admin Dashboard** — Editor tools for content review, user management, ads, analytics
 - **Analytics** — Event tracking, page views, revenue stats, top pages
 - **Notifications** — In-app notification bell with unread counts
@@ -25,7 +26,6 @@
 - **Scraper Worker** — Automated content scraping with approval workflow
 - **Discord Integration** — Editor notifications for pending updates
 - **i18n** — Multi-language support (English, French, Kinyarwanda)
-- **CI/CD** — GitHub Actions with lint, build, test, and Vercel deployment
 
 ## Tech Stack
 
@@ -45,45 +45,11 @@
 | CI/CD | GitHub Actions |
 | i18n | custom provider |
 
-## Project Structure
-
-```
-bigenda-bite/
-├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── [lang]/            # i18n routes
-│   │   ├── admin/             # Admin dashboard
-│   │   ├── api/               # API routes
-│   │   ├── globals.css        # Global styles
-│   │   └── layout.tsx         # Root layout
-│   ├── components/            # React components
-│   │   ├── ui/                # Design system components
-│   │   ├── Navigation.tsx
-│   │   ├── Footer.tsx
-│   │   └── ...
-│   ├── lib/                   # Core libraries
-│   │   ├── analytics.ts       # Event tracking
-│   │   ├── auth/              # Authentication
-│   │   ├── cms/               # Sanity CMS
-│   │   ├── db/                # MongoDB connection
-│   │   ├── momo/              # MTN MoMo payments
-│   │   ├── scrapers/          # Web scraping engine
-│   │   └── ...
-│   ├── i18n/                  # Internationalization
-│   └── types/                 # TypeScript types
-├── scripts/                   # Utility scripts
-│   └── worker.ts              # Scraper worker
-├── sanity/                    # Sanity schemas & config
-├── tests/                     # Playwright E2E tests
-├── docs/                      # Documentation
-└── .github/workflows/         # CI/CD pipelines
-```
-
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - MongoDB Atlas account
 - Sanity account
 - MTN MoMo developer account (for payments)
@@ -93,7 +59,7 @@ bigenda-bite/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/bigenda-bite.git
+git clone https://github.com/Nide17/bigenda-bite.git
 cd bigenda-bite
 
 # Install dependencies
@@ -155,6 +121,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript compiler checks |
 | `npm run scrape` | Run scraper worker |
 | `npm run test:e2e` | Run Playwright E2E tests |
 | `npm run test:e2e:ui` | Run Playwright tests with UI |
@@ -162,19 +129,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## CI/CD
 
-GitHub Actions runs checks on every PR and push to `main`. Production deployment is handled automatically by Vercel.
-
-- **PR checks:** typecheck, lint, build, E2E smoke tests
-- **Production:** Vercel deploys `main` automatically
+GitHub Actions runs typecheck, lint, build, and E2E smoke tests on every PR and push to `main`. Production deployment is handled automatically by Vercel.
 
 ## Documentation
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guidelines
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — System design and architecture
-- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — Deployment guide
-- [docs/API.md](docs/API.md) — API reference
-- [docs/SANITY_SETUP.md](docs/SANITY_SETUP.md) — Sanity CMS setup
-- [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) — Environment variables reference
+- [PRODUCT.md](docs/PRODUCT.md) — Product overview and feature status
+- [DEVELOPMENT.md](docs/DEVELOPMENT.md) — Local development setup
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) — System design and architecture
+- [API.md](docs/API.md) — API reference
+- [DEPLOYMENT.md](docs/DEPLOYMENT.md) — Production deployment guide
+- [TESTING.md](docs/TESTING.md) — Testing strategy and execution
+- [SECURITY.md](docs/SECURITY.md) — Security practices
+- [CONTENT_EDITOR_GUIDE.md](docs/CONTENT_EDITOR_GUIDE.md) — Sanity CMS editor guide
+- [ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) — Admin dashboard usage
+- [SCRAPER_GUIDE.md](docs/SCRAPER_GUIDE.md) — Scraper worker setup and usage
+- [ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) — Environment variables reference
 
 ## License
 

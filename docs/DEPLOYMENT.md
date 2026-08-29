@@ -1,13 +1,13 @@
 # Deployment Guide
 
-This guide covers deploying Bigenda Bite to production.
+This guide covers deploying Bigenda Bite to production on Vercel.
 
 ## Prerequisites
 
 - Vercel account
 - MongoDB Atlas account
 - Sanity account
-- MTN MoMo developer account
+- MTN MoMo developer account (for payments)
 - Domain name (optional)
 
 ## 1. MongoDB Atlas Setup
@@ -22,8 +22,7 @@ This guide covers deploying Bigenda Bite to production.
 1. Create a new Sanity project at [sanity.io/manage](https://www.sanity.io/manage)
 2. Note your `projectId` and `dataset` name
 3. Create an API token with Editor/Write permissions
-4. Deploy Sanity Studio: `npx sanity deploy`
-5. See [docs/SANITY_SETUP.md](SANITY_SETUP.md) for detailed instructions
+4. See [CONTENT_EDITOR_GUIDE.md](CONTENT_EDITOR_GUIDE.md) for detailed instructions
 
 ## 3. MTN MoMo Setup
 
@@ -116,7 +115,6 @@ DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 - [ ] Test on mobile devices
 - [ ] Set up custom domain in Vercel
 - [ ] Configure SSL certificate
-- [ ] Set up Vercel Analytics
 - [ ] Configure error monitoring (Sentry, etc.)
 
 ## 8. Custom Domain
@@ -127,15 +125,7 @@ DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
 4. Update DNS records as instructed by Vercel
 5. Wait for SSL certificate provisioning
 
-## 9. CI/CD
-
-Vercel automatically deploys on every push to the main branch. You can configure:
-
-- **Preview Deployments**: Every PR gets a preview URL
-- **Production Deployments**: Only merges to main deploy to production
-- **Environment Variables**: Different values per environment
-
-## 10. Monitoring
+## 9. Monitoring
 
 - **Vercel Analytics**: Built-in in Vercel dashboard
 - **Vercel Logs**: Real-time function logs
@@ -143,42 +133,28 @@ Vercel automatically deploys on every push to the main branch. You can configure
 - **Sanity**: Content change history and logs
 - **Discord**: Error notifications via webhooks
 
-## 11. CI/CD Integration
-
-After deployment, CI/CD is handled automatically via GitHub Actions. See [docs/CI_CD.md](CI_CD.md) for details on:
-- GitHub Actions workflow configuration
-- Required secrets
-- Local CI testing
-- Deployment flow
-
 ## Troubleshooting
 
-### Build Failures
+### Build failures
 
 - Check Vercel build logs for errors
 - Ensure all environment variables are set
 - Verify `npm run build` works locally
 
-### Database Connection Issues
+### Database connection issues
 
 - Verify MongoDB Atlas connection string
 - Check IP whitelist in Atlas
 - Ensure database user has correct permissions
 
-### Sanity Content Not Showing
+### Sanity content not showing
 
 - Verify `projectId` and `dataset` are correct
 - Check that content is published (`status: "published"`)
 - Verify API token has read permissions
 
-### Payment Issues
+### Payment issues
 
 - Verify MTN MoMo credentials
 - Check callback URL is accessible
 - Ensure sandbox/production environment is consistent
-
-### CI/CD Issues
-
-- Verify GitHub secrets are set correctly
-- Check GitHub Actions logs for errors
-- Ensure Node.js version matches local development

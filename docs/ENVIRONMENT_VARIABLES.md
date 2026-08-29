@@ -2,6 +2,8 @@
 
 This document lists all environment variables used in Bigenda Bite.
 
+For a complete development setup guide, see [DEVELOPMENT.md](../DEVELOPMENT.md).
+
 ## Setup
 
 1. Copy `.env.example` to `.env.local`
