@@ -46,5 +46,10 @@
   "continue_with_google": "Continue with Google",
   "or_continue_with_google": "Or continue with Google",
   "oauth_error": "Authentication failed. Please try again.",
-  "oauth_cancelled": "Authentication was cancelled."
+  "oauth_cancelled": "Authentication was cancelled.",
+  "footer_explore": "Explore",
+  "footer_account": "Account",
+  "footer_tagline": "Your everyday guide to life and administrative processes in Rwanda. Built with care for Rwandans, by Rwandans.",
+  "footer_built": "Built for Rwanda · Made with ☕ and 💻",
+  "footer_rights": "All rights reserved."
 }

@@ -61,7 +61,6 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
             <option value="Musanze">Musanze</option>
             <option value="Rubavu">Rubavu</option>
             <option value="Huye">Huye</option>
-            <option value="Mombasa">Mombasa</option>
           </select>
           <button type="submit" className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors">
             Filter

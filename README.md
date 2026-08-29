@@ -17,7 +17,7 @@
 - **Business Directory** — City-based business listings with contact and lead capture
 - **Alerts** — Real-time official announcements with severity levels
 - **Membership** — Subscription plans with MTN MoMo payment integration
-- **City Routing** — Content personalized by city (Kigali, Musanze, Rubavu, Huye, Mombasa)
+- **City Routing** — Content personalized by city (Kigali, Musanze, Rubavu, Huye)
 - **Admin Dashboard** — Editor tools for content review, user management, ads, analytics
 - **Analytics** — Event tracking, page views, revenue stats, top pages
 - **Notifications** — In-app notification bell with unread counts

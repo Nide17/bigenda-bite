@@ -80,6 +80,13 @@ async function main() {
 
     for (const scraped of flatResults) {
       try {
+        const title = scraped.translations?.en?.title || ''
+        if (!title || title.length < 3 || /^(test|placeholder|todo|fixme|hhh|guid \d+|undefined)$/i.test(title)) {
+          console.log(`[worker] Skipping suspicious title: "${title}"`)
+          skipped++
+          continue
+        }
+
         const diff = await computeDiff(scraped)
 
         if (!diff.hasChanges) {

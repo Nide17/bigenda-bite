@@ -39,7 +39,6 @@ export default function CitySelector({ cityName }: { cityName: string }) {
         <option value="Musanze">Musanze</option>
         <option value="Rubavu">Rubavu</option>
         <option value="Huye">Huye</option>
-        <option value="Mombasa">Mombasa</option>
       </select>
       <svg
         className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none"

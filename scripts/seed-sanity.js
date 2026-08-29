@@ -361,6 +361,11 @@ async function main() {
   console.log('Seeding processes...')
   for (const doc of processes) {
     try {
+      const existing = await client.fetch(`*[_type == "process" && translations.en.title == $title][0]`, { title: doc.translations.en.title })
+      if (existing) {
+        console.log('Skipping existing process:', doc.translations.en.title)
+        continue
+      }
       await client.create(doc)
       console.log('Created process:', doc.translations.en.title)
     } catch (err) {
@@ -371,6 +376,11 @@ async function main() {
   console.log('Seeding guides...')
   for (const doc of guides) {
     try {
+      const existing = await client.fetch(`*[_type == "guide" && translations.en.title == $title][0]`, { title: doc.translations.en.title })
+      if (existing) {
+        console.log('Skipping existing guide:', doc.translations.en.title)
+        continue
+      }
       await client.create(doc)
       console.log('Created guide:', doc.translations.en.title)
     } catch (err) {
@@ -381,6 +391,11 @@ async function main() {
   console.log('Seeding alerts...')
   for (const doc of alerts) {
     try {
+      const existing = await client.fetch(`*[_type == "alert" && translations.en == $text][0]`, { text: doc.translations.en })
+      if (existing) {
+        console.log('Skipping existing alert:', doc.translations.en)
+        continue
+      }
       await client.create(doc)
       console.log('Created alert:', doc.translations.en)
     } catch (err) {

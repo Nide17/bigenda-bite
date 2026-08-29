@@ -40,11 +40,16 @@
   "latest_processes": "Imirimo ya leta",
   "latest_guides": "Ubusobanuro bw'uburyo",
   "lang_en": "English",
-  "lang_fr": "Français",
   "lang_rw": "Kinyarwanda",
+  "lang_fr": "Français",
   "search_placeholder": "Uko wowe ushaka gukora mu Rwanda?",
   "continue_with_google": "Komeza na Google",
   "or_continue_with_google": "Cyangwa komeza na Google",
   "oauth_error": "Kwinjira byanze. Ongera ugerageze.",
-  "oauth_cancelled": "Kwinjira byahagaritswe."
+  "oauth_cancelled": "Kwinjira byahagaritswe.",
+  "footer_explore": "Reba",
+  "footer_account": "Konti",
+  "footer_tagline": "Ubusobanuro bwawe bw'umunsi ku munsi ku buzima n'imirimo ya leta mu Rwanda. Bwubatswe n'ubunyangamutima ku Rwanda, n'abanyarwanda.",
+  "footer_built": "Kubw'u Rwanda · Byakozwe na ☕ na 💻",
+  "footer_rights": "Uburenganzira bwose bufite."
 }
