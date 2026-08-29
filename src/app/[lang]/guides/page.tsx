@@ -49,7 +49,7 @@ export default async function GuidesPage({ params }: { params: Promise<{ lang: s
           guides.map((guide: Guide) => (
             <Link
               key={guide._id}
-              href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide.translations?.en?.title || guide._id}`}
+              href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide._id}`}
               className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-4">

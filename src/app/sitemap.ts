@@ -41,7 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ])
 
     for (const process of processes) {
-      const slug = toSlug(process.slug?.current || process.translations?.en?.title || process._id)
+      const slug = process.slug?.current || process._id
       const category = process.category || ''
       const lastModified = process._updatedAt ? new Date(process._updatedAt) : new Date()
       for (const locale of locales) {
@@ -51,14 +51,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           changeFrequency: 'weekly',
           priority: 0.7,
           alternates: {
-            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/processes/${category}/${slug}`])),
+            languages: Object.fromEntries(locales.map((l) => [`/${l}/processes/${category}/${slug}`])),
           },
         })
       }
     }
 
     for (const guide of guides) {
-      const slug = toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id)
+      const slug = guide.slug?.current || guide._id
       const category = guide.category || ''
       const lastModified = guide._updatedAt ? new Date(guide._updatedAt) : new Date()
       for (const locale of locales) {
@@ -68,7 +68,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           changeFrequency: 'weekly',
           priority: 0.7,
           alternates: {
-            languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/guides/${category}/${slug}`])),
+            languages: Object.fromEntries(locales.map((l) => [`/${l}/guides/${category}/${slug}`])),
           },
         })
       }

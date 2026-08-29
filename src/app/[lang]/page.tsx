@@ -194,7 +194,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                       {processes.slice(0, 5).map((process: Process) => (
                         <li key={process._id}>
                           <Link
-                            href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}
+                             href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
                             className="group block bg-white border border-neutral-200 rounded-lg p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200"
                           >
                             <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
@@ -231,7 +231,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                       {guides.slice(0, 5).map((guide: Guide) => (
                         <li key={guide._id}>
                           <Link
-                            href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide.translations?.en?.title || guide._id}`}
+                             href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide._id}`}
                             className="group block bg-white border border-neutral-200 rounded-lg p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200"
                           >
                             <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">

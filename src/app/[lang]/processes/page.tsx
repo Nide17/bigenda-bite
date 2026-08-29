@@ -49,7 +49,7 @@ export default async function ProcessesPage({ params }: { params: Promise<{ lang
           processes.map((process: Process) => (
             <Link
               key={process._id}
-              href={`/${lang}/processes/${process.category}/${process.slug?.current || process.translations?.en?.title || process._id}`}
+              href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
               className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-4">
