@@ -120,7 +120,6 @@ NEXTAUTH_SECRET=your_secret_key
 # Sanity
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_TOKEN=your_api_token
 SANITY_API_TOKEN=your_api_token
 
 # App

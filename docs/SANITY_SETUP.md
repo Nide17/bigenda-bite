@@ -56,7 +56,6 @@ Add to your `.env.local`:
 ```env
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
-NEXT_PUBLIC_SANITY_API_TOKEN=your_token
 SANITY_API_TOKEN=your_token
 ```
 

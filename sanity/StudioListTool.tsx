@@ -2,11 +2,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@sanity/client'
 
-const client = createClient({
+const readClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'fallback',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
-  token: process.env.NEXT_PUBLIC_SANITY_API_TOKEN,
   useCdn: false,
 })
 
@@ -25,7 +24,7 @@ export default function StudioListTool() {
   const loadDocuments = useCallback(async () => {
     setLoading(true)
     try {
-      const docs = await client.fetch('*[_type == $type] | order(_createdAt desc)', { type: selectedType })
+      const docs = await readClient.fetch('*[_type == $type] | order(_createdAt desc)', { type: selectedType })
       setDocuments(docs)
     } catch (e) {
       console.error('Failed to load documents', e)
@@ -35,7 +34,6 @@ export default function StudioListTool() {
   }, [selectedType])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDocuments()
   }, [loadDocuments])
 
@@ -44,17 +42,29 @@ export default function StudioListTool() {
     try {
       const title = prompt('Enter title:')
       if (!title) return
-      const doc = await client.create({
-        _type: selectedType,
-        status: 'published',
-        translations: {
-          en: { title, summary: '' },
-          fr: { title, summary: '' },
-          rw: { title, summary: '' },
-        },
+      const res = await fetch('/api/sanity/studio-tool', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create',
+          type: selectedType,
+          data: {
+            status: 'published',
+            translations: {
+              en: { title, summary: '' },
+              fr: { title, summary: '' },
+              rw: { title, summary: '' },
+            },
+          },
+        }),
       })
-      alert('Created: ' + doc._id)
-      loadDocuments()
+      if (res.ok) {
+        const result = await res.json()
+        alert('Created: ' + result.document._id)
+        loadDocuments()
+      } else {
+        alert('Failed to create document')
+      }
     } catch (e) {
       console.error('Failed to create document', e)
       alert('Failed to create document')

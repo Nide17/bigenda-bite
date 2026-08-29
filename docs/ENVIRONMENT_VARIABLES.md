@@ -29,7 +29,6 @@ This document lists all environment variables used in Bigenda Bite.
 |----------|-------------|---------|
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID | `abc123xyz` |
 | `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset name | `production` |
-| `NEXT_PUBLIC_SANITY_API_TOKEN` | Sanity API token (read) | `skZ...` |
 | `SANITY_API_TOKEN` | Sanity API token (write) | `skZ...` |
 
 ### Application
