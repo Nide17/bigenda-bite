@@ -25,7 +25,7 @@ async function main() {
     }
   }
 
-  const seen = new Map<string, string>()
+  const seen = new Map()
   for (const doc of guides) {
     const title = doc.translations?.en?.title || ''
     const key = `${doc._type}:${title}`

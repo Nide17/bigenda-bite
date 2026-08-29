@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { createClient } from '@sanity/client'
 
 const readClient = createClient({
@@ -20,6 +20,7 @@ export default function StudioListTool() {
   const [loading, setLoading] = useState(true)
   const [selectedType, setSelectedType] = useState('process')
   const [creating, setCreating] = useState(false)
+  const initialized = useRef(false)
 
   const loadDocuments = useCallback(async () => {
     setLoading(true)
@@ -33,9 +34,10 @@ export default function StudioListTool() {
     }
   }, [selectedType])
 
-  useEffect(() => {
+  if (!initialized.current) {
+    initialized.current = true
     loadDocuments()
-  }, [loadDocuments])
+  }
 
   async function createDocument() {
     setCreating(true)
