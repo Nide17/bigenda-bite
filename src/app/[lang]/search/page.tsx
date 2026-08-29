@@ -10,7 +10,6 @@ import type { Metadata } from 'next'
 const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
-  const { lang: _lang } = await params
   return {
     title: 'Search | Bigenda Bite',
     description: 'Search processes, guides, businesses, and alerts across Rwanda.',
