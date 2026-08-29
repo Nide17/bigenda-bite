@@ -62,11 +62,10 @@ export default function Navigation({ lang }: { lang: string }) {
   const toggleRef = useRef<HTMLButtonElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
-  const isActive = (href: string) => {
-    const prefix = `/${lang}`
-    if (href === prefix) return pathname === prefix
-    return pathname.startsWith(href)
-  }
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`)
+
+  const isHome = pathname === `/${lang}`
 
   const openMenu = useCallback(() => {
     previousFocusRef.current = toggleRef.current
@@ -147,7 +146,9 @@ export default function Navigation({ lang }: { lang: string }) {
           <div className="flex items-center gap-8">
             <Link
               href={`/${lang}`}
-              className="flex items-center gap-2.5 group"
+              className={`flex items-center gap-2.5 group ${
+                isHome ? 'text-[#1e1b4b]' : 'text-neutral-900'
+              }`}
             >
               <div className="w-8 h-8 bg-[#1e1b4b] rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-[#312e6b] transition-colors">
                 BB
