@@ -19,6 +19,11 @@ const navItems: NavItem[] = [
   { href: '/search', labelKey: 'search' },
 ]
 
+const secondaryNavItems: NavItem[] = [
+  { href: '/login', labelKey: 'sign_in' },
+  { href: '/membership', labelKey: 'membership' },
+]
+
 const LANG_OPTIONS = [
   { code: 'en', labelKey: 'lang_en' },
   { code: 'fr', labelKey: 'lang_fr' },
@@ -95,6 +100,23 @@ export default function Navigation({ lang }: { lang: string }) {
             </nav>
           </div>
           <div className="flex items-center gap-3">
+            <nav className="hidden md:flex items-center gap-1" aria-label="Account">
+              {secondaryNavItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={`/${lang}${item.href}`}
+                  className={`
+                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
+                    ${isActive(`/${lang}${item.href}`)
+                      ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                      : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                    }
+                  `}
+                >
+                  {t(item.labelKey)}
+                </Link>
+              ))}
+            </nav>
             <LangSwitcher currentLang={lang} />
             <NotificationBell />
             <button
@@ -121,6 +143,22 @@ export default function Navigation({ lang }: { lang: string }) {
         <div className="md:hidden border-t border-neutral-200 bg-white">
           <nav className="px-4 py-3 space-y-1" aria-label="Mobile">
             {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={`/${lang}${item.href}`}
+                onClick={() => setMobileOpen(false)}
+                className={`
+                  block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  ${isActive(`/${lang}${item.href}`)
+                    ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                    : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                  }
+                `}
+              >
+                {t(item.labelKey)}
+              </Link>
+            ))}
+            {secondaryNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={`/${lang}${item.href}`}
