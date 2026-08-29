@@ -17,19 +17,23 @@ interface SearchProps {
   lang: string
   placeholder?: string
   className?: string
+  initialQuery?: string
+  onSearch?: (query: string) => void
 }
 
-export default function Search({ lang, placeholder = 'What do you need to do in Rwanda?', className = '' }: SearchProps) {
-  const [query, setQuery] = useState('')
+export default function Search({ lang, placeholder = 'What do you need to do in Rwanda?', className = '', initialQuery = '', onSearch }: SearchProps) {
+  const [query, setQuery] = useState(initialQuery)
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
   const abortControllerRef = useRef<AbortController | null>(null)
+  const initialQueryRef = useRef('')
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.trim().length < 2) {
       setResults([])
       setHasSearched(false)
+      if (onSearch) onSearch(searchQuery)
       return
     }
 
@@ -59,6 +63,7 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
 
       const data = await response.json()
       setResults(data.results || [])
+      if (onSearch) onSearch(searchQuery.trim())
     } catch (error) {
       if (error instanceof Error && error.name !== 'AbortError') {
         console.error('Search error:', error)
@@ -67,7 +72,15 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
     } finally {
       setLoading(false)
     }
-  }, [lang])
+  }, [lang, onSearch])
+
+  useEffect(() => {
+    if (initialQuery && initialQuery !== initialQueryRef.current) {
+      initialQueryRef.current = initialQuery
+      setQuery(initialQuery)
+      performSearch(initialQuery)
+    }
+  }, [initialQuery, performSearch])
 
   useEffect(() => {
     const timer = setTimeout(() => {

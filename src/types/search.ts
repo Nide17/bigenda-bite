@@ -7,6 +7,7 @@ export interface SearchResult {
   category?: string
   language: string
   url: string
+  score?: number
   metadata?: Record<string, unknown>
 }
 

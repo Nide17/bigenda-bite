@@ -4,15 +4,29 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import type { SearchResponse, SearchResult } from '@/types/search'
 
 const SUPPORTED_LANGUAGES = ['en', 'fr', 'rw'] as const
+const SEARCHABLE_TYPES = ['process', 'guide', 'alert', 'business'] as const
+type SearchableType = typeof SEARCHABLE_TYPES[number]
 
-function escapeRegExp(string: string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .split(/[\s,./-]+/)
+    .filter(Boolean)
 }
 
-function matchText(query: string, text: string | undefined) {
-  if (!text) return false
-  const escaped = escapeRegExp(query)
-  return new RegExp(escaped, 'i').test(text)
+function relevanceScore(queryTokens: string[], text: string): number {
+  const lower = text.toLowerCase()
+  let score = 0
+  for (const token of queryTokens) {
+    if (lower === token) {
+      score += 10
+    } else if (lower.startsWith(token)) {
+      score += 5
+    } else if (lower.includes(token)) {
+      score += 1
+    }
+  }
+  return score
 }
 
 export async function GET(request: Request) {
@@ -20,10 +34,16 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const rawQuery = searchParams.get('q') || ''
     const lang = searchParams.get('lang') || 'en'
+    const typeFilter = searchParams.get('type') || ''
+    const limit = Math.min(parseInt(searchParams.get('limit') || '20', 10), 50)
 
     if (!SUPPORTED_LANGUAGES.includes(lang as typeof SUPPORTED_LANGUAGES[number])) {
       return NextResponse.json({ error: 'Unsupported language' }, { status: 400 })
     }
+
+    const typesToSearch: SearchableType[] = typeFilter
+      ? typeFilter.split(',').filter((t): t is SearchableType => SEARCHABLE_TYPES.includes(t as SearchableType))
+      : [...SEARCHABLE_TYPES]
 
     const query = rawQuery.trim()
     if (!query || query.length < 2) {
@@ -35,6 +55,7 @@ export async function GET(request: Request) {
       })
     }
 
+    const queryTokens = tokenize(query)
     const [processes, guides, alerts, db] = await Promise.all([
       getProcesses(lang),
       getGuides(lang),
@@ -44,77 +65,99 @@ export async function GET(request: Request) {
 
     const results: SearchResult[] = []
 
-    for (const process of processes) {
-      const title = process.translations?.[lang]?.title || process.translations?.en?.title || ''
-      const description = process.translations?.[lang]?.summary || process.translations?.en?.summary || ''
-      if (matchText(query, title) || matchText(query, description)) {
-        results.push({
-          type: 'process',
-          title,
-          description,
-          category: process.category,
-          language: lang,
-          url: `/${lang}/processes/${process.category}/${process.slug?.current || process._id}`,
-          metadata: { sourceType: process.sourceType, lastVerifiedDate: process.lastVerifiedDate },
-        })
-      }
-    }
-
-    for (const guide of guides) {
-      const title = guide.translations?.[lang]?.title || guide.translations?.en?.title || ''
-      const description = guide.translations?.[lang]?.summary || guide.translations?.en?.summary || ''
-      if (matchText(query, title) || matchText(query, description)) {
-        results.push({
-          type: 'guide',
-          title,
-          description,
-          category: guide.category,
-          language: lang,
-          url: `/${lang}/guides/${guide.category}/${guide.slug?.current || guide._id}`,
-          metadata: { lastReviewedDate: guide.lastReviewedDate },
-        })
-      }
-    }
-
-    for (const alert of alerts) {
-      const title = typeof alert.translations === 'string' ? alert.translations : ''
-      const description = title
-      if (matchText(query, title) || matchText(query, description)) {
-        results.push({
-          type: 'alert',
-          title,
-          description,
-          category: alert.type,
-          language: lang,
-          url: `/${lang}/alerts`,
-          metadata: { severity: alert.severity, expiresAt: alert.expiresAt },
-        })
-      }
-    }
-
-    try {
-      const businesses = await db.collection('businesses').find({}).limit(200).toArray()
-      for (const business of businesses) {
-        const name = business.name || ''
-        const description = business.description || ''
-        if (matchText(query, name) || matchText(query, description)) {
+    if (typesToSearch.includes('process')) {
+      for (const process of processes) {
+        const title = process.translations?.[lang]?.title || process.translations?.en?.title || ''
+        const description = process.translations?.[lang]?.summary || process.translations?.en?.summary || ''
+        const combined = `${title} ${description} ${process.category || ''}`
+        const score = relevanceScore(queryTokens, combined)
+        if (score > 0 && (title.length > 0 || description.length > 0)) {
           results.push({
-            type: 'business',
-            title: name,
+            type: 'process',
+            title,
             description,
-            category: business.category,
+            category: process.category,
             language: lang,
-            url: `/${lang}/directory/${business.slug || business._id.toString()}`,
-            metadata: { city: business.city, contact: business.contact },
+            url: `/${lang}/processes/${process.category}/${process.slug?.current || process._id}`,
+            score,
+            metadata: { sourceType: process.sourceType, lastVerifiedDate: process.lastVerifiedDate },
           })
         }
       }
-    } catch (error) {
-      console.error('Error searching businesses:', error)
     }
 
+    if (typesToSearch.includes('guide')) {
+      for (const guide of guides) {
+        const title = guide.translations?.[lang]?.title || guide.translations?.en?.title || ''
+        const description = guide.translations?.[lang]?.summary || guide.translations?.en?.summary || ''
+        const combined = `${title} ${description} ${guide.category || ''}`
+        const score = relevanceScore(queryTokens, combined)
+        if (score > 0 && (title.length > 0 || description.length > 0)) {
+          results.push({
+            type: 'guide',
+            title,
+            description,
+            category: guide.category,
+            language: lang,
+            url: `/${lang}/guides/${guide.category}/${guide.slug?.current || guide._id}`,
+            score,
+            metadata: { lastReviewedDate: guide.lastReviewedDate },
+          })
+        }
+      }
+    }
+
+    if (typesToSearch.includes('alert')) {
+      for (const alert of alerts) {
+        const title = typeof alert.translations?.en === 'string' ? alert.translations.en : ''
+        if (!title) continue
+        const score = relevanceScore(queryTokens, title)
+        if (score > 0) {
+          results.push({
+            type: 'alert',
+            title,
+            description: title,
+            category: alert.type,
+            language: lang,
+            url: `/${lang}/alerts`,
+            score,
+            metadata: { severity: alert.severity, expiresAt: alert.expiresAt },
+          })
+        }
+      }
+    }
+
+    if (typesToSearch.includes('business')) {
+      try {
+        const businesses = await db.collection('businesses').find({}).limit(200).toArray()
+        for (const business of businesses) {
+          const name = business.name || ''
+          const description = business.description || ''
+          const combined = `${name} ${description} ${business.category || ''} ${business.city || ''}`
+          const score = relevanceScore(queryTokens, combined)
+          if (score > 0) {
+            results.push({
+              type: 'business',
+              title: name,
+              description,
+              category: business.category,
+              language: lang,
+              url: `/${lang}/directory/${business.slug || business._id.toString()}`,
+              score,
+              metadata: { city: business.city, contact: business.contact },
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Error searching businesses:', error)
+      }
+    }
+
+    results.sort((a, b) => (b.score || 0) - (a.score || 0))
+    const sliced = results.slice(0, limit)
+
     const response: SearchResponse = {
-      results,
+      results: sliced,
       query,
       language: lang,
       total: results.length,

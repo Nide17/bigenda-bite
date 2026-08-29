@@ -27,6 +27,7 @@ test.describe('Search', () => {
               category: 'business',
               language: 'en',
               url: '/en/processes/business/registration',
+              score: 12,
             },
           ],
           query,
@@ -75,5 +76,36 @@ test.describe('Search', () => {
 
     const searchInput = page.getByPlaceholder('Que devez-vous faire au Rwanda?')
     await expect(searchInput).toBeVisible()
+  })
+
+  test('search page renders results from URL query', async ({ page }) => {
+    await page.route('**/api/search*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          results: [
+            {
+              type: 'guide',
+              title: 'Test Guide',
+              description: 'Test description',
+              category: 'test',
+              language: 'en',
+              url: '/en/guides/test/guide',
+              score: 8,
+            },
+          ],
+          query: 'test',
+          language: 'en',
+          total: 1,
+        }),
+      })
+    })
+
+    const response = await page.goto('/en/search?q=test')
+    expect(response?.status()).toBe(200)
+
+    await expect(page.getByRole('link', { name: 'Test Guide ★ Relevant Test' })).toBeVisible({ timeout: 30000 })
+    await expect(page.getByRole('heading', { name: 'How-To Guides' }).first()).toBeVisible()
   })
 })

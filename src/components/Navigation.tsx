@@ -16,7 +16,7 @@ const navItems: NavItem[] = [
   { href: '/guides', labelKey: 'guides' },
   { href: '/directory', labelKey: 'directory' },
   { href: '/alerts', labelKey: 'alerts' },
-  { href: '/membership', labelKey: 'membership' },
+  { href: '/search', labelKey: 'search' },
 ]
 
 const LANG_OPTIONS = [
