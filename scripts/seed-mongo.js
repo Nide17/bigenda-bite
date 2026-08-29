@@ -38,10 +38,10 @@ async function main() {
   ])
 
   await db.collection('ads').insertMany([
-    { title: 'Kigali Coffee Festival', imageUrl: 'https://cdn.sanity.io/images/55et5l4p/production/example-ad.jpg', linkUrl: 'https://example.com/coffee-festival', placement: 'sidebar', city: 'Kigali', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-    { title: 'Musanze Gorilla Trekking', imageUrl: 'https://cdn.sanity.io/images/55et5l4p/production/example-ad2.jpg', linkUrl: 'https://example.com/gorilla-trekking', placement: 'sidebar', city: 'Musanze', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-    { title: 'Bigenda Bite Pro', imageUrl: 'https://cdn.sanity.io/images/55et5l4p/production/example-ad3.jpg', linkUrl: '/en/membership/checkout?plan=pro', placement: 'top', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
-    { title: 'Rubavu Beach Getaway', imageUrl: 'https://cdn.sanity.io/images/55et5l4p/production/example-ad4.jpg', linkUrl: 'https://example.com/rubavu-beach', placement: 'inline', city: 'Rubavu', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+    { title: 'Kigali Coffee Festival', imageUrl: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&h=192&fit=crop', linkUrl: 'https://example.com/coffee-festival', placement: 'sidebar', city: 'Kigali', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+    { title: 'Musanze Gorilla Trekking', imageUrl: 'https://images.unsplash.com/photo-1516026671112-bd2ccdbb9a28?w=600&h=192&fit=crop', linkUrl: 'https://example.com/gorilla-trekking', placement: 'sidebar', city: 'Musanze', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+    { title: 'Bigenda Bite Pro', imageUrl: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=192&fit=crop', linkUrl: '/en/membership/checkout?plan=pro', placement: 'top', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
+    { title: 'Rubavu Beach Getaway', imageUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=192&fit=crop', linkUrl: 'https://example.com/rubavu-beach', placement: 'inline', city: 'Rubavu', active: true, impressions: 0, clicks: 0, startDate: new Date(), endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) },
   ])
 
   console.log('MongoDB seed complete')

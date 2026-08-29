@@ -41,12 +41,13 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
     fetch(`/api/ads?${params}`)
       .then((res) => res.json())
       .then((data) => {
-        setAds(data)
+        const adsArray = Array.isArray(data) ? data : []
+        setAds(adsArray)
         setLoading(false)
         setImageError(false)
 
-        if (data.length > 0) {
-          trackImpression(data[0]._id)
+        if (adsArray.length > 0 && adsArray[0]?._id) {
+          trackImpression(adsArray[0]._id)
         }
       })
       .catch(() => setLoading(false))
@@ -65,6 +66,25 @@ export default function AdBanner({ placement, city }: AdBannerProps) {
   if (loading || ads.length === 0) return null
 
   const ad = ads[0]
+
+  if (!ad || !ad.imageUrl) {
+    return (
+      <div className="border rounded-lg overflow-hidden shadow-sm">
+        <div
+          className="w-full h-48 bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center cursor-pointer"
+          onClick={() => handleClick(ad)}
+        >
+          <div className="text-center p-4">
+            <div className="text-3xl mb-2">📢</div>
+            <p className="text-sm font-medium text-neutral-700 line-clamp-2">{ad?.title || 'Advertisement'}</p>
+          </div>
+        </div>
+        <div className="p-3">
+          <h3 className="font-semibold text-sm">{ad?.title || 'Advertisement'}</h3>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-sm">
