@@ -40,8 +40,9 @@ export const alertType = defineType({
       name: 'translations',
       type: 'object',
       title: 'Translations',
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: 'en', type: 'text', title: 'English' },
+        { name: 'en', type: 'text', title: 'English', validation: (Rule) => Rule.required() },
         { name: 'fr', type: 'text', title: 'French' },
         { name: 'rw', type: 'text', title: 'Kinyarwanda' },
       ],

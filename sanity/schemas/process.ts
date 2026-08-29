@@ -10,6 +10,7 @@ export const processType = defineType({
       type: 'slug',
       title: 'Slug',
       options: { source: 'translations.en.title', maxLength: 96 },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'sourceType',
@@ -44,8 +45,9 @@ export const processType = defineType({
       name: 'translations',
       type: 'object',
       title: 'Translations',
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: 'en', type: 'localizedTitle', title: 'English' },
+        { name: 'en', type: 'localizedTitle', title: 'English', validation: (Rule) => Rule.required() },
         { name: 'fr', type: 'localizedTitle', title: 'French' },
         { name: 'rw', type: 'localizedTitle', title: 'Kinyarwanda' },
       ],
@@ -55,6 +57,7 @@ export const processType = defineType({
       type: 'array',
       title: 'Steps',
       of: [{ type: 'step' }],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'fees',
@@ -109,19 +112,26 @@ export const stepType = defineType({
   name: 'step',
   type: 'object',
   fields: [
-    { name: 'order', type: 'number', title: 'Order' },
+    {
+      name: 'order',
+      type: 'number',
+      title: 'Order',
+      validation: (Rule) => Rule.required().min(1),
+    },
     {
       name: 'text',
       type: 'object',
       title: 'Text',
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: 'en', type: 'text', title: 'English' },
+        { name: 'en', type: 'text', title: 'English', validation: (Rule) => Rule.required() },
         { name: 'fr', type: 'text', title: 'French' },
         { name: 'rw', type: 'text', title: 'Kinyarwanda' },
       ],
     },
     { name: 'estimatedTime', type: 'string', title: 'Estimated Time' },
   ],
+  validation: (Rule) => Rule.required(),
 })
 
 export const feeType = defineType({
@@ -138,7 +148,8 @@ export const localizedTitleType = defineType({
   name: 'localizedTitle',
   type: 'object',
   fields: [
-    { name: 'title', type: 'string', title: 'Title' },
-    { name: 'summary', type: 'text', title: 'Summary' },
+    { name: 'title', type: 'string', title: 'Title', validation: (Rule) => Rule.required() },
+    { name: 'summary', type: 'text', title: 'Summary', validation: (Rule) => Rule.required() },
   ],
+  validation: (Rule) => Rule.required(),
 })

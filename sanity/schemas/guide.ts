@@ -10,6 +10,7 @@ export const guideType = defineType({
       type: 'slug',
       title: 'Slug',
       options: { source: 'translations.en.title', maxLength: 96 },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'sourceType',
@@ -45,8 +46,9 @@ export const guideType = defineType({
       name: 'translations',
       type: 'object',
       title: 'Translations',
+      validation: (Rule) => Rule.required(),
       fields: [
-        { name: 'en', type: 'localizedTitle', title: 'English' },
+        { name: 'en', type: 'localizedTitle', title: 'English', validation: (Rule) => Rule.required() },
         { name: 'fr', type: 'localizedTitle', title: 'French' },
         { name: 'rw', type: 'localizedTitle', title: 'Kinyarwanda' },
       ],
@@ -56,6 +58,7 @@ export const guideType = defineType({
       type: 'array',
       title: 'Steps',
       of: [{ type: 'step' }],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'typicalCosts',
