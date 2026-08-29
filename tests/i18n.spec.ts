@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test'
 
 test.describe('i18n', () => {
   const locales = [
-    { code: 'en', hero: 'Find your way in Rwanda', processes: 'Official Processes' },
-    { code: 'fr', hero: 'Trouvez votre chemin au Rwanda', processes: 'Processus officiels' },
-    { code: 'rw', hero: 'Menya inzira mu Rwanda', processes: 'Imirimo ya leta' },
+    { code: 'en', hero: 'What do you want to do?', processes: 'Official Processes' },
+    { code: 'fr', hero: 'Que voulez-vous faire?', processes: 'Processus officiels' },
+    { code: 'rw', hero: 'Ushaka gukora iki?', processes: 'Imirimo ya leta' },
   ]
 
   for (const locale of locales) {
