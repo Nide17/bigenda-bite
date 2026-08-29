@@ -46,7 +46,7 @@ This document lists all environment variables used in Bigenda Bite.
 | `GOOGLE_CLIENT_ID` | Google OAuth client ID | `xxx.apps.googleusercontent.com` |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth client secret | `GOCSPX-...` |
 
-> **Note:** Google OAuth is a secondary sign-in option. Email/password is the primary authentication method.
+> **Note:** Google OAuth is available as an alternative sign-in option alongside email/password.
 
 ### MTN MoMo Payments
 

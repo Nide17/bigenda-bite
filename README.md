@@ -36,7 +36,7 @@
 | Styling | Tailwind CSS 3 |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | Custom credentials auth with MongoDB sessions |
+| Auth | NextAuth v4 (Google OAuth + credentials) with MongoDB sessions |
 | Payments | MTN MoMo API |
 | Notifications | Discord Webhooks |
 | Analytics | Custom event tracking |

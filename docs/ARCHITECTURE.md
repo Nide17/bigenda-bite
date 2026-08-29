@@ -53,7 +53,7 @@ Bigenda Bite is a full-stack web application built with Next.js 15, serving as a
 | i18n | custom provider | Multi-language (EN/FR/RW) |
 | Database | MongoDB (native driver) | User data, sessions, ads, payments |
 | CMS | Sanity v3 | Published content (processes, guides, alerts) |
-| Auth | Custom credentials auth | Session-based auth with MongoDB |
+| Auth | NextAuth v4 (Google OAuth + credentials) | Session-based auth with MongoDB |
 | Payments | MTN MoMo API | Mobile money payments |
 | Notifications | Discord Webhooks | Editor notifications |
 | Analytics | Custom event tracking | Page views, clicks, conversions |
@@ -126,13 +126,13 @@ src/
 - **Sanity** — Published content: processes, guides, alerts
 - **Rationale**: Sanity provides a real-time CMS for editors; MongoDB handles transactional/operational data better
 
-### 2. Custom Authentication
+### 2. Authentication
 
-- NextAuth v4 was replaced with a minimal custom credentials auth
+- NextAuth v4 with MongoDB adapter
+- Providers: Google OAuth and custom credentials (email/password)
 - Sessions stored in MongoDB `sessions` collection
 - Server-side `getSession()` accepts `NextRequest | string | null`
-- Google OAuth is available as a secondary sign-in option
-- Rationale: NextAuth v4 had compatibility issues with Next.js 15 App Router
+- Rationale: NextAuth v4 provides both social and email/password auth with minimal custom code
 
 ### 3. i18n Architecture
 
