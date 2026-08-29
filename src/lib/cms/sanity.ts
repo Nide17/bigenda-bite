@@ -27,22 +27,12 @@ export const getProcesses = cache(
 )
 
 export const getProcessBySlug = cache(
-  async (slug: string, locale: string): Promise<Process | null> => {
+  async (slug: string): Promise<Process | null> => {
     const client = createSanityClient()
     if (!client) return null
-    const result = await client.fetch<Process | null>(
+    return client.fetch<Process | null>(
       `*[_type == "process" && slug.current == $slug && status == "published"][0]`,
       { slug }
-    )
-    if (result) return result
-    const byId = await client.fetch<Process | null>(
-      `*[_type == "process" && _id == $slug && status == "published"][0]`,
-      { slug }
-    )
-    if (byId) return byId
-    return client.fetch<Process | null>(
-      `*[_type == "process" && translations.${locale}.title match $title && status == "published"][0]`,
-      { title: `*${slug.replace(/-/g, ' ')}*` }
     )
   }
 )
@@ -60,22 +50,12 @@ export const getGuides = cache(
 )
 
 export const getGuideBySlug = cache(
-  async (slug: string, locale: string): Promise<Guide | null> => {
+  async (slug: string): Promise<Guide | null> => {
     const client = createSanityClient()
     if (!client) return null
-    const result = await client.fetch<Guide | null>(
+    return client.fetch<Guide | null>(
       `*[_type == "guide" && slug.current == $slug && status == "published"][0]`,
       { slug }
-    )
-    if (result) return result
-    const byId = await client.fetch<Guide | null>(
-      `*[_type == "guide" && _id == $slug && status == "published"][0]`,
-      { slug }
-    )
-    if (byId) return byId
-    return client.fetch<Guide | null>(
-      `*[_type == "guide" && translations.${locale}.title match $title && status == "published"][0]`,
-      { title: `*${slug.replace(/-/g, ' ')}*` }
     )
   }
 )

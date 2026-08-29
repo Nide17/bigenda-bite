@@ -20,7 +20,7 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
   const { lang, category, slug } = await params
-  const process = await getProcessBySlug(slug, lang)
+  const process = await getProcessBySlug(slug)
   if (!process) return pageMetadata({ title: 'Process Not Found', description: 'The requested process could not be found.', pathname: `/processes/${category}/${slug}`, locale: lang })
 
   const title = process.translations?.[lang]?.title || process.translations?.en?.title || 'Process Details'
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function ProcessDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
-  const process = await getProcessBySlug(slug, lang)
+  const process = await getProcessBySlug(slug)
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key
 

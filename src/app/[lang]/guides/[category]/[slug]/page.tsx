@@ -18,7 +18,7 @@ export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
   const { lang, category, slug } = await params
-  const guide = await getGuideBySlug(slug, lang)
+  const guide = await getGuideBySlug(slug)
   if (!guide) return pageMetadata({ title: 'Guide Not Found', description: 'The requested guide could not be found.', pathname: `/guides/${category}/${slug}`, locale: lang })
 
   const title = guide.translations?.[lang]?.title || guide.translations?.en?.title || 'Guide Details'
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function GuideDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
-  const guide = await getGuideBySlug(slug, lang)
+  const guide = await getGuideBySlug(slug)
   const messages = (await import('@/i18n/messages/' + lang + '.json')).default
   const t = (key: string) => messages[key] || key
 

@@ -135,6 +135,7 @@ export default function Navigation({ lang }: { lang: string }) {
 
   useEffect(() => {
     if (mobileOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       closeMenu()
     }
   }, [pathname, mobileOpen, closeMenu])
