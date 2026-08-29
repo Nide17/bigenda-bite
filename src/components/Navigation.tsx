@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from '@/components/I18nProvider'
@@ -58,12 +58,87 @@ export default function Navigation({ lang }: { lang: string }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const pathname = usePathname() || ''
   const t = useTranslations()
+  const menuRef = useRef<HTMLDivElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
 
   const isActive = (href: string) => {
     const prefix = `/${lang}`
     if (href === prefix) return pathname === prefix
     return pathname.startsWith(href)
   }
+
+  const openMenu = useCallback(() => {
+    previousFocusRef.current = toggleRef.current
+    setMobileOpen(true)
+  }, [])
+
+  const closeMenu = useCallback(() => {
+    setMobileOpen(false)
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden'
+      const firstFocusable = menuRef.current?.querySelector<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+      if (firstFocusable) {
+        setTimeout(() => firstFocusable.focus(), 0)
+      }
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileOpen])
+
+  useEffect(() => {
+    if (!mobileOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeMenu()
+        return
+      }
+
+      if (e.key === 'Tab' && menuRef.current) {
+        const focusable = menuRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+        if (focusable.length === 0) return
+
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last.focus()
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault()
+            first.focus()
+          }
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [mobileOpen, closeMenu])
+
+  useEffect(() => {
+    if (mobileOpen) {
+      closeMenu()
+    }
+  }, [pathname, mobileOpen, closeMenu])
 
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
@@ -120,9 +195,10 @@ export default function Navigation({ lang }: { lang: string }) {
             <LangSwitcher currentLang={lang} />
             <NotificationBell />
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
+              ref={toggleRef}
+              onClick={() => (mobileOpen ? closeMenu() : openMenu())}
               className="md:hidden p-2 rounded-lg hover:bg-neutral-100 transition-colors"
-              aria-label="Toggle menu"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
             >
               {mobileOpen ? (
@@ -141,14 +217,14 @@ export default function Navigation({ lang }: { lang: string }) {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-neutral-200 bg-white">
-          <nav className="px-4 py-3 space-y-1" aria-label="Mobile">
+          <nav ref={menuRef} className="px-4 py-3 space-y-1" aria-label="Mobile">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={`/${lang}${item.href}`}
-                onClick={() => setMobileOpen(false)}
+                onClick={closeMenu}
                 className={`
-                  block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  block min-h-[44px] flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors
                   ${isActive(`/${lang}${item.href}`)
                     ? 'bg-[#eef2ff] text-[#1e1b4b]'
                     : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -162,9 +238,9 @@ export default function Navigation({ lang }: { lang: string }) {
               <Link
                 key={item.href}
                 href={`/${lang}${item.href}`}
-                onClick={() => setMobileOpen(false)}
+                onClick={closeMenu}
                 className={`
-                  block px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  block min-h-[44px] flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors
                   ${isActive(`/${lang}${item.href}`)
                     ? 'bg-[#eef2ff] text-[#1e1b4b]'
                     : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -180,5 +256,3 @@ export default function Navigation({ lang }: { lang: string }) {
     </header>
   )
 }
-
-
