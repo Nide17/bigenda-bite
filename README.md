@@ -162,18 +162,10 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## CI/CD
 
-GitHub Actions workflows are configured in `.github/workflows/ci.yml`:
+GitHub Actions runs checks on every PR and push to `main`. Production deployment is handled automatically by Vercel.
 
-- **Lint** — ESLint check on every PR/push
-- **Build** — Next.js build verification
-- **Test** — Playwright smoke tests
-- **Deploy Preview** — Automatic Vercel preview for PRs
-- **Deploy Production** — Automatic production deployment on merge to main
-
-Required GitHub secrets:
-- `VERCEL_TOKEN`
-- `VERCEL_ORG_ID`
-- `VERCEL_PROJECT_ID`
+- **PR checks:** typecheck, lint, build, E2E smoke tests
+- **Production:** Vercel deploys `main` automatically
 
 ## Documentation
 
