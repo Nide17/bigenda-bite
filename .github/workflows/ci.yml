@@ -58,11 +58,7 @@ jobs:
       - run: rm -rf .next
       - run: npm run build
       - run: 'test -d .next || (echo "Build failed: .next missing" && exit 1)'
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-      - uses: microsoft/playwright-github-action@v1
+      - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
         env:
           CI: true
