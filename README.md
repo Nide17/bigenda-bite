@@ -96,7 +96,7 @@ SANITY_API_TOKEN=your_api_token
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-> **Production:** In Vercel, set `NEXTAUTH_URL` to your production domain (e.g. `https://bigendabite.com`). Also update your Google OAuth client authorized redirect URIs to match.
+> **Production:** `NEXTAUTH_URL` auto-detects from Vercel's `VERCEL_URL`. Override it in Vercel Dashboard → Settings → Environment Variables if you use a custom domain. Also update your Google OAuth authorized redirect URIs accordingly.
 
 ### Development
 

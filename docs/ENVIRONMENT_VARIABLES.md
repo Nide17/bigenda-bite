@@ -22,8 +22,10 @@ For a complete development setup guide, see [DEVELOPMENT.md](../DEVELOPMENT.md).
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `NEXTAUTH_URL` | Application URL | `http://localhost:3000` |
+| `NEXTAUTH_URL` | Application base URL | `http://localhost:3000` |
 | `NEXTAUTH_SECRET` | Secret key for session encryption | Generate with `openssl rand -base64 32` |
+
+> **Production:** In Vercel, `NEXTAUTH_URL` is auto-detected from `VERCEL_URL`. You can override it by setting `NEXTAUTH_URL` explicitly to your custom domain (e.g. `https://bigendabite.com`).
 
 ### Sanity CMS
 

@@ -116,6 +116,15 @@ function LoginFormContent({ lang }: { lang: string }) {
           required
           autoComplete="current-password"
         />
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm text-neutral-600">
+            <input type="checkbox" className="rounded border-neutral-300" />
+            {t('remember_me')}
+          </label>
+          <a href={`/${lang}/forgot-password`} className="text-sm text-primary font-medium hover:underline">
+            {t('forgot_password')}
+          </a>
+        </div>
         <Button type="submit" className="w-full" loading={loading}>
           {t('login')}
         </Button>
