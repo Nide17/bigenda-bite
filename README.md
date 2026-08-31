@@ -87,6 +87,10 @@ NEXTAUTH_SECRET=your_secret_key
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 
+# Gmail SMTP (for password reset emails)
+GMAIL_USER=your_email@gmail.com
+GMAIL_PASSWORD=your_app_password
+
 # Sanity
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
@@ -97,6 +101,8 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
 > **Production:** `NEXTAUTH_URL` auto-detects from Vercel's `VERCEL_URL`. Override it in Vercel Dashboard → Settings → Environment Variables if you use a custom domain. Also update your Google OAuth authorized redirect URIs accordingly.
+>
+> **Gmail SMTP:** Enable 2FA on your Google account, then generate an app password at https://myaccount.google.com/apppasswords.
 
 ### Development
 

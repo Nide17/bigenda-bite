@@ -52,6 +52,15 @@ For a complete development setup guide, see [DEVELOPMENT.md](../DEVELOPMENT.md).
 
 > **Note:** Google OAuth is available as an alternative sign-in option alongside email/password.
 
+### Email (Gmail SMTP)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `GMAIL_USER` | Gmail address used to send emails | `you@gmail.com` |
+| `GMAIL_PASSWORD` | Gmail app password (not your regular password) | `abcd efgh ijkl mnop` |
+
+> **Setup:** Enable 2FA on your Google account, then generate an app password at https://myaccount.google.com/apppasswords.
+
 ### MTN MoMo Payments
 
 | Variable | Description | Example |
