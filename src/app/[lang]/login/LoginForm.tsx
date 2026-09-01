@@ -38,9 +38,12 @@ function LoginFormContent({ lang }: { lang: string }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [errorType, setErrorType] = useState<'general' | 'unverified'>('general')
   const [csrfToken, setCsrfToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendSuccess, setResendSuccess] = useState(false)
 
   const callbackUrl = searchParams?.get('callbackUrl') || `/${lang}`
   const oauthError = searchParams?.get('error') || null
@@ -64,6 +67,8 @@ function LoginFormContent({ lang }: { lang: string }) {
     e.preventDefault()
     setLoading(true)
     setError('')
+    setErrorType('general')
+    setResendSuccess(false)
 
     const res = await fetch('/api/auth/callback/credentials', {
       method: 'POST',
@@ -80,9 +85,32 @@ function LoginFormContent({ lang }: { lang: string }) {
     if (res.ok) {
       router.push(callbackUrl)
     } else {
-      setError('Invalid email or password')
+      const data = await res.json().catch(() => ({}))
+      if (data.error === 'email_not_verified') {
+        setErrorType('unverified')
+        setError('Please verify your email before signing in. Check your inbox for the verification link.')
+      } else {
+        setErrorType('general')
+        setError('Invalid email or password')
+      }
       setLoading(false)
     }
+  }
+
+  const handleResendVerification = async () => {
+    setResendLoading(true)
+    setResendSuccess(false)
+
+    const res = await fetch('/api/auth/verify-email/resend', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+
+    if (res.ok) {
+      setResendSuccess(true)
+    }
+    setResendLoading(false)
   }
 
   const handleGoogleSignIn = async () => {
@@ -96,8 +124,37 @@ function LoginFormContent({ lang }: { lang: string }) {
       <form onSubmit={handleSubmit} className="space-y-5">
         <input type="hidden" name="csrfToken" value={csrfToken} />
         {(oauthErrorMessage || error) && (
-          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+          <div className={`border rounded-lg p-3 text-sm ${errorType === 'unverified' ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
             {oauthErrorMessage || error}
+            {errorType === 'unverified' && !oauthErrorMessage && (
+              <div className="mt-2">
+                {resendSuccess ? (
+                  <span className="text-green-700">Verification email sent! Check your inbox.</span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleResendVerification}
+                    disabled={resendLoading}
+                    className="text-amber-800 font-medium underline hover:no-underline disabled:opacity-50"
+                  >
+                    {resendLoading ? 'Sending...' : 'Resend verification email'}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {errorType === 'general' && error && !oauthErrorMessage && (
+          <div className="text-sm text-neutral-600 text-center">
+            <button
+              type="button"
+              onClick={handleResendVerification}
+              disabled={resendLoading}
+              className="text-primary font-medium hover:underline disabled:opacity-50"
+            >
+              {resendLoading ? 'Sending...' : 'Resend verification email'}
+            </button>
+            <span className="ml-1">if you haven&apos;t verified your email yet.</span>
           </div>
         )}
         <Input
