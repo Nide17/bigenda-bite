@@ -66,5 +66,19 @@
   "error_title": "Une erreur s'est produite",
   "error_message": "Nous n'avons pas pu charger ces informations pour le moment. Veuillez réessayer.",
   "error_retry": "Réessayer",
-  "error_home": "Accueil"
+  "error_home": "Accueil",
+  "error_404_title": "Page non trouvée",
+  "error_404_message": "La page que vous recherchez n'existe pas ou a été déplacée.",
+  "error_500_title": "Erreur serveur",
+  "error_500_message": "Quelque chose s'est mal passé de notre côté. Veuillez réessayer plus tard.",
+  "error_network_title": "Erreur de connexion",
+  "error_network_message": "Veuillez vérifier votre connexion Internet et réessayer.",
+  "error_search_help": "Essayez de rechercher ce dont vous avez besoin :",
+  "error_popular_links": "Pages populaires",
+  "error_contact_support": "Besoin d'aide ? Contactez le support",
+  "error_go_back": "Retour",
+  "not_found_title": "Page non trouvée",
+  "not_found_message": "Désolé, nous n'avons pas trouvé la page que vous recherchez. Elle a peut-être été déplacée, supprimée ou vous avez entré la mauvaise URL.",
+  "not_found_search_help": "Essayez de rechercher ce dont vous avez besoin :",
+  "not_found_popular_pages": "Pages populaires"
 }

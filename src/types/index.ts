@@ -103,8 +103,10 @@ export interface Business {
   city?: string
   slug?: string
   description?: string
+  email?: string
   contact?: {
     phone?: string
+    email?: string
   }
   leadsEnabled?: boolean
 }

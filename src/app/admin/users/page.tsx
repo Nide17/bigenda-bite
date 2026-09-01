@@ -15,6 +15,7 @@ async function getUsers() {
     email: u.email || '',
     role: u.role || 'reader',
     banned: u.banned || false,
+    emailVerified: u.emailVerified || false,
     createdAt: u.createdAt?.toISOString() || new Date().toISOString(),
   }))
 }

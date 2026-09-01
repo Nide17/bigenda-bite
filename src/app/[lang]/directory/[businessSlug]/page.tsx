@@ -13,6 +13,7 @@ import type { Metadata } from 'next'
 import type { Business } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
+import LeadForm from './LeadForm'
 
 const baseUrl = 'https://bigendabite.com'
 
@@ -84,7 +85,7 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
             <div className="flex flex-wrap items-center gap-3 text-sm text-neutral-600">
               <span className="flex items-center gap-1">
                 <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 01-1h2a1 1 0 01 1 1v5m-4 0h4" />
                 </svg>
                 {business.category}
               </span>
@@ -119,28 +120,7 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
         )}
 
         {business.leadsEnabled && (
-          <Card className="p-6 bg-primary-light border-primary/10">
-            <h2 className="text-xl font-semibold text-primary mb-2">Contact this business</h2>
-            <p className="text-sm text-neutral-600 mb-4">
-              Send a message directly to {business.name}. They will get back to you shortly.
-            </p>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input label="Your name" type="text" placeholder="Your name" required />
-                <Input label="Your phone" type="tel" placeholder="+250788000000" required />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1.5">Message</label>
-                <textarea
-                  placeholder="Tell them what you need..."
-                  rows={4}
-                  className="w-full px-3 py-2.5 border border-neutral-300 rounded-lg text-base bg-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  required
-                />
-              </div>
-              <Button type="submit" size="lg">Send Message</Button>
-            </form>
-          </Card>
+          <LeadForm businessId={business._id.toString()} businessName={business.name} />
         )}
       </Card>
     </PageContainer>
