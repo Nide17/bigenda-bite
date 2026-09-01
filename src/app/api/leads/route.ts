@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { parseJson, requireFields } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
+import { ObjectId } from 'mongodb'
 
 export async function POST(request: Request) {
   try {
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
       createdAt: new Date(),
     })
 
-    const business = await db.collection('businesses').findOne({ _id: businessId })
+    const business = await db.collection('businesses').findOne({ _id: new ObjectId(businessId) })
     const businessEmail = business?.email || business?.contact?.email
 
     if (businessEmail && business?.name) {
