@@ -1,160 +1,106 @@
 # Deployment Guide
 
-This guide covers deploying Bigenda Bite to production on Vercel.
-
 ## Prerequisites
 
 - Vercel account
 - MongoDB Atlas account
 - Sanity account
 - MTN MoMo developer account (for payments)
-- Domain name (optional)
 
-## 1. MongoDB Atlas Setup
+## 1. MongoDB Atlas
 
-1. Create a new cluster on [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Create a database user with read/write permissions
-3. Whitelist your IP (or use 0.0.0.0/0 for Vercel)
-4. Get the connection string: `mongodb+srv://<user>:<password>@<cluster>/<database>`
+1. Create a cluster at [mongodb.com/atlas](https://www.mongodb.com/atlas)
+2. Create a database user with read/write access
+3. Whitelist your IP (or `0.0.0.0/0` for Vercel)
+4. Copy the connection string
 
-## 2. Sanity Setup
+## 2. Sanity
 
-1. Create a new Sanity project at [sanity.io/manage](https://www.sanity.io/manage)
-2. Note your `projectId` and `dataset` name
-3. Create an API token with Editor/Write permissions
-4. See [CONTENT_EDITOR_GUIDE.md](CONTENT_EDITOR_GUIDE.md) for detailed instructions
+1. Create a project at [sanity.io/manage](https://www.sanity.io/manage)
+2. Note your `projectId` and `dataset`
+3. Create an API token with Editor permissions
+4. See [Content Editor Guide](CONTENT_EDITOR_GUIDE.md) for details
 
-## 3. MTN MoMo Setup
+## 3. MTN MoMo
 
-1. Create an account at [MTN MoMo Developer Portal](https://momodeveloper.mtn.com/)
+1. Sign up at [momodeveloper.mtn.com](https://momodeveloper.mtn.com/)
 2. Create an API product
 3. Get your API key, subscription key, and callback URL
-4. Set environment to sandbox or production
 
-## 4. Discord Webhook Setup
+## 4. Discord (optional)
 
-1. Create a Discord server or use an existing one
-2. Create a webhook in your channel settings
-3. Copy the webhook URL
-4. Use it as `DISCORD_WEBHOOK_URL`
+1. Create a webhook in your channel settings
+2. Copy the webhook URL for `DISCORD_WEBHOOK_URL`
 
-## 5. Vercel Deployment
+## 5. Vercel
 
-### Option A: Deploy via Git
+### Deploy via Git
 
-1. Push your code to GitHub/GitLab
-2. Import the repository in Vercel
-3. Configure environment variables
+1. Push to GitHub
+2. Import the repo in Vercel
+3. Set environment variables
 4. Deploy
 
-### Option B: Deploy via CLI
+### Deploy via CLI
 
 ```bash
-# Install Vercel CLI
 npm i -g vercel
-
-# Deploy
 vercel
-
-# Pull environment variables
-vercel pull
 ```
 
-## 6. Environment Variables
+## Environment Variables
 
-Set these in Vercel Dashboard → Settings → Environment Variables:
-
-### Required
+Set these in Vercel → Settings → Environment Variables:
 
 ```env
-# MongoDB
+# Required
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/bigendabite
-
-# NextAuth
 NEXTAUTH_URL=https://yourdomain.com
-NEXTAUTH_SECRET=your_secret_key_here
-
-# Sanity
+NEXTAUTH_SECRET=your_secret
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=your_sanity_token
-
-# App
+SANITY_API_TOKEN=your_token
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
-```
 
-### Optional (for payments)
-
-```env
-# MTN MoMo
+# Optional — Payments
 MTN_MOMO_API_URL=https://sandbox.momodeveloper.mtn.com
-MTN_MOMO_API_KEY=your_api_key
-MTN_MOMO_API_SECRET=your_api_secret
-MTN_MOMO_SUBSCRIPTION_KEY=your_subscription_key
+MTN_MOMO_API_KEY=your_key
+MTN_MOMO_API_SECRET=your_secret
+MTN_MOMO_SUBSCRIPTION_KEY=your_key
 MTN_MOMO_CALLBACK_URL=https://yourdomain.com/api/webhooks/momo
-MTN_MOMO_PAYEE_CODE=your_payee_code
-```
+MTN_MOMO_PAYEE_CODE=your_code
 
-### Optional (for notifications)
-
-```env
+# Optional — Notifications
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+
+# Optional — Email (for password reset, lead notifications)
+GMAIL_USER=your_email@gmail.com
+GMAIL_PASSWORD=your_app_password
 ```
 
-## 7. Post-Deployment Checklist
+> **Note:** `NEXTAUTH_URL` must be set explicitly in Vercel for production. Google OAuth redirect URIs must also be updated.
 
-- [ ] Verify the homepage loads correctly
-- [ ] Test user registration and login
-- [ ] Verify Sanity content is displaying
-- [ ] Test city selector functionality
-- [ ] Verify ads are loading
-- [ ] Test MoMo payment flow (sandbox)
-- [ ] Verify Discord notifications for scrapers
-- [ ] Check admin dashboard access
-- [ ] Verify 404 and error pages
-- [ ] Test on mobile devices
-- [ ] Set up custom domain in Vercel
-- [ ] Configure SSL certificate
-- [ ] Configure error monitoring (Sentry, etc.)
+## Post-Deployment
 
-## 8. Custom Domain
+- [ ] Homepage loads
+- [ ] Registration and login work
+- [ ] Sanity content displays
+- [ ] City selector works
+- [ ] Ads load
+- [ ] Payment flow works (sandbox)
+- [ ] Admin dashboard accessible
+- [ ] 404/error pages work
+- [ ] Mobile responsive
 
-1. Purchase a domain from a registrar
-2. In Vercel Dashboard → Settings → Domains
-3. Add your domain (e.g., `bigendabite.com`)
-4. Update DNS records as instructed by Vercel
-5. Wait for SSL certificate provisioning
+## Custom Domain
 
-## 9. Monitoring
-
-- **Vercel Analytics**: Built-in in Vercel dashboard
-- **Vercel Logs**: Real-time function logs
-- **MongoDB Atlas**: Database monitoring and alerts
-- **Sanity**: Content change history and logs
-- **Discord**: Error notifications via webhooks
+1. Add domain in Vercel → Settings → Domains
+2. Update DNS records as instructed
+3. Wait for SSL provisioning
 
 ## Troubleshooting
 
-### Build failures
-
-- Check Vercel build logs for errors
-- Ensure all environment variables are set
-- Verify `npm run build` works locally
-
-### Database connection issues
-
-- Verify MongoDB Atlas connection string
-- Check IP whitelist in Atlas
-- Ensure database user has correct permissions
-
-### Sanity content not showing
-
-- Verify `projectId` and `dataset` are correct
-- Check that content is published (`status: "published"`)
-- Verify API token has read permissions
-
-### Payment issues
-
-- Verify MTN MoMo credentials
-- Check callback URL is accessible
-- Ensure sandbox/production environment is consistent
+- **Build fails:** Check Vercel logs, ensure all env vars are set
+- **DB connection issues:** Verify connection string and IP whitelist
+- **Sanity not showing:** Check projectId, dataset, and publish status
+- **Payment errors:** Verify MoMo credentials and callback URL

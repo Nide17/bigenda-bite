@@ -1,71 +1,54 @@
 # Admin Guide
 
-This guide covers the Bigenda Bite admin dashboard for editors and administrators.
+For editors and administrators using the Bigenda Bite dashboard.
 
 ## Access
 
-Navigate to `/admin` after logging in with an editor or admin account.
+Go to `/admin` after signing in with an editor or admin account.
 
 ## Sections
 
 ### Pending Updates
 
-Shows scraper updates awaiting review.
+Scraper updates waiting for review.
 
-- **Approve** — Creates or updates the corresponding Sanity document
-- **Reject** — Discards the proposed update
-- Pending updates come from the scraper worker via MongoDB `pendingUpdates`
+- **Approve** — Creates/updates the Sanity document
+- **Reject** — Discards the update
 
 ### Analytics
 
-Summary statistics including:
-
-- Page views
-- Ad clicks
-- Payment initiations and successes
-- Community contributions
-- Business leads
-
-Filter by date range (default: last 7 days).
+Summary stats: page views, ad clicks, payments, contributions, leads. Filter by date range (default: 7 days).
 
 ### Users
 
 Manage registered users:
 
-- View all users
-- Update roles (`user`, `editor`, `admin`)
+- Search by name or email
+- Filter by role or status
+- Change roles (reader, editor, admin, superadmin)
 - Ban/unban users
+- Manually verify emails
 
 ### Content
 
-Browse and manage published content. This is a lightweight view; detailed editing is done in Sanity Studio.
+Lightweight view of published content. For detailed editing, use Sanity Studio.
 
 ### Ads
 
-Manage advertisement placements:
+Manage ad placements:
 
-- Create new ads with title, placement, city, link URL, and image URL
-- View existing ads
-- Ads are served via `/api/ads` with impression and click tracking
+- Create ads with title, placement, city, link, and image
+- Edit or delete existing ads
 
 ## Roles
 
-| Role | Description |
-|------|-------------|
-| `reader` | Default role for new signups |
-| `editor` | Can review pending updates and manage content |
-| `admin` | Full access to all admin sections |
+| Role | Access |
+|------|--------|
+| `reader` | Default for new users |
+| `editor` | Review updates, manage content |
+| `admin` | Full admin access |
+| `superadmin` | System configuration |
 
 ## Notifications
 
-Editors receive Discord webhook notifications when the scraper worker submits new pending updates.
-
-## Approval Flow
-
-1. Worker scrapes sources and computes diffs
-2. Pending updates are inserted into MongoDB
-3. Discord webhook notifies editors
-4. Editor reviews in `/admin/pending-updates`
-5. Editor approves or rejects
-6. On approve: Sanity document is created/updated
-7. Pending update is marked as processed
+Editors get Discord notifications when the scraper finds updates to review.

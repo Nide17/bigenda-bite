@@ -1,73 +1,63 @@
-# Security Guide
-
-This document covers security practices for Bigenda Bite.
+# Security
 
 ## Environment Variables
 
-- **Never commit `.env.local` to version control**
-- Use different values for development and production
-- `NEXT_PUBLIC_*` variables are exposed to the browser
-- Server-only variables should not have the `NEXT_PUBLIC_` prefix
+- Never commit `.env.local`
+- Use different values for dev and production
+- `NEXT_PUBLIC_*` vars are visible in the browser
+- Server-only vars should not have the `NEXT_PUBLIC_` prefix
 - Rotate secrets regularly
 
-## Public vs Private Variables
+## Public vs Private
 
-| Prefix | Visibility | Purpose |
-|--------|-----------|---------|
-| `NEXT_PUBLIC_*` | Public (browser) | Client-side accessible variables |
-| `SANITY_API_TOKEN` | Private (server) | Sanity write operations |
-| `MONGODB_URI` | Private (server) | Database connection |
-| `MTN_MOMO_*` | Private (server) | Payment integration |
-| `DISCORD_WEBHOOK_URL` | Private (server) | Notifications |
-| `NEXTAUTH_SECRET` | Private (server) | Session encryption |
+| Prefix | Visibility | Use |
+|--------|-----------|-----|
+| `NEXT_PUBLIC_*` | Browser | Client-side config |
+| Everything else | Server only | Secrets, DB, APIs |
 
 ## Sanity API Token
 
-- `SANITY_API_TOKEN` must have Editor/Write permissions for seeding and the studio tool proxy
-- This token is server-only and must not be prefixed with `NEXT_PUBLIC_`
-- If a token is ever exposed, rotate it immediately in [sanity.io/manage](https://sanity.io/manage)
+- `SANITY_API_TOKEN` is server-only (no `NEXT_PUBLIC_` prefix)
+- If exposed, rotate it immediately at [sanity.io/manage](https://sanity.io/manage)
 
-## Authentication
+## Auth
 
-- Sessions are stored in MongoDB `sessions` collection
+- Sessions stored in MongoDB
 - Session tokens are HTTP-only cookies
-- CSRF protection is enabled on auth endpoints
-- Passwords are hashed with bcrypt
+- CSRF protection on auth endpoints
+- Passwords hashed with bcrypt
 
 ## Database
 
-- Use parameterized queries to prevent MongoDB injection
-- The app connects to MongoDB Atlas; IP whitelist should be configured
-- Database user should have minimum required permissions
+- Parameterized queries prevent injection
+- MongoDB Atlas IP whitelist
+- Minimum permissions for DB user
 
 ## Input Validation
 
-- All API routes validate input before processing
-- Server components and API routes enforce authorization where required
-- Client components never trust user input without server-side validation
+- All API routes validate before processing
+- Server components enforce authorization
+- Client input is never trusted without server validation
 
 ## Error Handling
 
-- Error boundaries catch client-side failures and show localized retry UIs
-- Server errors are logged but do not expose stack traces or internal details to clients
-- API routes return generic error messages without leaking implementation details
+- Error boundaries show localized retry UIs
+- Server errors are logged but don't leak details to clients
+- API routes return generic error messages
 
 ## Dependencies
 
-- Keep dependencies up to date
-- Review security advisories for `next`, `next-auth`, `mongodb`, `@sanity/client`, and `playwright`
-- Use `npm audit` periodically
+- Keep packages updated
+- Run `npm audit` periodically
+- Watch for advisories on `next`, `next-auth`, `mongodb`, `@sanity/client`
 
 ## Generating Secrets
 
 ```bash
-# Generate NEXTAUTH_SECRET
-openssl rand -base64 32
-
-# Generate a random API key
-openssl rand -hex 24
+openssl rand -base64 32   # NEXTAUTH_SECRET
+openssl rand -hex 24      # API keys
 ```
 
-## Reporting Security Issues
+## Reporting
 
-If you discover a security vulnerability, please report it privately rather than opening a public issue.
+Found a vulnerability? Report it privately, not in a public issue.

@@ -1,28 +1,19 @@
 # Development Guide
 
-This guide covers setting up a local development environment for Bigenda Bite.
-
 ## Prerequisites
 
 - Node.js 22+
-- npm
 - MongoDB Atlas account
 - Sanity account
 - Git
 
-## Quick Start
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/Nide17/bigenda-bite.git
 cd bigenda-bite
-
-# Install dependencies
 npm install
-
-# Copy environment variables
 cp .env.example .env.local
-
 # Edit .env.local with your credentials
 npm run dev
 ```
@@ -31,9 +22,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-See [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) for the complete list.
+See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) for the full list.
 
-Minimum required for local development:
+Minimum needed to get started:
 
 ```env
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/bigendabite
@@ -44,7 +35,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=your_api_token
 ```
 
-## Available Scripts
+## Scripts
 
 | Script | Description |
 |--------|-------------|
@@ -52,78 +43,58 @@ SANITY_API_TOKEN=your_api_token
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript compiler checks |
+| `npm run typecheck` | TypeScript type checking |
 | `npm run scrape` | Run scraper worker |
 | `npm run test:e2e` | Run Playwright E2E tests |
-| `npm run test:e2e:ui` | Run Playwright tests with UI |
-| `npm run test:e2e:debug` | Run Playwright tests in debug mode |
+| `npm run test:e2e:ui` | Run tests with UI |
+| `npm run test:e2e:debug` | Run tests in debug mode |
 
 ## Project Structure
 
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── [lang]/            # i18n routes
+│   ├── [lang]/            # Localized routes
 │   ├── admin/             # Admin dashboard
 │   ├── api/               # API routes
-│   ├── globals.css        # Global styles
 │   └── layout.tsx         # Root layout
 ├── components/            # React components
-│   ├── ui/                # Design system components
-│   ├── Navigation.tsx
-│   ├── Footer.tsx
+│   ├── ui/                # Design system
 │   └── ...
-├── lib/                   # Core libraries
+├── lib/                   # Core utilities
 │   ├── analytics.ts       # Event tracking
 │   ├── auth/              # Authentication
-│   ├── cms/               # Sanity CMS
-│   ├── db/                # MongoDB connection
-│   ├── momo/              # MTN MoMo payments
+│   ├── cms/               # Sanity client
+│   ├── db/                # MongoDB
 │   └── ...
-├── i18n/                  # Internationalization
-└── types/                 # TypeScript type definitions
+├── i18n/                  # Translations
+└── types/                 # TypeScript types
 ```
 
 ## Code Style
 
-- **Language**: TypeScript (strict mode)
-- **Framework**: Next.js 15 App Router
-- **Styling**: Tailwind CSS 3 with custom design system
-- **Components**: Server components by default, `'use client'` only when needed
-- **Imports**: Group imports (React, Next.js, third-party, local)
-- **Naming**: camelCase for variables/functions, PascalCase for components
+- TypeScript strict mode
+- Server components by default, `'use client'` only when needed
+- camelCase for variables/functions, PascalCase for components
+- Group imports (React, Next.js, third-party, local)
 
-## Commit Conventions
-
-Use clear, descriptive commit messages:
+## Commits
 
 ```
-feat: add admin user management page
-fix: resolve slug fallback for guides without slugs
-docs: update API reference with new endpoints
-style: improve button hover states
-refactor: extract city selector to client component
-test: add unit tests for analytics tracking
+feat: add user profile page
+fix: correct slug fallback for guides
+docs: update API reference
+refactor: extract city selector to component
 ```
 
-## Pull Request Process
+## Branching
 
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make your changes and test them
-3. Run the build: `npm run build`
-4. Commit with a clear message
-5. Push to your fork
-6. Open a Pull Request against `main`
-7. Wait for review and address any feedback
+- `main` — Production
+- Feature branches — Open PRs against `main`
 
-## Branch Strategy
+## Related Docs
 
-- `main` — Production branch
-- Feature branches — Create PRs from feature branches
-
-## Related Documentation
-
-- [ARCHITECTURE.md](ARCHITECTURE.md) — System design and data flow
-- [API.md](API.md) — API reference
-- [DEPLOYMENT.md](DEPLOYMENT.md) — Production deployment guide
-- [TESTING.md](TESTING.md) — Testing strategy and execution
+- [Architecture](ARCHITECTURE.md) — System design
+- [API Reference](API.md) — API endpoints
+- [Deployment](DEPLOYMENT.md) — Production setup
+- [Testing](TESTING.md) — Test guide

@@ -1,30 +1,30 @@
 # Architecture
 
-## System Overview
+## Overview
 
-Bigenda Bite is a full-stack web application built with Next.js 15, serving as a comprehensive guide for Rwandans to navigate official processes, access how-to guides, discover businesses, and stay informed.
+Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, guides, businesses, and alerts.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                         Client (Browser)                     │
-│  Next.js 15 App Router + Tailwind CSS + custom i18n provider  │
+│                        Client (Browser)                      │
+│       Next.js App Router + Tailwind CSS + custom i18n        │
 └─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
+                             │
+                             ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Next.js Application                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
-│  │  Server      │  │  Server      │  │  Server         │  │
-│  │  Components  │  │  Actions     │  │  API Routes     │  │
+│  │  Server      │  │  Server      │  │  API Routes     │  │
+│  │  Components  │  │  Actions     │  │                 │  │
 │  └──────────────┘  └──────────────┘  └─────────────────┘  │
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
 │  │  Client      │  │  Admin       │  │  Webhooks       │  │
 │  │  Components  │  │  Dashboard   │  │  (MoMo, CMS)    │  │
 │  └──────────────┘  └──────────────┘  └─────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                            │
-        ┌───────────────────┼───────────────────┐
-        ▼                   ▼                   ▼
+                             │
+         ┌───────────────────┼───────────────────┐
+         ▼                   ▼                   ▼
 ┌───────────────┐   ┌───────────────┐   ┌───────────────┐
 │   MongoDB     │   │   Sanity      │   │   External    │
 │   (Operational│   │   (Published  │   │   APIs        │
@@ -33,214 +33,90 @@ Bigenda Bite is a full-stack web application built with Next.js 15, serving as a
 │ - Users       │   │ - Processes   │   │ - Discord     │
 │ - Sessions    │   │ - Guides      │   │ - IRREMBO     │
 │ - Ads         │   │ - Alerts      │   │ - RRA         │
-│ - Contributions│  │               │   │ - RDB         │
+│ - Payments    │   │               │   │ - RDB         │
 │ - Leads       │   │               │   │               │
-│ - Payments    │   │               │   │               │
 │ - Analytics   │   │               │   │               │
-│ - Pending     │   │               │   │               │
-│   Updates     │   │               │   │               │
-│ - Notifications│  │               │   │               │
 └───────────────┘   └───────────────┘   └───────────────┘
 ```
 
 ## Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Framework | Next.js 15 (App Router) | SSR, SSG, API routes |
-| Language | TypeScript | Type safety |
-| Styling | Tailwind CSS 3 | Utility-first CSS |
-| i18n | custom provider | Multi-language (EN/FR/RW) |
-| Database | MongoDB (native driver) | User data, sessions, ads, payments |
-| CMS | Sanity v3 | Published content (processes, guides, alerts) |
-| Auth | NextAuth v4 (Google OAuth + credentials) | Session-based auth with MongoDB |
-| Payments | MTN MoMo API | Mobile money payments |
-| Notifications | Discord Webhooks | Editor notifications |
-| Analytics | Custom event tracking | Page views, clicks, conversions |
-| Deployment | Vercel | Hosting and CI/CD |
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 15 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS 3 |
+| i18n | Custom provider (EN/FR/RW) |
+| Database | MongoDB (native driver) |
+| CMS | Sanity v3 |
+| Auth | NextAuth v4 (Google OAuth + credentials) |
+| Payments | MTN MoMo API |
+| Notifications | Discord Webhooks |
+| Deployment | Vercel |
 
-## Directory Structure
+## Key Decisions
 
-```
-src/
-├── app/                    # Next.js App Router
-│   ├── [lang]/            # i18n page routes
-│   │   ├── layout.tsx     # Layout with server-side tracking
-│   │   ├── page.tsx       # Homepage
-│   │   ├── processes/     # Process listing & detail
-│   │   ├── guides/        # Guide listing & detail
-│   │   ├── directory/     # Business directory
-│   │   ├── alerts/        # Alerts page
-│   │   ├── membership/    # Membership & checkout
-│   │   ├── login/         # Login page
-│   │   ├── register/      # Registration page
-│   │   └── ...
-│   ├── admin/             # Admin dashboard
-│   │   ├── layout.tsx     # Admin layout with sidebar
-│   │   ├── analytics/     # Analytics dashboard
-│   │   ├── users/         # User management
-│   │   ├── ads/           # Ad management
-│   │   ├── content/       # Content scheduling
-│   │   └── pending-updates/ # Scraper approval queue
-│   ├── api/               # API routes
-│   │   ├── auth/          # Authentication
-│   │   ├── analytics/     # Analytics endpoints
-│   │   ├── momo/          # MTN MoMo integration
-│   │   ├── ads/           # Ad tracking
-│   │   ├── admin/         # Admin API
-│   │   ├── notifications/ # Notification API
-│   │   └── webhooks/      # Webhook handlers
-│   ├── layout.tsx         # Root HTML layout
-│   ├── globals.css        # Global styles
-│   ├── robots.ts          # robots.txt
-│   └── sitemap.ts         # sitemap.xml
-├── components/            # Reusable components
-│   ├── ui/                # Design system components
-│   ├── Navigation.tsx     # Main navigation with language switcher
-│   ├── Footer.tsx         # Site footer
-│   ├── AdBanner.tsx       # Ad display component
-│   ├── CitySelector.tsx   # City dropdown
-│   └── ...
-├── lib/                   # Core utilities
-│   ├── analytics.ts       # Event tracking
-│   ├── auth/              # Authentication logic
-│   ├── cms/               # Sanity client & queries
-│   ├── db/                # MongoDB connection
-│   ├── momo/              # MTN MoMo API client
-│   ├── scrapers/          # Web scraping engine
-│   ├── notifications.ts   # Notification helpers
-│   ├── city.ts            # City resolution
-│   └── seo.ts             # SEO utilities
-├── i18n/                  # Internationalization
-│   ├── messages/          # Translation files
-│   ├── routing.ts         # i18n routing config
-│   └── request.ts         # i18n request handler
-└── types/                 # TypeScript type definitions
-```
+### Dual Database
 
-## Key Architectural Decisions
-
-### 1. Dual Database Strategy
-
-- **MongoDB** — Operational data: users, sessions, ads, payments, contributions, leads, analytics events, notifications, pending updates
+- **MongoDB** — Operational data: users, sessions, ads, payments, leads, analytics
 - **Sanity** — Published content: processes, guides, alerts
-- **Rationale**: Sanity provides a real-time CMS for editors; MongoDB handles transactional/operational data better
+- Sanity gives editors a real-time CMS; MongoDB handles transactional data better
 
-### 2. Authentication
+### Auth
 
-- NextAuth v4 with MongoDB adapter
-- Providers: Google OAuth and custom credentials (email/password)
-- Sessions stored in MongoDB `sessions` collection
-- Server-side `getSession()` accepts `NextRequest | string | null`
-- Rationale: NextAuth v4 provides both social and email/password auth with minimal custom code
+NextAuth v4 with Google OAuth and email/password. Sessions stored in MongoDB.
 
-### 3. i18n Architecture
+### i18n
 
-- Custom lightweight i18n provider for routing and translations
-- Server components load translation JSON files directly
-- URL structure: `/{lang}/...`
-- Supported locales: English (`en`), French (`fr`), Kinyarwanda (`rw`)
-- Language switcher is global in the site header
+Custom lightweight provider. Translations are JSON files loaded by server components. URLs follow `/{lang}/...`.
 
-### 4. Scraper Worker Pattern
+### Scraper Worker
 
-- Standalone Node.js process (`scripts/worker.ts`)
-- Launches Playwright browser, scrapes sources
-- Computes diffs against existing Sanity documents
-- Inserts into MongoDB `pendingUpdates` collection
-- Discord webhook notifies editors for review
-- Editors approve via admin dashboard, which creates/updates Sanity documents
+Standalone Node.js process using Playwright. Scrapes sources, diffs against Sanity, stores changes in MongoDB `pendingUpdates`, and notifies editors via Discord.
 
-### 5. City-Based Personalization
+### City Personalization
 
-- `bigenda-city` cookie stores user's city preference
-- Server-side resolution via `resolveCity()` (cookie or IP-based)
-- Client-side `CitySelector` component for manual override
-- Used for ad targeting and content filtering
+`bigenda-city` cookie stores preference. Used for ad targeting and content filtering.
 
-### 6. Analytics Architecture
+### Analytics
 
-- Server-side page view tracking in layout (fire-and-forget)
-- Client-side event tracking via `useTrackEvent` hook
-- Events stored in MongoDB `analytics` collection
-- Admin dashboard queries for summary stats
-- Anonymous session ID via `bigenda-session` cookie
+Server-side page view tracking in layout. Client-side events via `useTrackEvent` hook. Events stored in MongoDB.
 
-### 7. Payment Flow
+## Data Flows
 
-- MTN MoMo API for payment initiation and status polling
-- Client-side `CheckoutForm` with phone number input
-- Server-side `/api/momo/collect` creates payment
-- Client polls `/api/momo/status` for updates
-- Webhook `/api/webhooks/momo` for server-side confirmation
+### User Registration
 
-## Data Flow
-
-### User Registration Flow
-
-1. User submits registration form (`/register`)
+1. User submits form at `/register`
 2. POST `/api/register` creates user in MongoDB
 3. Password hashed with bcrypt
-4. Redirect to login page
+4. Redirect to login
 
-### Authentication Flow
+### Content Publishing
 
-1. User submits login form (`/login`)
-2. POST `/api/auth/callback/credentials`
-3. Custom auth verifies credentials against MongoDB
-4. Session created and stored in `sessions` collection
-5. Session cookie set
-6. Subsequent requests validated via `getSession()`
-
-### Content Publishing Flow
-
-1. Editor creates/edits content in Sanity Studio
+1. Editor works in Sanity Studio
 2. Content published with `status: "published"`
-3. Next.js fetches published content via Sanity client
-4. Pages rendered server-side with fresh data
+3. Next.js fetches via Sanity client
+4. Pages rendered server-side
 
-### Scraper Approval Flow
+### Scraper Approval
 
-1. Worker scrapes sources and computes diffs
+1. Worker scrapes sources, computes diffs
 2. Pending updates inserted into MongoDB
-3. Discord webhook sends notification to editors
-4. Editor reviews in `/admin/pending-updates`
-5. Editor approves/rejects
-6. On approve: Sanity document created/updated
-7. Pending update marked as processed
+3. Discord notifies editors
+4. Editor reviews at `/admin/pending-updates`
+5. Approve creates/updates Sanity document
 
-### Ad Display Flow
+### Payments
 
-1. Page requests ad via `AdBanner` component
-2. Client fetches from `/api/ads?placement=...&city=...`
-3. Ad returned with impression tracking pixel
-4. Impression recorded via `/api/ads/impression`
-5. Click tracked via `/api/ads/click`
+1. User submits phone at checkout
+2. POST `/api/momo/collect` initiates payment
+3. Client polls `/api/momo/status`
+4. Webhook confirms server-side
 
-## Caching Strategy
+## Security
 
-- **Static pages**: SSG where possible (`generateStaticParams`)
-- **Dynamic pages**: `force-dynamic` for fresh data
-- **Sanity content**: Fetched server-side on each request; no client-side caching
-- **API routes**: No caching by default, explicit headers where appropriate
-- **CDN**: Vercel Edge Network for static assets
-
-## Security Considerations
-
-- Environment variables for all secrets
-- No client-side exposure of server-only tokens
-- CSRF protection on auth endpoints
-- Session tokens stored in HTTP-only cookies
-- Input validation on all API routes
-- MongoDB injection prevention via parameterized queries
-- Sanity API tokens with minimum required permissions
+See [SECURITY.md](SECURITY.md) for security practices.
 
 ## CI/CD
 
-See [docs/CI_CD.md](CI_CD.md) for the full CI/CD pipeline configuration.
-
-**Summary:**
-- GitHub Actions with lint, build, test, and deploy jobs
-- Playwright E2E smoke tests
-- Vercel preview deployments for PRs
-- Automatic production deployment on merge to `main`
+See [CI_CD.md](CI_CD.md) for the CI pipeline.

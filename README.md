@@ -8,24 +8,18 @@
 ![Vercel](https://img.shields.io/badge/Vercel-Ready-black?logo=vercel)
 ![Playwright](https://img.shields.io/badge/Playwright-E2E%20Tests-green?logo=playwright)
 
-**Bigenda Bite** is a comprehensive platform for Rwandans to navigate official processes, access how-to guides, discover local businesses, and stay informed with real-time alerts. Built with Next.js 15, TypeScript, Tailwind CSS, MongoDB, and Sanity CMS.
+A platform for Rwandans to navigate official processes, access how-to guides, discover local businesses, and stay informed with real-time alerts.
 
 ## Features
 
 - **Official Processes** — Step-by-step guides for government services
 - **How-To Guides** — Practical guides for everyday life in Rwanda
-- **Business Directory** — City-based business listings with contact and lead capture
+- **Business Directory** — City-based listings with contact and lead capture
 - **Alerts** — Real-time official announcements with severity levels
-- **Search** — Universal search across processes, guides, businesses, and alerts
-- **Membership** — Subscription plans with MTN MoMo payment integration
-- **City Routing** — Content personalized by city
-- **Admin Dashboard** — Editor tools for content review, user management, ads, analytics
-- **Analytics** — Event tracking, page views, revenue stats, top pages
-- **Notifications** — In-app notification bell with unread counts
-- **Ads System** — Ad placement with impression/click tracking
-- **Scraper Worker** — Automated content scraping with approval workflow
-- **Discord Integration** — Editor notifications for pending updates
-- **i18n** — Multi-language support (English, French, Kinyarwanda)
+- **Search** — Universal search across all content types
+- **Membership** — Subscription plans with MTN MoMo payments
+- **Admin Dashboard** — User management, ads, analytics, content review
+- **i18n** — English, French, Kinyarwanda
 
 ## Tech Stack
 
@@ -36,131 +30,40 @@
 | Styling | Tailwind CSS 3 |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | NextAuth v4 (Google OAuth + credentials) with MongoDB sessions |
+| Auth | NextAuth v4 (Google OAuth + credentials) |
 | Payments | MTN MoMo API |
-| Notifications | Discord Webhooks |
-| Analytics | Custom event tracking |
-| Testing | Playwright |
 | Deployment | Vercel |
-| CI/CD | GitHub Actions |
-| i18n | custom provider |
 
 ## Quick Start
 
-### Prerequisites
-
-- Node.js 22+
-- MongoDB Atlas account
-- Sanity account
-- MTN MoMo developer account (for payments)
-- Vercel account (for deployment)
-
-### Installation
-
 ```bash
-# Clone the repository
 git clone https://github.com/Nide17/bigenda-bite.git
 cd bigenda-bite
-
-# Install dependencies
 npm install
-
-# Copy environment variables
 cp .env.example .env.local
-
 # Edit .env.local with your credentials
-```
-
-### Environment Setup
-
-Create `.env.local` in the root directory. See [docs/ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) for the complete list.
-
-```env
-# MongoDB
-MONGODB_URI=your_mongodb_connection_string
-
-# NextAuth
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_secret_key
-
-# Google OAuth
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# Gmail SMTP (for password reset emails)
-GMAIL_USER=your_email@gmail.com
-GMAIL_PASSWORD=your_app_password
-
-# Sanity
-NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
-NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=your_api_token
-
-# App
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-```
-
-> **Production:** `NEXTAUTH_URL` auto-detects from Vercel's `VERCEL_URL`. Override it in Vercel Dashboard → Settings → Environment Variables if you use a custom domain. Also update your Google OAuth authorized redirect URIs accordingly.
->
-> **Gmail SMTP:** Enable 2FA on your Google account, then generate an app password at https://myaccount.google.com/apppasswords.
-
-### Development
-
-```bash
-# Start development server
 npm run dev
-
-# Run scraper worker
-npm run scrape
-
-# Run E2E tests
-npm run test:e2e
-
-# Build for production
-npm run build
-
-# Start production server
-npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Available Scripts
-
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | Run TypeScript compiler checks |
-| `npm run scrape` | Run scraper worker |
-| `npm run test:e2e` | Run Playwright E2E tests |
-| `npm run test:e2e:ui` | Run Playwright tests with UI |
-| `npm run test:e2e:debug` | Run Playwright tests in debug mode |
-
-## CI/CD
-
-GitHub Actions runs typecheck, lint, build, and E2E smoke tests on every PR and push to `main`. Production deployment is handled automatically by Vercel.
+For detailed setup, see [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md).
 
 ## Documentation
 
-- [PRODUCT.md](docs/PRODUCT.md) — Product overview and feature status
-- [DEVELOPMENT.md](docs/DEVELOPMENT.md) — Local development setup
-- [ARCHITECTURE.md](docs/ARCHITECTURE.md) — System design and architecture
-- [API.md](docs/API.md) — API reference
-- [DEPLOYMENT.md](docs/DEPLOYMENT.md) — Production deployment guide
-- [TESTING.md](docs/TESTING.md) — Testing strategy and execution
-- [SECURITY.md](docs/SECURITY.md) — Security practices
-- [CONTENT_EDITOR_GUIDE.md](docs/CONTENT_EDITOR_GUIDE.md) — Sanity CMS editor guide
-- [ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) — Admin dashboard usage
-- [SCRAPER_GUIDE.md](docs/SCRAPER_GUIDE.md) — Scraper worker setup and usage
-- [ENVIRONMENT_VARIABLES.md](docs/ENVIRONMENT_VARIABLES.md) — Environment variables reference
+- [Product Overview](docs/PRODUCT.md) — Features and roadmap
+- [Development Guide](docs/DEVELOPMENT.md) — Local setup and scripts
+- [Architecture](docs/ARCHITECTURE.md) — System design and data flow
+- [API Reference](docs/API.md) — All API endpoints
+- [Deployment](docs/DEPLOYMENT.md) — Production setup on Vercel
+- [Testing](docs/TESTING.md) — E2E tests with Playwright
+- [Security](docs/SECURITY.md) — Security practices
+- [Environment Variables](docs/ENVIRONMENT_VARIABLES.md) — All env vars
+- [Admin Guide](docs/ADMIN_GUIDE.md) — Admin dashboard usage
+- [Content Editor Guide](docs/CONTENT_EDITOR_GUIDE.md) — Sanity CMS
+- [Scraper Guide](docs/SCRAPER_GUIDE.md) — Worker setup and usage
+- [Contributing](docs/CONTRIBUTING.md) — How to contribute
 
 ## License
 
 Proprietary — All rights reserved.
-
-## Support
-
-For questions or support, contact the Bigenda Bite team.

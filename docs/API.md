@@ -4,21 +4,16 @@ Base URL: `/api`
 
 ## Authentication
 
-Most endpoints require authentication via session cookie (`next-auth.session-token`).
-
-```http
-Cookie: next-auth.session-token=<token>
-```
+Most endpoints require a session cookie (`next-auth.session-token`).
 
 ## Endpoints
 
-### Authentication
+### Auth
 
 #### POST `/api/auth/callback/credentials`
 
-Authenticate a user with email and password.
+Sign in with email and password.
 
-**Request:**
 ```json
 {
   "csrfToken": "string",
@@ -29,15 +24,12 @@ Authenticate a user with email and password.
 }
 ```
 
-**Response:** `302 Redirect` to `callbackUrl` on success, `401` on failure.
-
----
+Returns `302` redirect on success, `401` on failure.
 
 #### POST `/api/register`
 
-Register a new user.
+Create a new account.
 
-**Request:**
 ```json
 {
   "name": "John Doe",
@@ -46,36 +38,11 @@ Register a new user.
 }
 ```
 
-**Response:**
-```json
-{
-  "user": {
-    "id": "string",
-    "name": "John Doe",
-    "email": "user@example.com"
-  }
-}
-```
-
-**Status Codes:**
-- `201` — User created
-- `400` — Validation error
-- `409` — Email already exists
-
----
+Returns `201` on success, `409` if email exists.
 
 #### GET `/api/auth/csrf`
 
-Get CSRF token for authentication.
-
-**Response:**
-```json
-{
-  "csrfToken": "string"
-}
-```
-
----
+Get a CSRF token for auth requests.
 
 ### Ads
 
@@ -83,111 +50,39 @@ Get CSRF token for authentication.
 
 Get ads for a placement and city.
 
-**Query Parameters:**
-- `placement` — Ad placement location
-- `city` — City for targeting
-
-**Response:**
-```json
-[
-  {
-    "_id": "string",
-    "title": "Ad Title",
-    "imageUrl": "https://...",
-    "linkUrl": "https://...",
-    "placement": "sidebar",
-    "city": "Kigali"
-  }
-]
-```
-
----
+Query: `placement`, `city`
 
 #### POST `/api/ads/impression`
 
-Record an ad impression.
-
-**Request:**
-```json
-{
-  "adId": "string"
-}
-```
-
-**Response:** `200 OK`
-
----
+Record an ad impression. Body: `{ "adId": "string" }`
 
 #### POST `/api/ads/click`
 
-Record an ad click.
-
-**Request:**
-```json
-{
-  "adId": "string"
-}
-```
-
-**Response:** `200 OK`
-
----
+Record an ad click. Body: `{ "adId": "string" }`
 
 ### Search
 
 #### GET `/api/search`
 
-Search processes, guides, and alerts.
+Search across processes, guides, and alerts.
 
-**Query Parameters:**
-- `q` — Search query
-- `lang` — Language code (`en`, `fr`, `rw`)
+Query: `q`, `lang`
 
-**Response:**
-```json
-{
-  "results": [
-    {
-      "type": "process",
-      "title": "Business Registration",
-      "description": "...",
-      "category": "business",
-      "language": "en",
-      "url": "/en/processes/business/registration"
-    }
-  ],
-  "query": "business",
-  "language": "en",
-  "total": 1
-}
-```
-
----
+Returns results with type, title, description, category, URL.
 
 ### Contributions
 
 #### POST `/api/contributions`
 
-Submit a community contribution for a guide.
+Submit a community tip for a guide.
 
-**Request:**
 ```json
 {
   "guideId": "passport-application",
-  "text": "I recommend doing this early in the morning...",
+  "text": "I recommend doing this early...",
   "city": "Kigali"
 }
 ```
-
-**Response:**
-```json
-{
-  "id": "string",
-  "status": "pending"
-}
-```
-
----
 
 ### Leads
 
@@ -195,160 +90,98 @@ Submit a community contribution for a guide.
 
 Submit a lead for a business.
 
-**Request:**
 ```json
 {
   "businessId": "string",
-  "name": "string",
-  "phone": "string",
+  "contactName": "string",
+  "contactPhone": "string",
   "message": "string"
 }
 ```
 
-**Response:**
+Sends an email notification to the business if they have an email on file.
+
+### Account
+
+#### GET `/api/account`
+
+Get the current user's profile.
+
+#### PATCH `/api/account`
+
+Update profile (displayName, email). Email changes reset verification.
+
+#### PATCH `/api/account/password`
+
+Change password. Requires current password.
+
+### Password Reset
+
+#### POST `/api/auth/forgot-password`
+
+Send a password reset email. Body: `{ "email": "string" }`
+
+#### POST `/api/auth/reset-password/validate`
+
+Validate a reset token.
+
+#### POST `/api/auth/reset-password`
+
+Set a new password. Body: `{ "token": "string", "password": "string" }`
+
+### Email Verification
+
+#### POST `/api/auth/verify-email`
+
+Verify email with token. Body: `{ "token": "string" }`
+
+#### POST `/api/auth/verify-email/resend`
+
+Resend verification email.
+
+### Admin — Users
+
+#### GET `/api/admin/users`
+
+List users (editor or above). Supports search and filters client-side.
+
+#### PATCH `/api/admin/users`
+
+Update a user (role, ban status, email verification).
+
 ```json
 {
-  "id": "string",
-  "status": "submitted"
+  "userId": "string",
+  "role": "editor",
+  "banned": false,
+  "emailVerified": true
 }
 ```
 
----
-
-### Admin - Pending Updates
+### Admin — Pending Updates
 
 #### GET `/api/admin/pending-updates`
 
-Get pending scraper updates (editor only).
-
-**Response:**
-```json
-[
-  {
-    "id": "string",
-    "sourceType": "scraper",
-    "documentId": "string",
-    "update": {},
-    "diffSummary": "string",
-    "confidenceScore": 0.95,
-    "status": "pending",
-    "detectedAt": "2024-01-01T00:00:00Z"
-  }
-]
-```
-
----
+List scraper updates awaiting review.
 
 #### PATCH `/api/admin/pending-updates/approve`
 
-Approve a pending update.
-
-**Request:**
-```json
-{
-  "id": "string"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
+Approve a pending update. Body: `{ "id": "string" }`
 
 #### PATCH `/api/admin/pending-updates/reject`
 
 Reject a pending update.
 
-**Request:**
-```json
-{
-  "id": "string"
-}
-```
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
-
-### Admin - Users
-
-#### GET `/api/admin/users`
-
-Get all users (editor only).
-
-**Response:**
-```json
-[
-  {
-    "_id": "string",
-    "name": "string",
-    "email": "string",
-    "role": "user",
-    "banned": false,
-    "createdAt": "2024-01-01T00:00:00Z"
-  }
-]
-```
-
----
-
-#### PATCH `/api/admin/users/[id]`
-
-Update a user (editor only).
-
-**Request:**
-```json
-{
-  "role": "editor",
-  "banned": false
-}
-```
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
-
-### Admin - Ads
+### Admin — Ads
 
 #### GET `/api/admin/ads`
 
-Get all ads (editor only).
-
-**Response:**
-```json
-[
-  {
-    "_id": "string",
-    "title": "string",
-    "placement": "string",
-    "city": "string",
-    "linkUrl": "string",
-    "imageUrl": "string"
-  }
-]
-```
-
----
+List all ads.
 
 #### POST `/api/admin/ads`
 
-Create a new ad (editor only).
+Create an ad.
 
-**Request:**
 ```json
 {
   "title": "string",
@@ -359,93 +192,32 @@ Create a new ad (editor only).
 }
 ```
 
-**Response:**
-```json
-{
-  "id": "string"
-}
-```
-
----
-
 #### PATCH `/api/admin/ads/[id]`
 
-Update an ad (editor only).
-
-**Request:** Same fields as POST.
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
+Update an ad.
 
 #### DELETE `/api/admin/ads/[id]`
 
-Delete an ad (editor only).
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
+Delete an ad.
 
 ### Analytics
 
 #### GET `/api/analytics`
 
-Get analytics summary (editor only).
-
-**Query Parameters:**
-- `days` (optional) — Number of days to look back (default: 7)
-
-**Response:**
-```json
-{
-  "pageViews": 150,
-  "adClicks": 45,
-  "payments": 12,
-  "contributions": 8,
-  "leads": 23,
-  "days": 7
-}
-```
-
----
+Get summary stats. Query: `days` (default: 7)
 
 #### POST `/api/analytics/track`
 
-Track an analytics event (public).
+Track an event (public).
 
-**Request:**
 ```json
 {
   "type": "page_view",
-  "metadata": {
-    "path": "/en/processes/immigration/passport",
-    "lang": "en",
-    "city": "Kigali",
-    "sessionId": "uuid"
-  }
+  "metadata": { "path": "/en/processes", "lang": "en" }
 }
 ```
 
-**Supported event types:**
-- `page_view` — Page navigation
-- `ad_click` — Ad click
-- `payment_initiated` — Payment started
-- `payment_success` — Payment completed
-- `contribution_submitted` — Community tip submitted
-
-**Response:** `200 OK`
-
----
+Event types: `page_view`, `ad_click`, `payment_initiated`, `payment_success`, `contribution_submitted`, `lead_submitted`
 
 ### Payments
 
@@ -453,7 +225,6 @@ Track an analytics event (public).
 
 Initiate a MoMo payment.
 
-**Request:**
 ```json
 {
   "planId": "basic",
@@ -462,33 +233,9 @@ Initiate a MoMo payment.
 }
 ```
 
-**Response:**
-```json
-{
-  "transactionId": "string",
-  "status": "PENDING"
-}
-```
-
----
-
 #### GET `/api/momo/status`
 
-Check payment status.
-
-**Query Parameters:**
-- `transactionId` — The transaction ID
-
-**Response:**
-```json
-{
-  "status": "SUCCESSFUL",
-  "transactionId": "string",
-  "amount": 2000
-}
-```
-
----
+Check payment status. Query: `transactionId`
 
 ### Notifications
 
@@ -496,107 +243,33 @@ Check payment status.
 
 Get notifications for the logged-in user.
 
-**Response:**
-```json
-[
-  {
-    "id": "string",
-    "type": "scraper_update",
-    "title": "New Pending Update",
-    "body": "IremboGov has a new update",
-    "read": false,
-    "metadata": {},
-    "createdAt": "2024-01-01T00:00:00Z"
-  }
-]
-```
-
----
-
 #### POST `/api/notifications`
 
 Create a notification (system use).
 
-**Request:**
-```json
-{
-  "userId": "string",
-  "type": "system",
-  "title": "string",
-  "body": "string",
-  "metadata": {}
-}
-```
-
-**Response:**
-```json
-{
-  "id": "string"
-}
-```
-
----
-
 #### PATCH `/api/notifications/[id]`
 
-Mark a notification as read.
-
-**Response:**
-```json
-{
-  "success": true
-}
-```
-
----
+Mark as read.
 
 ### Webhooks
 
 #### POST `/api/webhooks/momo`
 
-MTN MoMo payment webhook.
-
-**Headers:**
-- `X-MoMo-Signature`: MoMo signature
-
-**Response:** `200 OK`
-
----
+MTN MoMo payment confirmation.
 
 #### POST `/api/webhooks/cms-revalidate`
 
-Sanity CMS revalidation webhook.
-
-**Headers:**
-- `X-Sanity-Signature`: Sanity signature
-
-**Request:**
-```json
-{
-  "_type": "process",
-  "_id": "string"
-}
-```
-
-**Response:** `200 OK`
-
----
+Sanity CMS revalidation.
 
 ## Error Codes
 
-| Code | Description |
-|------|-------------|
-| `200` | Success |
-| `201` | Created |
-| `301` | Moved permanently |
-| `400` | Bad request |
-| `401` | Unauthorized |
-| `403` | Forbidden |
-| `404` | Not found |
-| `409` | Conflict |
-| `429` | Too many requests |
-| `500` | Internal server error |
-
-## Rate Limiting
-
-Currently no rate limiting is implemented. This may be added in future versions.
+| Code | Meaning |
+|------|---------|
+| 200 | Success |
+| 201 | Created |
+| 400 | Bad request |
+| 401 | Unauthorized |
+| 403 | Forbidden |
+| 404 | Not found |
+| 409 | Conflict |
+| 500 | Server error |

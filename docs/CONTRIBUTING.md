@@ -1,79 +1,49 @@
-# Contributing to Bigenda Bite
+# Contributing
 
-Thank you for your interest in contributing to Bigenda Bite! This document provides guidelines and instructions for contributing.
+Thanks for wanting to contribute to Bigenda Bite.
 
-## How to Contribute
+## Reporting Bugs
 
-### Reporting Bugs
+- Use GitHub issues
+- Include steps to reproduce
+- Add screenshots if helpful
+- Mention your browser, OS, and Node version
 
-- Use the GitHub issue tracker
-- Describe the bug clearly with steps to reproduce
-- Include screenshots if applicable
-- Specify your browser, OS, and Node.js version
+## Requesting Features
 
-### Requesting Features
-
-- Use the GitHub issue tracker
-- Describe the feature and its use case
-- Explain why it would benefit the project
+- Open an issue describing the feature
+- Explain the use case
 - Be specific about expected behavior
 
-### Development Setup
+## Development
 
-1. Fork and clone the repository
-2. Install dependencies: `npm install`
-3. Copy `.env.example` to `.env.local`
-4. Fill in required environment variables
-5. Start the dev server: `npm run dev`
+1. Fork and clone the repo
+2. `npm install`
+3. `cp .env.example .env.local` and fill in values
+4. `npm run dev`
 
-### Code Style
+## Code Style
 
-- **Language**: TypeScript (strict mode)
-- **Framework**: Next.js 15 App Router
-- **Styling**: Tailwind CSS 3 with custom design system
-- **Formatting**: Follow existing code patterns
-- **Components**: Server components by default, `'use client'` only when needed
-- **Imports**: Group imports (React, Next.js, third-party, local)
-- **Naming**: camelCase for variables/functions, PascalCase for components
+See [DEVELOPMENT.md](DEVELOPMENT.md#code-style) for conventions.
 
-### Commit Conventions
-
-Use clear, descriptive commit messages:
+## Commits
 
 ```
-feat: add admin user management page
-fix: resolve slug fallback for guides without slugs
-docs: update API reference with new endpoints
-style: improve button hover states
-refactor: extract city selector to client component
-test: add unit tests for analytics tracking
+feat: add user profile page
+fix: correct slug fallback
+docs: update API reference
+refactor: extract component
 ```
 
-### Pull Request Process
+## Pull Requests
 
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make your changes and test them
-3. Run the build: `npm run build`
-4. Commit with a clear message
-5. Push to your fork
-6. Open a Pull Request against `main`
-7. Wait for review and address any feedback
-
-### Code Review
-
-- All PRs require at least one approval
-- Address all review comments before merging
-- Keep PRs focused and reasonably sized
-- Update documentation if needed
-
-## Architecture
-
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for system design and [docs/API.md](docs/API.md) for API reference.
-
-## Deployment
-
-See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for deployment instructions.
+1. Create a feature branch
+2. Make changes and test
+3. Run `npm run build`
+4. Commit and push
+5. Open a PR against `main`
+6. Address review feedback
 
 ## Questions?
 
-Feel free to open an issue for any questions about contributing.
+Open an issue for help.

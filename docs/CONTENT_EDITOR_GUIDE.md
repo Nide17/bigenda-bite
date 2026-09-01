@@ -1,8 +1,8 @@
 # Content Editor Guide
 
-This guide is for editors and content managers working with Bigenda Bite's Sanity CMS.
+For editors working with Sanity CMS.
 
-## Accessing Sanity Studio
+## Accessing Studio
 
 ```bash
 cd sanity
@@ -11,22 +11,11 @@ sanity start
 
 Open [http://localhost:3333](http://localhost:3333).
 
-Or use the deployed studio if configured.
-
 ## Content Model
 
-Bigenda Bite uses a single-document translation model (Model A). Each document contains translations for all supported languages.
+Bigenda Bite uses a single-document translation model. Each document contains all language translations.
 
-### Document Structure
-
-Every published content item should have:
-
-- `_id` — Sanity document ID
-- `slug.current` — Canonical URL slug
-- `status` — `draft` or `published`
-- `translations` — localized content object
-
-### Supported Document Types
+### Document Types
 
 | Type | Description |
 |------|-------------|
@@ -34,75 +23,59 @@ Every published content item should have:
 | `guide` | How-to guide |
 | `alert` | Time-sensitive announcement |
 
+### Structure
+
+Every document needs:
+
+- `slug.current` — URL slug
+- `status` — `draft` or `published`
+- `translations` — Localized content
+
 ## Required Fields
 
 ### Process
 
-- `slug` — Required. Auto-generated from English title.
-- `translations` — Required.
-- `translations.en` — Required. English is the base language.
-- `translations.en.title` — Required.
-- `translations.en.summary` — Required.
-- `steps` — Required. Minimum 1 step.
-- `step.order` — Required. Minimum value 1.
-- `step.text.en` — Required. English step text.
+- `slug` — Auto-generated from English title
+- `translations.en.title` — Required
+- `translations.en.summary` — Required
+- `steps` — Minimum 1 step
+- `step.order` — Minimum 1
+- `step.text.en` — Required
 
 ### Guide
 
-- `slug` — Required.
-- `translations` — Required.
-- `translations.en` — Required.
-- `translations.en.title` — Required.
-- `translations.en.summary` — Required.
-- `steps` — Required. Minimum 1 step.
-- `step.order` — Required.
-- `step.text.en` — Required.
+Same as process.
 
 ### Alert
 
-- `translations` — Required.
-- `translations.en` — Required.
-- `type` — Required. One of: `fee_change`, `office_closure`, `new_requirement`, `transport_disruption`
-- `severity` — Required. One of: `info`, `warning`, `critical`
-- `expiresAt` — Required. Date/time when the alert expires.
+- `translations.en` — Required
+- `type` — One of: `fee_change`, `office_closure`, `new_requirement`, `transport_disruption`
+- `severity` — One of: `info`, `warning`, `critical`
+- `expiresAt` — When the alert expires
 
-## Publishing Content
+## Publishing
 
-1. Create or edit a document in Sanity Studio
-2. Fill in all required fields
+1. Create or edit in Sanity Studio
+2. Fill required fields
 3. Set `status` to `published`
-4. Save the document
+4. Save
 
-Published content is immediately available on the site.
+Content goes live immediately.
 
-## Content Guidelines
+## Guidelines
 
-- English is mandatory for all content types
+- English is mandatory
 - French and Kinyarwanda are optional but encouraged
 - Titles should be clear and action-oriented
-- Summaries should be concise (1-2 sentences)
+- Summaries: 1-2 sentences max
 - Steps should be ordered and actionable
-- Avoid placeholder or test content
+- No placeholder or test content
 
 ## Validation
 
-Sanity Studio enforces validation rules defined in `sanity/schemas/`. You cannot publish documents with:
-
-- Missing slugs
-- Missing English translations
-- Empty titles or summaries
-- Empty step arrays
-- Missing step text
+Sanity enforces these rules. You can't publish with missing slugs, empty titles, or empty steps.
 
 ## Troubleshooting
 
-### Content not showing on the site
-
-- Verify `status` is set to `published`
-- Check that `slug.current` is set
-- Ensure `translations.en.title` is populated
-
-### Images not loading
-
-- Verify image URLs are correct and accessible
-- Check that `NEXT_PUBLIC_SANITY_PROJECT_ID` is configured for CDN URLs
+- **Not showing on site:** Check `status` is `published`, `slug.current` is set, `translations.en.title` exists
+- **Images not loading:** Verify URLs and `NEXT_PUBLIC_SANITY_PROJECT_ID`

@@ -1,26 +1,26 @@
 # Product Overview
 
-Bigenda Bite is a content-driven platform that helps Rwandans navigate official government processes, access practical how-to guides, discover local businesses, and stay informed with verified alerts.
+Bigenda Bite is a content platform that helps Rwandans find official processes, how-to guides, local businesses, and alerts.
 
-## Core Purpose
+## How It Works
 
-Users come to accomplish something, not to browse a website. The product is organized around task completion:
+Users come to get things done, not browse. The product is organized around tasks:
 
-1. Search — the primary entry point
-2. Popular tasks — common government processes
-3. Important alerts — time-sensitive announcements
-4. Browse by category — structured content discovery
-5. Latest guides — recently updated how-to content
-6. Businesses near you — location-aware directory
-7. Latest updates — recently changed official processes
+1. **Search** — Main entry point for finding anything
+2. **Popular tasks** — Common government processes
+3. **Alerts** — Time-sensitive announcements
+4. **Categories** — Browse content by topic
+5. **Latest guides** — Recently updated how-to content
+6. **Businesses near you** — Location-aware directory
+7. **Latest updates** — Recently changed official processes
 
-## Supported Languages
+## Languages
 
 - English (`en`)
 - French (`fr`)
 - Kinyarwanda (`rw`)
 
-## Supported Cities
+## Cities
 
 - Kigali
 - Musanze
@@ -29,43 +29,41 @@ Users come to accomplish something, not to browse a website. The product is orga
 
 ## Feature Status
 
-### Implemented
+### Live
 
-| Feature | Description |
+| Feature | What it does |
 |---------|-------------|
-| Official Processes | Published government process guides with steps, fees, and required documents |
-| How-To Guides | Practical life guides with steps, costs, and community tips |
-| Business Directory | City-based business listings with contact forms and lead capture |
-| Alerts | Severity-based official announcements with expiry dates |
-| Search | Universal search across processes, guides, businesses, and alerts |
-| City Routing | Content and ads personalized by city preference |
-| i18n | Full translation coverage for EN/FR/RW |
-| Authentication | Email/password and Google OAuth via NextAuth v4 |
-| Membership | Subscription plans with MTN MoMo payment integration |
-| Ads | Impression and click tracking with placement management |
-| Admin Dashboard | Editor tools for users, ads, analytics, content, and pending updates |
-| Analytics | Page views, custom events, and summary stats |
-| Notifications | In-app notification bell with unread counts |
-| Scraper Worker | Automated scraping with diff-based approval workflow |
-| Discord Integration | Editor notifications for pending scraper updates |
-| Error Boundaries | Localized error and loading states with retry |
-| CI/CD | GitHub Actions for typecheck, lint, build, and E2E tests |
+| Official Processes | Government process guides with steps, fees, documents |
+| How-To Guides | Life guides with steps, costs, community tips |
+| Business Directory | City listings with contact forms and lead capture |
+| Alerts | Severity-based announcements with expiry |
+| Search | Universal search across all content |
+| City Routing | Content and ads personalized by city |
+| i18n | Full EN/FR/RW translations |
+| Auth | Email/password and Google OAuth |
+| Membership | Subscriptions with MTN MoMo payments |
+| Ads | Impression and click tracking |
+| Admin Dashboard | Users, ads, analytics, content, pending updates |
+| Analytics | Page views, events, summary stats |
+| Notifications | In-app bell with unread counts |
+| Scraper Worker | Automated scraping with approval workflow |
+| Discord Integration | Editor notifications |
+| Error Pages | Localized 404/error with search and recovery |
+| CI/CD | GitHub Actions for typecheck, lint, build, tests |
 
-### Partially Implemented
+### In Progress
 
-| Feature | Description |
-|---------|-------------|
-| Scraper Content Quality | Worker and approval flow exist; data quality guardrails are still being refined |
-| Payment Flow | MoMo integration is implemented; sandbox validation is incomplete |
-| Search Relevance | Basic token-based scoring is in place; fuzzy matching and advanced ranking are planned |
+| Feature | Status |
+|---------|--------|
+| Scraper Quality | Approval flow exists, data quality being refined |
+| Payment Flow | MoMo integrated, sandbox validation incomplete |
+| Search Relevance | Basic scoring, fuzzy matching planned |
 
 ### Planned
 
-| Feature | Description |
-|---------|-------------|
-| Advanced Search | Fuzzy matching, typo tolerance, and dedicated search index |
-| User Profiles | Extended profile management and preference settings |
-| Content Scheduling | Future-date publishing and expiry automation |
-| Rate Limiting | API-level rate limiting and abuse protection |
-| Offline Support | Service worker and cached content for low-connectivity users |
-| Mobile App | Native or PWA experience beyond responsive web |
+- Advanced search (fuzzy matching, typo tolerance)
+- User profiles and preferences
+- Content scheduling (future publish, auto-expiry)
+- API rate limiting
+- Offline support (service worker, caching)
+- Mobile app / PWA
