@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
 
 const secondaryNavItems: NavItem[] = [
   { href: '/login', labelKey: 'sign_in' },
+  { href: '/account', labelKey: 'account' },
   { href: '/membership', labelKey: 'membership' },
 ]
 

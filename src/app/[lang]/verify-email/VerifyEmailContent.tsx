@@ -1,20 +1,20 @@
 'use client'
 
 import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { useTranslations } from '@/components/I18nProvider'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 
 function VerifyEmailContent({ lang }: { lang: string }) {
   const searchParams = useSearchParams()
-  const t = useTranslations()
+  const router = useRouter()
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
   const [message, setMessage] = useState('')
 
   useEffect(() => {
     const token = searchParams?.get('token')
     if (!token) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStatus('error')
       setMessage('Verification token is missing.')
       return
@@ -68,7 +68,7 @@ function VerifyEmailContent({ lang }: { lang: string }) {
           </div>
           <h2 className="text-lg font-semibold text-primary mb-2">Email verified!</h2>
           <p className="text-sm text-neutral-600 mb-6">{message}</p>
-          <Button className="w-full" onClick={() => { window.location.href = `/${lang}/login` }}>
+          <Button className="w-full" onClick={() => router.push(`/${lang}/login`)}>
             Sign in
           </Button>
         </div>
@@ -86,7 +86,7 @@ function VerifyEmailContent({ lang }: { lang: string }) {
         </div>
         <h2 className="text-lg font-semibold text-primary mb-2">Verification failed</h2>
         <p className="text-sm text-neutral-600 mb-6">{message}</p>
-        <Button variant="outline" className="w-full" onClick={() => { window.location.href = `/${lang}/login` }}>
+        <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)}>
           Back to sign in
         </Button>
       </div>

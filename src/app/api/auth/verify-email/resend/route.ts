@@ -1,7 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { randomBytes } from 'crypto'
 import { connectToDatabase } from '@/lib/db/mongodb'
-import { ObjectId } from 'mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
 
