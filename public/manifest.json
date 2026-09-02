@@ -1,0 +1,17 @@
+{
+  "name": "Bigenda Bite",
+  "short_name": "Bigenda",
+  "description": "Official processes, trusted guides, verified businesses, and alerts for Rwanda. All in one place.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e1b4b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ]
+}

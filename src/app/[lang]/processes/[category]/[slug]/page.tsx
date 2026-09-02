@@ -5,6 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
+import ShareButton from '@/components/ShareButton'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
@@ -187,6 +188,14 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
           </a>
         </section>
       )}
+
+      <div className="mt-8 pt-8 border-t border-neutral-200">
+        <h2 className="text-xl font-semibold text-neutral-700 mb-4">Share this process</h2>
+        <ShareButton
+          title={data?.title || 'Bigenda Bite Process'}
+          url={`${globalThis.process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${process.slug?.current ? `/processes/${process.category}/${process.slug.current}` : ''}`}
+        />
+      </div>
     </PageContainer>
   )
 }

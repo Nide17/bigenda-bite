@@ -11,6 +11,13 @@ export const metadata: Metadata = {
     shortcut: '/favicon.svg',
     apple: '/favicon.svg',
   },
+  manifest: '/manifest.json',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#1e1b4b',
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

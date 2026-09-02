@@ -11,6 +11,19 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['@sanity/client'],
+  async headers() {
+    return [
+      {
+        source: '/manifest.json',
+        headers: [
+          {
+            key: 'Content-Type',
+            value: 'application/manifest+json',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default withBundleAnalyzer({

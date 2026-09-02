@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
+import ShareButton from '@/components/ShareButton'
 import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, howToJsonLd } from '@/lib/seo'
@@ -219,6 +220,14 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </Link>
+      </div>
+
+      <div className="mt-8 pt-8 border-t border-neutral-200">
+        <h2 className="text-xl font-semibold text-neutral-700 mb-4">Share this guide</h2>
+        <ShareButton
+          title={data?.title || 'Bigenda Bite Guide'}
+          url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : ''}`}
+        />
       </div>
     </PageContainer>
   )
