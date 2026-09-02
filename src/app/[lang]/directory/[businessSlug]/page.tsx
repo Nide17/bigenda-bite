@@ -12,7 +12,6 @@ import type { Business } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
 import LeadForm from './LeadForm'
-import LeadForm from './LeadForm'
 
 const baseUrl = 'https://bigendabite.com'
 
