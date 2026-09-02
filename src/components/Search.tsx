@@ -13,6 +13,20 @@ const typeLabels: Record<SearchResultType, string> = {
   alert: 'Alerts',
 }
 
+const conversationalPlaceholders = [
+  'How do I get a SIM card?',
+  'Where to buy a fridge in Kigali?',
+  'Quiet cafes to work from in Kiyovu',
+  'How to use Tap&Go buses',
+]
+
+const quickScenarios = [
+  { label: 'New to Rwanda', query: 'new to Rwanda' },
+  { label: 'I need a clinic', query: 'clinic near me' },
+  { label: 'Starting a business', query: 'register business' },
+  { label: 'Shopping & errands', query: 'shopping markets' },
+]
+
 interface SearchProps {
   lang: string
   placeholder?: string
@@ -21,13 +35,15 @@ interface SearchProps {
   onSearch?: (query: string) => void
 }
 
-export default function Search({ lang, placeholder = 'What do you need to do in Rwanda?', className = '', initialQuery = '', onSearch }: SearchProps) {
+export default function Search({ lang, className = '', initialQuery = '', onSearch }: SearchProps) {
   const [query, setQuery] = useState(initialQuery)
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+  const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0)
   const abortControllerRef = useRef<AbortController | null>(null)
   const initialQueryRef = useRef('')
+  const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.trim().length < 2) {
@@ -90,6 +106,42 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
     return () => clearTimeout(timer)
   }, [query, performSearch])
 
+  useEffect(() => {
+    placeholderIntervalRef.current = setInterval(() => {
+      setCurrentPlaceholderIndex((prev) => (prev + 1) % conversationalPlaceholders.length)
+    }, 3000)
+
+    return () => {
+      if (placeholderIntervalRef.current) {
+        clearInterval(placeholderIntervalRef.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (query) {
+      if (placeholderIntervalRef.current) {
+        clearInterval(placeholderIntervalRef.current)
+        placeholderIntervalRef.current = null
+      }
+    } else {
+      placeholderIntervalRef.current = setInterval(() => {
+        setCurrentPlaceholderIndex((prev) => (prev + 1) % conversationalPlaceholders.length)
+      }, 3000)
+    }
+
+    return () => {
+      if (placeholderIntervalRef.current) {
+        clearInterval(placeholderIntervalRef.current)
+      }
+    }
+  }, [query])
+
+  const handleScenarioClick = (scenarioQuery: string) => {
+    setQuery(scenarioQuery)
+    performSearch(scenarioQuery)
+  }
+
   const groupedResults = results.reduce<Record<SearchResultType, SearchResult[]>>((acc, result) => {
     if (!acc[result.type]) {
       acc[result.type] = []
@@ -104,6 +156,7 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
   })
 
   const totalResults = results.length
+  const displayPlaceholder = conversationalPlaceholders[currentPlaceholderIndex]
 
   return (
     <div className={`w-full ${className}`}>
@@ -112,7 +165,7 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder}
+          placeholder={displayPlaceholder}
           className={`
             w-full
             pl-12 pr-4 py-4
@@ -139,13 +192,29 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
         </div>
       </div>
 
+      {!query && !loading && !hasSearched && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          <span className="text-xs text-neutral-500 mb-1">Try:</span>
+          {quickScenarios.map((scenario) => (
+            <button
+              key={scenario.query}
+              type="button"
+              onClick={() => handleScenarioClick(scenario.query)}
+              className="px-4 py-2 rounded-full border border-neutral-300 text-sm text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1e1b4b]/20"
+            >
+              {scenario.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {hasSearched && !loading && totalResults === 0 && (
         <div className="mt-6">
           <div className="bg-white border border-neutral-200 rounded-xl p-8 text-center">
             <div className="text-4xl mb-3 opacity-40">🔍</div>
             <h3 className="text-lg font-semibold text-neutral-900 mb-2">No results found</h3>
             <p className="text-neutral-600 max-w-md mx-auto">
-              We couldn&apos;t find anything matching &quot;{query}&quot;. Try different keywords or browse the categories below.
+              We couldn't find anything matching "{query}". Try different keywords or browse the categories below.
             </p>
           </div>
         </div>
@@ -154,7 +223,7 @@ export default function Search({ lang, placeholder = 'What do you need to do in 
       {totalResults > 0 && (
         <div className="mt-6 space-y-6">
           <p className="text-sm text-neutral-600">
-            {totalResults} result{totalResults !== 1 ? 's' : ''} for &quot;{query}&quot;
+            {totalResults} result{totalResults !== 1 ? 's' : ''} for "{query}"
           </p>
 
           {(Object.keys(groupedResults) as SearchResultType[]).map((type) => {
