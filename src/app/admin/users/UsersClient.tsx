@@ -71,19 +71,6 @@ export default function UsersClient({ users }: { users: UserRecord[] }) {
     setConfirmAction({ userId, action, data })
   }
 
-  function getRoleBadgeColor(role: string) {
-    switch (role) {
-      case 'superadmin':
-        return 'bg-purple-100 text-purple-800'
-      case 'admin':
-        return 'bg-blue-100 text-blue-800'
-      case 'editor':
-        return 'bg-amber-100 text-amber-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
-  }
-
   return (
     <div className="space-y-4">
       {message && (

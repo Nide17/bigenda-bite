@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import Button from '@/components/ui/Button'
@@ -19,6 +19,7 @@ const POPULAR_PAGES = [
 
 export default function NotFound() {
   const params = useParams()
+  const router = useRouter()
   const lang = (params?.lang as string) || 'en'
   const messages = messagesMap[lang] || messagesMap.en
   const t = (key: string) => messages[key] || key
@@ -43,7 +44,7 @@ export default function NotFound() {
                 if (e.key === 'Enter') {
                   const query = (e.target as HTMLInputElement).value
                   if (query.trim()) {
-                    window.location.href = `/${lang}/search?q=${encodeURIComponent(query.trim())}`
+                    router.push(`/${lang}/search?q=${encodeURIComponent(query.trim())}`)
                   }
                 }
               }}
@@ -53,7 +54,7 @@ export default function NotFound() {
               onClick={() => {
                 const input = document.querySelector('input[type="text"]') as HTMLInputElement
                 if (input?.value?.trim()) {
-                  window.location.href = `/${lang}/search?q=${encodeURIComponent(input.value.trim())}`
+                  router.push(`/${lang}/search?q=${encodeURIComponent(input.value.trim())}`)
                 }
               }}
             >

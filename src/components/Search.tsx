@@ -214,7 +214,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
             <div className="text-4xl mb-3 opacity-40">🔍</div>
             <h3 className="text-lg font-semibold text-neutral-900 mb-2">No results found</h3>
             <p className="text-neutral-600 max-w-md mx-auto">
-              We couldn't find anything matching "{query}". Try different keywords or browse the categories below.
+              We couldn&apos;t find anything matching &quot;{query}&quot;. Try different keywords or browse the categories below.
             </p>
           </div>
         </div>
@@ -223,7 +223,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
       {totalResults > 0 && (
         <div className="mt-6 space-y-6">
           <p className="text-sm text-neutral-600">
-            {totalResults} result{totalResults !== 1 ? 's' : ''} for "{query}"
+            {totalResults} result{totalResults !== 1 ? 's' : ''} for &quot;{query}&quot;
           </p>
 
           {(Object.keys(groupedResults) as SearchResultType[]).map((type) => {
