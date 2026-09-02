@@ -4,6 +4,7 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import TaskBlueprint from '@/components/TaskBlueprint'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
@@ -94,6 +95,8 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
           </span>
         )}
       </div>
+
+      <TaskBlueprint data={process.taskBlueprint} />
 
       {process.steps && process.steps.length > 0 && (
         <section className="mb-10">

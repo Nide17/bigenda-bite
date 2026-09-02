@@ -103,6 +103,45 @@ export const guideType = defineType({
       title: 'Tags',
       of: [{ type: 'string' }],
     }),
+    defineField({
+      name: 'taskBlueprint',
+      type: 'object',
+      title: 'Task Blueprint',
+      description: 'Quick-reference metadata for users completing this task',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({
+          name: 'estimatedTime',
+          type: 'string',
+          title: 'Estimated Time',
+          description: 'e.g. "30 minutes", "1-2 days"',
+        }),
+        defineField({
+          name: 'estimatedCost',
+          type: 'string',
+          title: 'Estimated Cost',
+          description: 'e.g. "1,000 RWF", "Free"',
+        }),
+        defineField({
+          name: 'requiredDocuments',
+          type: 'array',
+          title: 'Required Documents',
+          of: [{ type: 'string' }],
+        }),
+        defineField({
+          name: 'locationHint',
+          type: 'string',
+          title: 'Location Hint',
+          description: 'e.g. "Any MTN store, or via Irembo"',
+        }),
+        defineField({
+          name: 'introvertTip',
+          type: 'text',
+          title: 'Introvert Tip',
+          description: 'e.g. "Go before 10 AM to avoid queues. English is widely understood."',
+        }),
+      ],
+    }),
   ],
 })
 

@@ -34,6 +34,14 @@ export interface Fee {
   conditions?: string
 }
 
+export interface TaskBlueprint {
+  estimatedTime?: string
+  estimatedCost?: string
+  requiredDocuments?: string[]
+  locationHint?: string
+  introvertTip?: string
+}
+
 export interface Process {
   _id: string
   _type?: string
@@ -49,6 +57,7 @@ export interface Process {
   steps?: ProcessStep[]
   fees?: Fee[]
   requiredDocuments?: string[]
+  taskBlueprint?: TaskBlueprint
   officialPortal?: string
   sourceUrl?: string[]
   lastVerifiedDate?: string
@@ -80,6 +89,7 @@ export interface Guide {
   lastReviewedDate?: string
   status?: string
   tags?: string[]
+  taskBlueprint?: TaskBlueprint
 }
 
 export interface Alert {

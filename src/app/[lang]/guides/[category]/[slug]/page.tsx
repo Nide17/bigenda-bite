@@ -7,6 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import TaskBlueprint from '@/components/TaskBlueprint'
 import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, howToJsonLd } from '@/lib/seo'
@@ -113,6 +114,8 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
           </span>
         )}
       </div>
+
+      <TaskBlueprint data={guide.taskBlueprint} />
 
       {guide.steps && guide.steps.length > 0 && (
         <section className="mb-10">
