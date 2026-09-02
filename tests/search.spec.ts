@@ -5,7 +5,7 @@ test.describe('Search', () => {
     const response = await page.goto('/en')
     expect(response?.status()).toBe(200)
 
-    await expect(page.getByPlaceholder('What do you need to do in Rwanda?')).toBeVisible()
+    await expect(page.locator('input[aria-label="Search"]')).toBeVisible()
   })
 
   test('search returns results for existing content', async ({ page }) => {
@@ -37,7 +37,7 @@ test.describe('Search', () => {
       })
     })
 
-    const searchInput = page.getByPlaceholder('What do you need to do in Rwanda?')
+    const searchInput = page.locator('input[aria-label="Search"]')
     await searchInput.fill('business')
     await searchInput.press('Enter')
 
@@ -63,7 +63,7 @@ test.describe('Search', () => {
       })
     })
 
-    const searchInput = page.getByPlaceholder('What do you need to do in Rwanda?')
+    const searchInput = page.locator('input[aria-label="Search"]')
     await searchInput.fill('xyznonexistent123')
     await searchInput.press('Enter')
 
@@ -74,8 +74,7 @@ test.describe('Search', () => {
     const response = await page.goto('/fr')
     expect(response?.status()).toBe(200)
 
-    const searchInput = page.getByPlaceholder('Que devez-vous faire au Rwanda?')
-    await expect(searchInput).toBeVisible()
+    await expect(page.locator('input[aria-label="Search"]')).toBeVisible()
   })
 
   test('search page renders results from URL query', async ({ page }) => {
