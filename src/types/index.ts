@@ -119,6 +119,9 @@ export interface Business {
     email?: string
   }
   leadsEnabled?: boolean
+  englishSpeaking?: boolean
+  acceptsMomo?: boolean
+  bigendaVerified?: boolean
 }
 
 export interface CommunityContribution {

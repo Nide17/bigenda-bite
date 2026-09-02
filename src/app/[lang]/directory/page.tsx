@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
+import Badge from '@/components/ui/Badge'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
@@ -27,14 +28,38 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   })
 }
 
-export default async function DirectoryPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string }> }) {
+interface FilterState {
+  city: string
+  englishSpeaking: boolean
+  acceptsMomo: boolean
+  bigendaVerified: boolean
+}
+
+export default async function DirectoryPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string; englishSpeaking?: string; acceptsMomo?: string; bigendaVerified?: string }> }) {
   const { lang } = await params
-  const { city } = await searchParams
+  const sp = await searchParams
+
+  const filters: FilterState = {
+    city: sp.city || 'all',
+    englishSpeaking: sp.englishSpeaking === '1',
+    acceptsMomo: sp.acceptsMomo === '1',
+    bigendaVerified: sp.bigendaVerified === '1',
+  }
+
   const db = await connectToDatabase()
 
   const query: Record<string, unknown> = {}
-  if (city && city !== 'all') {
-    query.city = city
+  if (filters.city && filters.city !== 'all') {
+    query.city = filters.city
+  }
+  if (filters.englishSpeaking) {
+    query.englishSpeaking = true
+  }
+  if (filters.acceptsMomo) {
+    query.acceptsMomo = true
+  }
+  if (filters.bigendaVerified) {
+    query.bigendaVerified = true
   }
 
   const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray() as unknown as Business[]
@@ -45,6 +70,13 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
     { name: t('directory'), url: `/${lang}/directory` },
   ])
 
+  const activeFilterCount = [
+    filters.englishSpeaking,
+    filters.acceptsMomo,
+    filters.bigendaVerified,
+    filters.city !== 'all',
+  ].filter(Boolean).length
+
   return (
     <PageContainer>
       <JsonLd data={breadcrumbLd} />
@@ -54,8 +86,8 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
       </div>
 
       <form method="get" className="mb-8">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <select name="city" defaultValue={city || 'all'} className="appearance-none pl-4 pr-10 py-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-medium text-neutral-900 shadow-sm hover:border-primary hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-150">
+        <div className="flex flex-col sm:flex-row gap-3 mb-4">
+          <select name="city" defaultValue={filters.city} className="appearance-none pl-4 pr-10 py-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-medium text-neutral-900 shadow-sm hover:border-primary hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-150">
             <option value="all">All Cities</option>
             <option value="Kigali">Kigali</option>
             <option value="Musanze">Musanze</option>
@@ -63,8 +95,54 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
             <option value="Huye">Huye</option>
           </select>
           <button type="submit" className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors">
-            Filter
+            Apply Filters
           </button>
+          {activeFilterCount > 0 && (
+            <Link
+              href={`/${lang}/directory`}
+              className="px-6 py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-lg transition-colors"
+            >
+              Clear ({activeFilterCount})
+            </Link>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <label className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-colors ${filters.englishSpeaking ? 'bg-primary/10 border-primary text-primary' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}>
+            <input
+              type="checkbox"
+              name="englishSpeaking"
+              value="1"
+              defaultChecked={filters.englishSpeaking}
+              className="rounded border-neutral-300 text-primary focus:ring-primary"
+              aria-label="English-Speaking Staff"
+            />
+            <span className="text-sm font-medium">🗣️ English-Speaking Staff</span>
+          </label>
+
+          <label className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-colors ${filters.acceptsMomo ? 'bg-primary/10 border-primary text-primary' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}>
+            <input
+              type="checkbox"
+              name="acceptsMomo"
+              value="1"
+              defaultChecked={filters.acceptsMomo}
+              className="rounded border-neutral-300 text-primary focus:ring-primary"
+              aria-label="Accepts MTN/Airtel MoMo"
+            />
+            <span className="text-sm font-medium">📱 Accepts MTN/Airtel MoMo</span>
+          </label>
+
+          <label className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-colors ${filters.bigendaVerified ? 'bg-primary/10 border-primary text-primary' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}>
+            <input
+              type="checkbox"
+              name="bigendaVerified"
+              value="1"
+              defaultChecked={filters.bigendaVerified}
+              className="rounded border-neutral-300 text-primary focus:ring-primary"
+              aria-label="Bigenda Bite Verified"
+            />
+            <span className="text-sm font-medium">✅ Bigenda Bite Verified</span>
+          </label>
         </div>
       </form>
 
@@ -82,15 +160,32 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
               href={`/${lang}/directory/${business.slug || business._id.toString()}`}
               className="group block bg-white border border-neutral-200 rounded-xl p-6 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-0.5 transition-all duration-200"
             >
-              <h2 className="text-lg font-semibold text-primary group-hover:text-primary-hover transition-colors mb-2">
-                {business.name}
-              </h2>
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <h2 className="text-lg font-semibold text-primary group-hover:text-primary-hover transition-colors">
+                  {business.name}
+                </h2>
+                {business.bigendaVerified && (
+                  <Badge variant="success" className="text-xs">
+                    ✅ Verified
+                  </Badge>
+                )}
+              </div>
               <p className="text-sm text-neutral-600 mb-1">
                 {business.category}
               </p>
               <p className="text-sm text-neutral-500">
                 {business.city || 'Nationwide'}
               </p>
+              {(business.englishSpeaking || business.acceptsMomo) && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {business.englishSpeaking && (
+                    <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full">🗣️ English</span>
+                  )}
+                  {business.acceptsMomo && (
+                    <span className="text-xs px-2 py-0.5 bg-green-50 text-green-700 rounded-full">📱 MoMo</span>
+                  )}
+                </div>
+              )}
             </Link>
           ))}
         </div>
