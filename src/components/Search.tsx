@@ -13,29 +13,17 @@ const typeLabels: Record<SearchResultType, string> = {
   alert: 'Alerts',
 }
 
-const conversationalPlaceholders = [
-  'How do I get a SIM card?',
-  'Where to buy a fridge in Kigali?',
-  'Quiet cafes to work from in Kiyovu',
-  'How to use Tap&Go buses',
-]
-
-const quickScenarios = [
-  { label: 'New to Rwanda', query: 'new to Rwanda' },
-  { label: 'I need a clinic', query: 'clinic near me' },
-  { label: 'Starting a business', query: 'register business' },
-  { label: 'Shopping & errands', query: 'shopping markets' },
-]
-
 interface SearchProps {
   lang: string
   placeholder?: string
   className?: string
   initialQuery?: string
   onSearch?: (query: string) => void
+  placeholders?: string[]
+  scenarios?: { label: string; query: string }[]
 }
 
-export default function Search({ lang, className = '', initialQuery = '', onSearch }: SearchProps) {
+export default function Search({ lang, className = '', initialQuery = '', onSearch, placeholders, scenarios }: SearchProps) {
   const [query, setQuery] = useState(initialQuery)
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -44,6 +32,20 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
   const abortControllerRef = useRef<AbortController | null>(null)
   const initialQueryRef = useRef('')
   const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  const conversationalPlaceholders = placeholders || [
+    'How do I get a SIM card?',
+    'Where to buy a fridge in Kigali?',
+    'Quiet cafes to work from in Kiyovu',
+    'How to use Tap&Go buses',
+  ]
+
+  const quickScenarios = scenarios || [
+    { label: 'New to Rwanda', query: 'new to Rwanda' },
+    { label: 'I need a clinic', query: 'clinic near me' },
+    { label: 'Starting a business', query: 'register business' },
+    { label: 'Shopping & errands', query: 'shopping markets' },
+  ]
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery || searchQuery.trim().length < 2) {
@@ -116,7 +118,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
         clearInterval(placeholderIntervalRef.current)
       }
     }
-  }, [])
+  }, [conversationalPlaceholders.length])
 
   useEffect(() => {
     if (query) {
@@ -135,7 +137,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
         clearInterval(placeholderIntervalRef.current)
       }
     }
-  }, [query])
+  }, [query, conversationalPlaceholders.length])
 
   const handleScenarioClick = (scenarioQuery: string) => {
     setQuery(scenarioQuery)

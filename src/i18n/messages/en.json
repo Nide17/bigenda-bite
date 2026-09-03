@@ -95,5 +95,17 @@
   "not_found_title": "Page not found",
   "not_found_message": "Sorry, we couldn't find the page you're looking for. It might have been moved, deleted, or you entered the wrong URL.",
   "not_found_search_help": "Try searching for what you need:",
-  "not_found_popular_pages": "Popular pages"
+  "not_found_popular_pages": "Popular pages",
+  "search_placeholder_1": "How do I get a SIM card?",
+  "search_placeholder_2": "Where to buy a fridge in Kigali?",
+  "search_placeholder_3": "Quiet cafes to work from in Kiyovu",
+  "search_placeholder_4": "How to use Tap&Go buses",
+  "search_scenario_1": "New to Rwanda",
+  "search_scenario_1_query": "new to Rwanda",
+  "search_scenario_2": "I need a clinic",
+  "search_scenario_2_query": "clinic near me",
+  "search_scenario_3": "Starting a business",
+  "search_scenario_3_query": "register business",
+  "search_scenario_4": "Shopping & errands",
+  "search_scenario_4_query": "shopping markets"
 }

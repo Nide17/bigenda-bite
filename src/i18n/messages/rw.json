@@ -80,5 +80,17 @@
   "not_found_title": "Iri papu ntiribonetse",
   "not_found_message": "Iri papu ushaka nturibaho. Ryarahimuriwe, ryasibwe cyangwa winjije nabi URL.",
   "not_found_search_help": "Gerageza gushaka uko ushaka:",
-  "not_found_popular_pages": "Amapapu akunze"
+  "not_found_popular_pages": "Amapapu akunze",
+  "search_placeholder_1": "Nibyo nakora guhindura kardiyo SIM?",
+  "search_placeholder_2": "Niko gihari cyo guharura gira friji mu Kigali?",
+  "search_placeholder_3": "Kahekano ka kafe kigize kuri Kiyovu",
+  "search_placeholder_4": "Nibyo nakora gukoresha bisi ya Tap&Go",
+  "search_scenario_1": "Nagije mu Rwanda",
+  "search_scenario_1_query": "new to Rwanda",
+  "search_scenario_2": "Nshaka kliniki",
+  "search_scenario_2_query": "clinic near me",
+  "search_scenario_3": "Gushaka ushuri",
+  "search_scenario_3_query": "register business",
+  "search_scenario_4": "Gucura cyangwa gucana",
+  "search_scenario_4_query": "shopping markets"
 }

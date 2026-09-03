@@ -81,7 +81,22 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 {t('hero_task_subtitle')}
               </p>
               <div className="mb-6">
-                <Search lang={lang} placeholder={t('search_placeholder')} />
+                <Search
+                  lang={lang}
+                  placeholder={t('search_placeholder')}
+                  placeholders={[
+                    t('search_placeholder_1'),
+                    t('search_placeholder_2'),
+                    t('search_placeholder_3'),
+                    t('search_placeholder_4'),
+                  ]}
+                  scenarios={[
+                    { label: t('search_scenario_1'), query: t('search_scenario_1_query') },
+                    { label: t('search_scenario_2'), query: t('search_scenario_2_query') },
+                    { label: t('search_scenario_3'), query: t('search_scenario_3_query') },
+                    { label: t('search_scenario_4'), query: t('search_scenario_4_query') },
+                  ]}
+                />
               </div>
               <div className="flex items-center justify-center gap-2 text-white/90">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">

@@ -33,7 +33,23 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
         <div className="max-w-3xl mx-auto mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('search_title')}</h1>
           <p className="text-neutral-600 mb-6">{t('search_subtitle')}</p>
-          <Search lang={lang} placeholder={t('search_placeholder')} initialQuery={q || ''} />
+          <Search
+            lang={lang}
+            placeholder={t('search_placeholder')}
+            initialQuery={q || ''}
+            placeholders={[
+              t('search_placeholder_1'),
+              t('search_placeholder_2'),
+              t('search_placeholder_3'),
+              t('search_placeholder_4'),
+            ]}
+            scenarios={[
+              { label: t('search_scenario_1'), query: t('search_scenario_1_query') },
+              { label: t('search_scenario_2'), query: t('search_scenario_2_query') },
+              { label: t('search_scenario_3'), query: t('search_scenario_3_query') },
+              { label: t('search_scenario_4'), query: t('search_scenario_4_query') },
+            ]}
+          />
         </div>
 
         <Suspense fallback={<div className="text-neutral-600">Loading...</div>}>
