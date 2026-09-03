@@ -64,6 +64,8 @@ export interface Process {
   confidenceScore?: number
   status?: string
   tags?: string[]
+  beforeYouGo?: string[]
+  foreignerNotes?: string[]
 }
 
 export interface Guide {

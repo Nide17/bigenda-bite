@@ -1,10 +1,12 @@
 import { getProcessBySlug } from '@/lib/cms/sanity'
+import { getSession } from '@/lib/auth/session'
 import { notFound } from 'next/navigation'
 import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
+import BeforeYouGo from '@/components/BeforeYouGo'
 import ShareButton from '@/components/ShareButton'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
@@ -41,6 +43,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function ProcessDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
   const process = await getProcessBySlug(slug)
+  const session = await getSession()
+  const isForeigner = session?.user?.isForeigner ?? false
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
   const t = (key: string) => messages[key] || key
 
@@ -98,6 +102,12 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
       </div>
 
       <TaskBlueprint data={process.taskBlueprint} />
+
+      <BeforeYouGo
+        beforeYouGo={process.beforeYouGo}
+        foreignerNotes={process.foreignerNotes}
+        showForeignerNotes={isForeigner}
+      />
 
       {process.steps && process.steps.length > 0 && (
         <section className="mb-10">

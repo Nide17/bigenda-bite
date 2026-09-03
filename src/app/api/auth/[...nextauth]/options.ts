@@ -15,6 +15,7 @@ interface CustomUser extends User {
   id: string
   role: string
   displayName: string
+  isForeigner: boolean
 }
 
 export interface AppSession {
@@ -23,6 +24,7 @@ export interface AppSession {
     email: string
     displayName: string
     role: string
+    isForeigner: boolean
   }
   expires: string
 }
@@ -82,6 +84,7 @@ export const authOptions: AuthOptions = {
             email: user.email,
             displayName: user.displayName,
             role: user.role,
+            isForeigner: user.isForeigner || false,
           }
         } catch (error) {
           console.error('Auth authorize error:', error)
@@ -96,6 +99,7 @@ export const authOptions: AuthOptions = {
         const customUser = user as CustomUser
         token.role = customUser.role
         token.displayName = customUser.displayName
+        token.isForeigner = customUser.isForeigner
       }
       return token
     },
@@ -105,6 +109,7 @@ export const authOptions: AuthOptions = {
         customUser.id = token.sub!
         customUser.role = token.role as string
         customUser.displayName = token.displayName as string
+        customUser.isForeigner = token.isForeigner as boolean ?? false
       }
       return session
     },
@@ -121,6 +126,7 @@ export const authOptions: AuthOptions = {
               displayName: user.name || user.email || 'Google User',
               emailVerified: true,
               emailVerifiedAt: new Date(),
+              isForeigner: false,
             },
           }
         )

@@ -11,6 +11,7 @@ interface UserProfile {
   email: string
   role: string
   emailVerified: boolean
+  isForeigner: boolean
 }
 
 function AccountSettingsContent({ lang }: { lang: string }) {
@@ -26,6 +27,7 @@ function AccountSettingsContent({ lang }: { lang: string }) {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [isForeigner, setIsForeigner] = useState(false)
   const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [passwordLoading, setPasswordLoading] = useState(false)
 
@@ -44,6 +46,7 @@ function AccountSettingsContent({ lang }: { lang: string }) {
           setProfile(data)
           setDisplayName(data.displayName)
           setEmail(data.email)
+          setIsForeigner(data.isForeigner || false)
         }
         setLoading(false)
       })
@@ -60,14 +63,14 @@ function AccountSettingsContent({ lang }: { lang: string }) {
     const res = await fetch('/api/account', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ displayName, email }),
+      body: JSON.stringify({ displayName, email, isForeigner }),
     })
 
     const data = await res.json().catch(() => ({}))
 
     if (res.ok) {
       setProfileMessage({ type: 'success', text: 'Profile updated successfully.' })
-      setProfile((prev) => prev ? { ...prev, displayName, email } : prev)
+      setProfile((prev) => prev ? { ...prev, displayName, email, isForeigner } : prev)
     } else {
       setProfileMessage({ type: 'error', text: data.error || 'Failed to update profile.' })
     }
@@ -149,6 +152,29 @@ function AccountSettingsContent({ lang }: { lang: string }) {
           <div className="flex items-center gap-2">
             <span className="text-sm text-neutral-500">Role:</span>
             <span className="text-sm font-medium text-primary capitalize">{profile.role}</span>
+          </div>
+          <div className="flex items-start justify-between py-3 border-t border-neutral-200">
+            <div className="space-y-1">
+              <label className="text-sm font-medium text-neutral-700">Foreigner Mode</label>
+              <p className="text-xs text-neutral-500">
+                Show content specific to non-Rwandan visitors (e.g. visa info, foreigner-exclusive tips).
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsForeigner(!isForeigner)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                isForeigner ? 'bg-primary' : 'bg-neutral-300'
+              }`}
+              aria-checked={isForeigner}
+              role="switch"
+            >
+              <span
+                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${
+                  isForeigner ? 'translate-x-5' : 'translate-x-1'
+                }`}
+              />
+            </button>
           </div>
           <div className="flex justify-end">
             <Button type="submit" loading={profileLoading}>

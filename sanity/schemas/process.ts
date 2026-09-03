@@ -144,6 +144,20 @@ export const processType = defineType({
         }),
       ],
     }),
+    defineField({
+      name: 'beforeYouGo',
+      type: 'array',
+      title: 'Before You Go',
+      description: 'Essential tips shown on the process page (e.g. "Bring exact change", "Arrive before 11 AM")',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'foreignerNotes',
+      type: 'array',
+      title: 'Foreigner Notes',
+      description: 'Tips specific to non-Rwandan users (e.g. "Mutuelle de Santé is Rwanda\'s public health insurance")',
+      of: [{ type: 'string' }],
+    }),
   ],
 })
 

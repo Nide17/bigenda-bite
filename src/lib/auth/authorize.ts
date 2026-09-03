@@ -8,6 +8,7 @@ export type AuthenticatedSession = {
     email: string
     displayName: string
     role: string
+    isForeigner: boolean
   }
   expires: string
 }

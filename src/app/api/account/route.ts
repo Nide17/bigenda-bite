@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
       email: user.email,
       role: user.role,
       emailVerified: user.emailVerified || false,
+      isForeigner: user.isForeigner || false,
     })
   } catch (error) {
     console.error('Get account error:', error)
@@ -42,12 +43,12 @@ export async function PATCH(request: NextRequest) {
 
     const session = auth.session!
 
-    const parsed = await parseJson<{ displayName?: string; email?: string }>(request)
+    const parsed = await parseJson<{ displayName?: string; email?: string; isForeigner?: boolean }>(request)
     if (!parsed.ok) return parsed.response
 
-    const { displayName, email } = parsed.data
+    const { displayName, email, isForeigner } = parsed.data
 
-    if (!displayName && !email) {
+    if (!displayName && !email && isForeigner === undefined) {
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 })
     }
 
@@ -71,6 +72,10 @@ export async function PATCH(request: NextRequest) {
       }
       update.email = email
       update.emailVerified = false
+    }
+
+    if (isForeigner !== undefined) {
+      update.isForeigner = isForeigner
     }
 
     if (Object.keys(update).length > 0) {
