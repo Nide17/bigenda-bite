@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getProcesses, getGuides, getAlerts } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
+import { deduplicateAlerts } from '@/components/AlertsSection'
 import type { SearchResponse, SearchResult } from '@/types/search'
 
 const SUPPORTED_LANGUAGES = ['en', 'fr', 'rw'] as const
@@ -56,12 +57,13 @@ export async function GET(request: Request) {
     }
 
     const queryTokens = tokenize(query)
-    const [processes, guides, alerts, db] = await Promise.all([
+    const [processes, guides, alertsResult, db] = await Promise.all([
       getProcesses(lang),
       getGuides(lang),
       getAlerts(),
       connectToDatabase(),
     ])
+    const alerts = deduplicateAlerts(alertsResult)
 
     const results: SearchResult[] = []
 
