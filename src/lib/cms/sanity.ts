@@ -31,7 +31,7 @@ export const getProcessBySlug = cache(
     const client = createSanityClient()
     if (!client) return null
     return client.fetch<Process | null>(
-      `*[_type == "process" && slug.current == $slug && status == "published"][0]`,
+      `*[_type == "process" && (slug.current == $slug || _id == $slug) && status == "published"][0]`,
       { slug }
     )
   }
@@ -54,7 +54,7 @@ export const getGuideBySlug = cache(
     const client = createSanityClient()
     if (!client) return null
     return client.fetch<Guide | null>(
-      `*[_type == "guide" && slug.current == $slug && status == "published"][0]`,
+      `*[_type == "guide" && (slug.current == $slug || _id == $slug) && status == "published"][0]`,
       { slug }
     )
   }
