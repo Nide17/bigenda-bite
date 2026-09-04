@@ -19,12 +19,6 @@ const navItems: NavItem[] = [
   { href: '/search', labelKey: 'search' },
 ]
 
-const secondaryNavItems: NavItem[] = [
-  { href: '/login', labelKey: 'sign_in' },
-  { href: '/account', labelKey: 'account' },
-  { href: '/membership', labelKey: 'membership' },
-]
-
 const LANG_OPTIONS = [
   { code: 'en', labelKey: 'lang_en' },
   { code: 'fr', labelKey: 'lang_fr' },
@@ -33,14 +27,14 @@ const LANG_OPTIONS = [
 
 function LangSwitcher({ currentLang }: { currentLang: string }) {
   return (
-    <div className="inline-flex items-center gap-1 bg-neutral-100 rounded-lg p-1" role="group" aria-label="Language">
+    <div className="inline-flex items-center gap-0.5 bg-neutral-100 rounded-lg p-0.5" role="group" aria-label="Language">
       {LANG_OPTIONS.map((lang) => {
         const isActive = currentLang === lang.code
         return (
           <Link
             key={lang.code}
             href={`/${lang.code}`}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+            className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
               isActive
                 ? 'bg-white text-[#1e1b4b] shadow-sm'
                 : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -57,10 +51,12 @@ function LangSwitcher({ currentLang }: { currentLang: string }) {
 
 export default function Navigation({ lang }: { lang: string }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [accountOpen, setAccountOpen] = useState(false)
   const pathname = usePathname() || ''
   const t = useTranslations()
   const menuRef = useRef<HTMLDivElement>(null)
   const toggleRef = useRef<HTMLButtonElement>(null)
+  const accountRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
 
   const isActive = (href: string) =>
@@ -141,31 +137,39 @@ export default function Navigation({ lang }: { lang: string }) {
     }
   }, [pathname, mobileOpen, closeMenu])
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
+        setAccountOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-8">
+        <div className="flex items-center justify-between h-14">
+          <div className="flex items-center gap-6">
             <Link
               href={`/${lang}`}
-              className={`flex items-center gap-2.5 group ${
-                isHome ? 'text-[#1e1b4b]' : 'text-neutral-900'
-              }`}
+              className={`flex items-center gap-2 group ${isHome ? 'text-[#1e1b4b]' : 'text-neutral-900'}`}
             >
-              <div className="w-8 h-8 bg-[#1e1b4b] rounded-lg flex items-center justify-center text-white font-bold text-sm group-hover:bg-[#312e6b] transition-colors">
+              <div className="w-7 h-7 bg-[#1e1b4b] rounded-md flex items-center justify-center text-white font-bold text-xs group-hover:bg-[#312e6b] transition-colors">
                 BB
               </div>
-              <span className="font-bold text-lg text-[#1e1b4b] tracking-tight hidden sm:block">
+              <span className="font-bold text-base text-[#1e1b4b] tracking-tight hidden sm:block">
                 Bigenda Bite
               </span>
             </Link>
-            <nav className="hidden md:flex items-center gap-1" aria-label="Main">
+            <nav className="hidden md:flex items-center gap-0.5" aria-label="Main">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={`/${lang}${item.href}`}
                   className={`
-                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
+                    px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150
                     ${isActive(`/${lang}${item.href}`)
                       ? 'bg-[#eef2ff] text-[#1e1b4b]'
                       : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -177,23 +181,57 @@ export default function Navigation({ lang }: { lang: string }) {
               ))}
             </nav>
           </div>
-          <div className="flex items-center gap-3">
+
+          <div className="flex items-center gap-2">
             <nav className="hidden md:flex items-center gap-1" aria-label="Account">
-              {secondaryNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={`/${lang}${item.href}`}
+              <Link
+                href={`/${lang}/login`}
+                className={`
+                  px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150
+                  ${isActive(`/${lang}/login`)
+                    ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                    : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                  }
+                `}
+              >
+                {t('sign_in')}
+              </Link>
+              <div className="relative" ref={accountRef}>
+                <button
+                  onClick={() => setAccountOpen(!accountOpen)}
                   className={`
-                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150
-                    ${isActive(`/${lang}${item.href}`)
+                    px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150 flex items-center gap-1
+                    ${isActive(`/${lang}/account`) || isActive(`/${lang}/membership`)
                       ? 'bg-[#eef2ff] text-[#1e1b4b]'
                       : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
                     }
                   `}
+                  aria-expanded={accountOpen}
                 >
-                  {t(item.labelKey)}
-                </Link>
-              ))}
+                  {t('account')}
+                  <svg className="w-3.5 h-3.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {accountOpen && (
+                  <div className="absolute right-0 mt-1 w-40 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
+                    <Link
+                      href={`/${lang}/account`}
+                      className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                      onClick={() => setAccountOpen(false)}
+                    >
+                      {t('account')}
+                    </Link>
+                    <Link
+                      href={`/${lang}/membership`}
+                      className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                      onClick={() => setAccountOpen(false)}
+                    >
+                      {t('membership')}
+                    </Link>
+                  </div>
+                )}
+              </div>
             </nav>
             <LangSwitcher currentLang={lang} />
             <NotificationBell />
@@ -227,7 +265,7 @@ export default function Navigation({ lang }: { lang: string }) {
                 href={`/${lang}${item.href}`}
                 onClick={closeMenu}
                 className={`
-                  block min-h-[44px] flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors
+                  block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                   ${isActive(`/${lang}${item.href}`)
                     ? 'bg-[#eef2ff] text-[#1e1b4b]'
                     : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -237,22 +275,29 @@ export default function Navigation({ lang }: { lang: string }) {
                 {t(item.labelKey)}
               </Link>
             ))}
-            {secondaryNavItems.map((item) => (
+            <div className="border-t border-neutral-100 pt-1 mt-1">
               <Link
-                key={item.href}
-                href={`/${lang}${item.href}`}
+                href={`/${lang}/account`}
                 onClick={closeMenu}
-                className={`
-                  block min-h-[44px] flex items-center px-3 py-3 rounded-lg text-sm font-medium transition-colors
-                  ${isActive(`/${lang}${item.href}`)
-                    ? 'bg-[#eef2ff] text-[#1e1b4b]'
-                    : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
-                  }
-                `}
+                className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
               >
-                {t(item.labelKey)}
+                {t('account')}
               </Link>
-            ))}
+              <Link
+                href={`/${lang}/membership`}
+                onClick={closeMenu}
+                className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+              >
+                {t('membership')}
+              </Link>
+              <Link
+                href={`/${lang}/login`}
+                onClick={closeMenu}
+                className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+              >
+                {t('sign_in')}
+              </Link>
+            </div>
           </nav>
         </div>
       )}
