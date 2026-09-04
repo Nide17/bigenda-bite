@@ -39,10 +39,6 @@
     transition: color 150ms ease;
   }
 
-  a:hover {
-    color: #312e6b;
-  }
-
   img {
     max-width: 100%;
     height: auto;
