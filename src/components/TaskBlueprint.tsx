@@ -1,61 +1,20 @@
+'use client'
+
+import { useState, useCallback } from 'react'
 import Card from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
+import { Clock, Banknote, FileCheck, MapPin, MessageSquare, Check, Copy, CheckCheck } from 'lucide-react'
 import type { TaskBlueprint } from '@/types'
 
 interface TaskBlueprintProps {
   data?: TaskBlueprint
 }
 
-function IconClock() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  )
-}
-
-function IconBanknote() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-    </svg>
-  )
-}
-
-function IconFileText() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-    </svg>
-  )
-}
-
-function IconMapPin() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  )
-}
-
-function IconLightbulb() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-    </svg>
-  )
-}
-
-function IconClipboard() {
-  return (
-    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-    </svg>
-  )
-}
+const iconClass = 'w-5 h-5 flex-shrink-0 mt-0.5'
 
 export default function TaskBlueprint({ data }: TaskBlueprintProps) {
-  if (!data) return null
+  const [checkedDocs, setCheckedDocs] = useState<Set<number>>(new Set())
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
   const {
     estimatedTime,
@@ -65,69 +24,123 @@ export default function TaskBlueprint({ data }: TaskBlueprintProps) {
     culturalContext,
     copyPasteScripts,
     introvertTip,
-  } = data
+  } = data || {}
 
+  const totalCost = costBreakdown?.reduce((sum, item) => sum + (item.amountRWF || 0), 0) || 0
   const hasQuickInfo =
     estimatedTime ||
     (costBreakdown && costBreakdown.length > 0) ||
     (documentChecklist && documentChecklist.length > 0) ||
     physicalLocation
-
   const hasCulturalContext = culturalContext && culturalContext.trim().length > 0
   const hasScripts = copyPasteScripts && copyPasteScripts.length > 0
+
+  const toggleDoc = useCallback((index: number) => {
+    setCheckedDocs((prev) => {
+      const next = new Set(prev)
+      if (next.has(index)) {
+        next.delete(index)
+      } else {
+        next.add(index)
+      }
+      return next
+    })
+  }, [])
+
+  const copyToClipboard = useCallback(async (text: string, index: number) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 2000)
+    } catch {
+      console.error('Failed to copy')
+    }
+  }, [])
 
   if (!hasQuickInfo && !hasCulturalContext && !hasScripts && !introvertTip) return null
 
   return (
     <div className="mb-8">
       {hasQuickInfo && (
-        <Card className="p-5 mb-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Card className="p-4 sm:p-5 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
             {estimatedTime && (estimatedTime.online || estimatedTime.inPerson) && (
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-                  <IconClock />
+                <div className={`${iconClass} text-primary`}>
+                  <Clock />
                 </div>
-                <div>
-                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Time</p>
-                  {estimatedTime.online && <p className="text-sm font-semibold text-neutral-900">Online: {estimatedTime.online}</p>}
-                  {estimatedTime.inPerson && <p className="text-sm font-semibold text-neutral-900">In Person: {estimatedTime.inPerson}</p>}
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Time</p>
+                  {estimatedTime.online && (
+                    <p className="text-sm font-semibold text-neutral-900">Online: {estimatedTime.online}</p>
+                  )}
+                  {estimatedTime.inPerson && (
+                    <p className="text-sm font-semibold text-neutral-900">In Person: {estimatedTime.inPerson}</p>
+                  )}
                 </div>
               </div>
             )}
 
-            {costBreakdown && costBreakdown.length > 0 && (
+            {(costBreakdown && costBreakdown.length > 0) && (
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-                  <IconBanknote />
+                <div className={`${iconClass} text-primary`}>
+                  <Banknote />
                 </div>
-                <div>
-                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Cost</p>
-                  <ul className="text-sm text-neutral-900 space-y-0.5">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Cost</p>
+                  <ul className="text-sm text-neutral-900 space-y-1">
                     {costBreakdown.map((cost, index) => (
                       <li key={index} className="flex justify-between gap-2">
-                        <span>{cost.item}</span>
-                        <span className="font-semibold">{cost.amountRWF?.toLocaleString()} RWF</span>
+                        <span className="truncate">{cost.item}</span>
+                        <span className="font-semibold whitespace-nowrap">{cost.amountRWF?.toLocaleString()} RWF</span>
                       </li>
                     ))}
                   </ul>
+                  {totalCost > 0 && (
+                    <div className="mt-2 pt-2 border-t border-neutral-200">
+                      <p className="text-sm font-bold text-primary">
+                        Total: {totalCost.toLocaleString()} RWF
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
             {documentChecklist && documentChecklist.length > 0 && (
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-                  <IconFileText />
+                <div className={`${iconClass} text-primary`}>
+                  <FileCheck />
                 </div>
-                <div>
-                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Documents</p>
-                  <ul className="text-sm text-neutral-900 space-y-1">
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-2">Documents</p>
+                  <ul className="space-y-2">
                     {documentChecklist.map((doc, index) => (
-                      <li key={index}>
-                        <span className="font-medium">{doc.documentName}</span>
-                        {doc.isRequired ? '' : <span className="text-neutral-500"> (optional)</span>}
-                        {doc.fallbackOption && <p className="text-xs text-neutral-500">{doc.fallbackOption}</p>}
+                      <li
+                        key={index}
+                        className={`flex items-start gap-2 text-sm transition-colors ${
+                          checkedDocs.has(index) ? 'text-neutral-400' : 'text-neutral-900'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => toggleDoc(index)}
+                          className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 transition-colors ${
+                            checkedDocs.has(index)
+                              ? 'bg-primary border-primary text-white'
+                              : 'border-neutral-300 hover:border-primary'
+                          }`}
+                          aria-label={`${checkedDocs.has(index) ? 'Uncheck' : 'Check'} ${doc.documentName}`}
+                        >
+                          {checkedDocs.has(index) && <Check className="w-3 h-3" />}
+                        </button>
+                        <div className="min-w-0">
+                          <span className="font-medium">{doc.documentName}</span>
+                          {!doc.isRequired && <span className="text-neutral-500 ml-1">(optional)</span>}
+                          {doc.fallbackOption && (
+                            <p className="text-xs text-neutral-500 mt-0.5">{doc.fallbackOption}</p>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>
@@ -137,14 +150,21 @@ export default function TaskBlueprint({ data }: TaskBlueprintProps) {
 
             {physicalLocation && (physicalLocation.description || physicalLocation.mapsLink) && (
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-                  <IconMapPin />
+                <div className={`${iconClass} text-primary`}>
+                  <MapPin />
                 </div>
-                <div>
-                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Where</p>
-                  {physicalLocation.description && <p className="text-sm font-semibold text-neutral-900">{physicalLocation.description}</p>}
+                <div className="min-w-0">
+                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Where</p>
+                  {physicalLocation.description && (
+                    <p className="text-sm font-semibold text-neutral-900">{physicalLocation.description}</p>
+                  )}
                   {physicalLocation.mapsLink && (
-                    <a href={physicalLocation.mapsLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:text-primary-hover">
+                    <a
+                      href={physicalLocation.mapsLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:text-primary-hover underline underline-offset-2 mt-1 inline-block"
+                    >
                       View on Map
                     </a>
                   )}
@@ -172,21 +192,40 @@ export default function TaskBlueprint({ data }: TaskBlueprintProps) {
       )}
 
       {hasScripts && (
-        <Card className="p-5 mb-4">
+        <Card className="p-4 sm:p-5 mb-4">
           <div className="flex items-center gap-2 mb-3">
             <div className="flex-shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-              <IconClipboard />
+              <MessageSquare className="w-4 h-4" />
             </div>
             <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Copy-Paste Scripts</p>
           </div>
           <div className="space-y-3">
             {copyPasteScripts.map((script, index) => (
               <div key={index} className="bg-neutral-50 rounded-lg p-3">
-                <div className="flex items-center gap-2 mb-1">
+                <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-xs font-medium text-neutral-600 uppercase">{script.language}</span>
                   <span className="text-xs text-neutral-500">• {script.scenario}</span>
                 </div>
-                <p className="text-sm text-neutral-800 whitespace-pre-wrap">{script.text}</p>
+                <div className="flex items-start gap-2">
+                  <p className="text-sm text-neutral-800 whitespace-pre-wrap flex-1">{script.text}</p>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => copyToClipboard(script.text || '', index)}
+                    className="flex-shrink-0 h-8 w-8 p-0"
+                    aria-label="Copy script"
+                  >
+                    {copiedIndex === index ? (
+                      <CheckCheck className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </Button>
+                </div>
+                {copiedIndex === index && (
+                  <p className="text-xs text-emerald-600 mt-1 font-medium">Copied!</p>
+                )}
               </div>
             ))}
           </div>
@@ -197,7 +236,9 @@ export default function TaskBlueprint({ data }: TaskBlueprintProps) {
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 w-8 h-8 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mt-0.5">
-              <IconLightbulb />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
             </div>
             <div>
               <p className="text-xs font-medium text-blue-600 uppercase tracking-wide mb-1">Pro Tip</p>
