@@ -6,11 +6,6 @@ import GoogleProvider from 'next-auth/providers/google'
 import type { User } from 'next-auth'
 import type { AuthOptions } from 'next-auth'
 
-const mongoClient = process.env.MONGODB_URI
-  ? new MongoClient(process.env.MONGODB_URI)
-  : null
-mongoClient?.connect().catch((err) => console.error('MongoDB adapter connection error:', err))
-
 function validateEnv() {
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     console.error('Auth: GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET must be set')
@@ -24,6 +19,15 @@ function validateEnv() {
 }
 
 validateEnv()
+
+async function createMongoClient(): Promise<MongoClient> {
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI is not set')
+  }
+  const client = new MongoClient(process.env.MONGODB_URI)
+  await client.connect()
+  return client
+}
 
 interface CustomUser extends User {
   id: string
@@ -44,7 +48,7 @@ export interface AppSession {
 }
 
 export const authOptions: AuthOptions = {
-  ...(mongoClient ? { adapter: MongoDBAdapter(mongoClient) } : {}),
+  adapter: MongoDBAdapter(createMongoClient),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || process.env.AUTH_GOOGLE_ID || '',
