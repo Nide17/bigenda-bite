@@ -1,12 +1,11 @@
 import { getProcesses, getGuides, getAlerts } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { getCityFromCookie } from '@/lib/city'
-import AdBanner from '@/components/AdBanner'
 import AlertsSection from '@/components/AlertsSection'
-import CitySelector from '@/components/CitySelector'
 import Search from '@/components/Search'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
+import Card from '@/components/ui/Card'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
@@ -71,45 +70,41 @@ export default async function HomePage({ params, searchParams }: { params: Promi
   return (
     <div className="min-h-screen">
       <header>
-        <section className="bg-[#1e1b4b] text-white py-12 md:py-16">
+        <section className="bg-[#1e1b4b] text-white py-16 md:py-24">
           <PageContainer maxWidth="xl">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight">
                 {t('hero_task_title')}
               </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8">
+              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-10">
                 {t('hero_task_subtitle')}
               </p>
-              <div className="mb-6">
-                <Search
-                  lang={lang}
-                  placeholder={t('search_placeholder')}
-                  placeholders={[
-                    t('search_placeholder_1'),
-                    t('search_placeholder_2'),
-                    t('search_placeholder_3'),
-                    t('search_placeholder_4'),
-                  ]}
-                  scenarios={[
-                    { label: t('search_scenario_1'), query: t('search_scenario_1_query') },
-                    { label: t('search_scenario_2'), query: t('search_scenario_2_query') },
-                    { label: t('search_scenario_3'), query: t('search_scenario_3_query') },
-                    { label: t('search_scenario_4'), query: t('search_scenario_4_query') },
-                  ]}
-                />
+
+              <div className="mb-8">
+                <div className="bg-white rounded-2xl p-2 shadow-2xl shadow-black/20">
+                  <Search
+                    lang={lang}
+                    placeholder={t('search_placeholder')}
+                    placeholders={[
+                      t('search_placeholder_1'),
+                      t('search_placeholder_2'),
+                      t('search_placeholder_3'),
+                      t('search_placeholder_4'),
+                    ]}
+                    scenarios={[
+                      { label: t('search_scenario_1'), query: t('search_scenario_1_query') },
+                      { label: t('search_scenario_2'), query: t('search_scenario_2_query') },
+                      { label: t('search_scenario_3'), query: t('search_scenario_3_query') },
+                      { label: t('search_scenario_4'), query: t('search_scenario_4_query') },
+                    ]}
+                  />
+                </div>
               </div>
-              <div className="flex items-center justify-center gap-2 text-white/90">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span className="font-medium text-sm">{t('all_cities')}:</span>
-                <CitySelector cityName={cityName} />
-              </div>
-              <div className="flex items-center justify-center gap-3 mt-6">
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href={`/${lang}/processes`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-accent hover:bg-accent-hover text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl"
                 >
                   {t('browse_processes')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -118,7 +113,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 </Link>
                 <Link
                   href={`/${lang}/guides`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all border border-white/20"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20"
                 >
                   {t('read_guides')}
                 </Link>
@@ -130,39 +125,8 @@ export default async function HomePage({ params, searchParams }: { params: Promi
 
       <main>
         <PageContainer maxWidth="xl">
-          {processes.length > 0 && (
-            <section className="py-10 md:py-14" aria-labelledby="popular-tasks-heading">
-              <div className="max-w-2xl mb-6">
-                <h2 id="popular-tasks-heading" className="text-xl md:text-2xl font-bold text-primary mb-2">
-                  {t('popular_tasks_title')}
-                </h2>
-                <p className="text-neutral-600">
-                  {t('popular_tasks_subtitle')}
-                </p>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {processes.slice(0, 6).map((process: Process) => (
-                  <Link
-                    key={process._id}
-                    href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
-                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
-                  >
-                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
-                      {process.translations?.[lang]?.title || process.translations?.en?.title}
-                    </h3>
-                    {(process.translations?.[lang]?.summary || process.translations?.en?.summary) && (
-                      <p className="text-sm text-neutral-600 leading-relaxed line-clamp-2">
-                        {process.translations?.[lang]?.summary || process.translations?.en?.summary}
-                      </p>
-                    )}
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
           {alerts.length > 0 && (
-            <section className="py-6" aria-labelledby="alerts-heading">
+            <section className="py-8" aria-labelledby="alerts-heading">
               <AlertsSection
                 alerts={alerts.slice(0, 3)}
                 lang={lang}
@@ -178,15 +142,49 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 <h2 id="categories-heading" className="text-xl md:text-2xl font-bold text-primary mb-2">
                   {t('browse_by_category_title')}
                 </h2>
+                <p className="text-neutral-600">
+                  Explore official processes and how-to guides by topic.
+                </p>
               </div>
               <div className="flex flex-wrap gap-3">
                 {categories.map((category) => (
                   <Link
                     key={category}
                     href={`/${lang}/processes?category=${encodeURIComponent(category)}`}
-                    className="px-4 py-2 bg-white border border-neutral-200 rounded-lg text-sm font-medium text-neutral-700 hover:border-primary hover:text-primary transition-colors"
+                    className="px-4 py-2.5 bg-white border border-neutral-200 rounded-xl text-sm font-medium text-neutral-700 hover:border-primary hover:text-primary transition-colors shadow-sm"
                   >
                     {category}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {processes.length > 0 && (
+            <section className="py-10 md:py-14" aria-labelledby="popular-tasks-heading">
+              <div className="max-w-2xl mb-6">
+                <h2 id="popular-tasks-heading" className="text-xl md:text-2xl font-bold text-primary mb-2">
+                  {t('popular_tasks_title')}
+                </h2>
+                <p className="text-neutral-600">
+                  {t('popular_tasks_subtitle')}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                {processes.slice(0, 6).map((process: Process) => (
+                  <Link
+                    key={process._id}
+                    href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
+                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
+                  >
+                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
+                      {process.translations?.[lang]?.title || process.translations?.en?.title}
+                    </h3>
+                    {(process.translations?.[lang]?.summary || process.translations?.en?.summary) && (
+                      <p className="text-sm text-neutral-600 leading-relaxed line-clamp-2">
+                        {process.translations?.[lang]?.summary || process.translations?.en?.summary}
+                      </p>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -281,7 +279,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <li key={process._id}>
                     <Link
                       href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
-                      className="group block bg-white border border-neutral-200 rounded-lg p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
+                      className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
                     >
                       <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
                         {process.translations?.[lang]?.title || process.translations?.en?.title}
@@ -299,7 +297,20 @@ export default async function HomePage({ params, searchParams }: { params: Promi
           )}
 
           <section className="pb-10 md:pb-14">
-            <AdBanner placement="top" city={cityName} />
+            <Card className="p-6 md:p-8">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-primary mb-1">Bigenda Bite for Organizations</h3>
+                  <p className="text-sm text-neutral-600">Reach users at the moment they need your service. Sponsored placements available.</p>
+                </div>
+                <Link
+                  href="/membership"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors shadow-md"
+                >
+                  Become a Member
+                </Link>
+              </div>
+            </Card>
           </section>
         </PageContainer>
       </main>
