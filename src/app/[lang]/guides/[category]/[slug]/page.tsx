@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
+import SubmissionsSection from '@/components/SubmissionsSection'
 import ShareButton from '@/components/ShareButton'
 import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
@@ -229,6 +230,8 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
           url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : ''}`}
         />
       </div>
+
+      <SubmissionsSection contentType="guide" contentId={guide._id} contentSlug={guide.slug?.current} />
     </PageContainer>
   )
 }

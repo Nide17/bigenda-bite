@@ -4,6 +4,7 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
+import SubmissionsSection from '@/components/SubmissionsSection'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
 import messagesRw from '@/i18n/messages/rw.json'
@@ -120,6 +121,8 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
         {business.leadsEnabled && (
           <LeadForm businessId={business._id.toString()} businessName={business.name} />
         )}
+
+        <SubmissionsSection contentType="business" contentId={business._id.toString()} />
       </Card>
     </PageContainer>
   )

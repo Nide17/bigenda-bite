@@ -153,3 +153,28 @@ export interface PendingUpdate {
   update?: Record<string, unknown>
   currentSanityDoc?: Process | Guide | null
 }
+
+export type SubmissionType = 'comment' | 'edit_suggestion' | 'additional_info' | 'review'
+export type ContentType = 'process' | 'guide' | 'business'
+export type SubmissionStatus = 'pending' | 'approved' | 'rejected' | 'published'
+
+export interface UserSubmission {
+  _id: string
+  type: SubmissionType
+  contentType: ContentType
+  contentId: string
+  contentSlug?: string
+  userId: string
+  userDisplayName: string
+  userEmail: string
+  text: string
+  suggestedFields?: Record<string, unknown>
+  rating?: number
+  status: SubmissionStatus
+  reviewedBy?: string
+  reviewedAt?: string
+  reviewNote?: string
+  publishedAt?: string
+  createdAt: string
+  updatedAt: string
+}

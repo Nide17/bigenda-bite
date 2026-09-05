@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic'
 
 const navItems = [
   { href: '/admin/pending-updates', label: 'Pending Updates' },
+  { href: '/admin/submissions', label: 'Submissions' },
   { href: '/admin/analytics', label: 'Analytics' },
   { href: '/admin/users', label: 'Users' },
   { href: '/admin/content', label: 'Content' },

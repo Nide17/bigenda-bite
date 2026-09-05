@@ -7,6 +7,7 @@ import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
 import BeforeYouGo from '@/components/BeforeYouGo'
+import SubmissionsSection from '@/components/SubmissionsSection'
 import ShareButton from '@/components/ShareButton'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
@@ -206,6 +207,8 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
           url={`${globalThis.process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${process.slug?.current ? `/processes/${process.category}/${process.slug.current}` : ''}`}
         />
       </div>
+
+      <SubmissionsSection contentType="process" contentId={process._id} contentSlug={process.slug?.current} />
     </PageContainer>
   )
 }
