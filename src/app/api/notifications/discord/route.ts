@@ -5,7 +5,7 @@ import { sendDiscordNotification } from '@/lib/discord'
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

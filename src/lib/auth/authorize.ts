@@ -1,5 +1,4 @@
 import { getSession } from './session'
-import type { NextRequest } from 'next/server'
 import { redirect } from 'next/navigation'
 
 export type AuthenticatedSession = {
@@ -45,21 +44,18 @@ export function hasRole(userRole: string, allowedRoles: Role[]): boolean {
   return allowedRoles.some(role => ROLE_HIERARCHY[role] <= userLevel)
 }
 
-export async function requireAuth(request?: NextRequest): Promise<AuthResult> {
-  const session = await getSession(request)
+export async function requireAuth(): Promise<AuthResult> {
+  const session = await getSession()
 
   if (!session?.user) {
-    if (request) {
-      return { session: null, error: 'Unauthorized', status: 401 }
-    }
     redirect('/en/login')
   }
 
   return { session: session as AuthenticatedSession, error: null, status: 200 }
 }
 
-export async function requireRole(request?: NextRequest, allowedRoles: Role[] = []): Promise<AuthResult> {
-  const auth = await requireAuth(request)
+export async function requireRole(allowedRoles: Role[] = []): Promise<AuthResult> {
+  const auth = await requireAuth()
 
   if (auth.error) {
     return auth
@@ -73,14 +69,14 @@ export async function requireRole(request?: NextRequest, allowedRoles: Role[] = 
   return auth
 }
 
-export async function requireEditor(request?: NextRequest): Promise<AuthResult> {
-  return requireRole(request, [ROLES.editor, ROLES.admin, ROLES.superadmin])
+export async function requireEditor(): Promise<AuthResult> {
+  return requireRole([ROLES.editor, ROLES.admin, ROLES.superadmin])
 }
 
-export async function requireAdmin(request?: NextRequest): Promise<AuthResult> {
-  return requireRole(request, [ROLES.admin, ROLES.superadmin])
+export async function requireAdmin(): Promise<AuthResult> {
+  return requireRole([ROLES.admin, ROLES.superadmin])
 }
 
-export async function requireSuperadmin(request?: NextRequest): Promise<AuthResult> {
-  return requireRole(request, [ROLES.superadmin])
+export async function requireSuperadmin(): Promise<AuthResult> {
+  return requireRole([ROLES.superadmin])
 }

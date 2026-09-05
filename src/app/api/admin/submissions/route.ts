@@ -7,7 +7,7 @@ import type { UserSubmission } from '@/types'
 
 export async function GET(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

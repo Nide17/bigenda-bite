@@ -1,9 +1,18 @@
 import { Suspense } from 'react'
+import { redirect } from 'next/navigation'
 import LoginForm from './LoginForm'
 import PageContainer from '@/components/PageContainer'
+import { getSession } from '@/lib/auth/session'
+
+export const dynamic = 'force-dynamic'
 
 export default async function LoginPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
+
+  const session = await getSession()
+  if (session?.user) {
+    redirect(`/${lang}/account`)
+  }
 
   return (
     <PageContainer maxWidth="sm">

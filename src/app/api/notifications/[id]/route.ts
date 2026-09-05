@@ -5,7 +5,7 @@ import { markNotificationRead } from '@/lib/notifications'
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const auth = await requireAuth(request)
+    const auth = await requireAuth()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

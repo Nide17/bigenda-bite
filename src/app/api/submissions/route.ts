@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await requireAuth(request)
+    const auth = await requireAuth()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

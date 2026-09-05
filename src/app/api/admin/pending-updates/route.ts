@@ -1,10 +1,10 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
 import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

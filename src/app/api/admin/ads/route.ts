@@ -4,9 +4,9 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -110,7 +110,7 @@ export async function PATCH(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const auth = await requireEditor(request)
+    const auth = await requireEditor()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

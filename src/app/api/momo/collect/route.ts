@@ -6,7 +6,7 @@ import { parseJson, requireFields, fail } from '@/lib/api/validate'
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = await requireAuth(request)
+    const auth = await requireAuth()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

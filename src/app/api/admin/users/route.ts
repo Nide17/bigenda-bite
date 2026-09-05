@@ -4,9 +4,9 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
 import { ObjectId } from 'mongodb'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const auth = await requireAdmin(request)
+    const auth = await requireAdmin()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const auth = await requireAdmin(request)
+    const auth = await requireAdmin()
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }

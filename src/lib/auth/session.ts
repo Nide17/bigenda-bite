@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 import type { AppSession } from '@/app/api/auth/[...nextauth]/options'
-import type { NextRequest } from 'next/server'
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import { MongoClient } from 'mongodb'
 
@@ -25,12 +23,9 @@ const sessionOptions = {
   adapter: MongoDBAdapter(createSessionClient),
 }
 
-export async function getSession(request?: NextRequest): Promise<AppSession | null> {
+export async function getSession(): Promise<AppSession | null> {
   try {
-    const session = request
-      ? await (getServerSession as any)(request, undefined, sessionOptions)
-      : await getServerSession(sessionOptions)
-    return session as AppSession | null
+    return await getServerSession(sessionOptions)
   } catch (error) {
     console.error('getSession failed:', error)
     return null
