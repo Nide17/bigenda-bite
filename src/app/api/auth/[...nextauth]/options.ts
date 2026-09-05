@@ -145,7 +145,7 @@ export const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token) {
         const customUser = session.user as unknown as CustomUser
         customUser.id = (token.sub as string) || customUser.id || session.user.email || ''
         customUser.role = (token.role as string) || customUser.role
