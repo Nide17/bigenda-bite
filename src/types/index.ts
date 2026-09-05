@@ -118,6 +118,8 @@ export interface Guide {
   aiDraftStatus?: string
   researchSources?: string[]
   lastReviewedDate?: string
+  lastVerifiedDate?: string
+  outdatedReportsCount?: number
   status?: string
   tags?: string[]
   taskBlueprint?: TaskBlueprint

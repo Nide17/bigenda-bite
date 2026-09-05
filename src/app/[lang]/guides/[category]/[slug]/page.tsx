@@ -9,6 +9,7 @@ import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import TaskBlueprint from '@/components/TaskBlueprint'
 import SubmissionsSection from '@/components/SubmissionsSection'
+import GuideFeedback from '@/components/GuideFeedback'
 import ShareButton from '@/components/ShareButton'
 import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
@@ -232,6 +233,14 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
       </div>
 
       <SubmissionsSection contentType="guide" contentId={guide._id} contentSlug={guide.slug?.current} />
+
+      <div className="mt-8">
+        <GuideFeedback
+          guideId={guide._id}
+          lastVerifiedDate={guide.lastVerifiedDate}
+          outdatedReportsCount={guide.outdatedReportsCount}
+        />
+      </div>
     </PageContainer>
   )
 }

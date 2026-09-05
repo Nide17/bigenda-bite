@@ -91,6 +91,19 @@ export const guideType = defineType({
       title: 'Last Reviewed Date',
     }),
     defineField({
+      name: 'lastVerifiedDate',
+      type: 'datetime',
+      title: 'Last Verified Date',
+      description: 'When this guide was last verified by the community',
+    }),
+    defineField({
+      name: 'outdatedReportsCount',
+      type: 'number',
+      title: 'Outdated Reports Count',
+      description: 'Number of times users reported this as outdated',
+      initialValue: 0,
+    }),
+    defineField({
       name: 'status',
       type: 'string',
       title: 'Status',
