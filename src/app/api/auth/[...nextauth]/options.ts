@@ -102,11 +102,6 @@ export const authOptions: AuthOptions = {
             return null
           }
 
-          if (!user.emailVerified) {
-            console.error('Auth: email not verified for', (credentials as Record<string, unknown>)?.email)
-            return null
-          }
-
           const passwordMatch = await bcrypt.compare(
             String((credentials as Record<string, unknown>)?.password || ''),
             user.password

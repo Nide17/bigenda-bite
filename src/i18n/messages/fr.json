@@ -59,6 +59,8 @@
   "or_continue_with_google": "Ou continuer avec Google",
   "oauth_error": "Échec de l'authentification. Veuillez réessayer.",
   "oauth_cancelled": "L'authentification a été annulée.",
+  "forgot_password": "Mot de passe oublié ?",
+  "remember_me": "Se souvenir de moi",
   "footer_explore": "Explorer",
   "footer_account": "Compte",
   "footer_tagline": "Votre guide quotidien pour la vie administrative au Rwanda. Conçu avec soin pour les Rwandais, par les Rwandais.",

@@ -61,6 +61,7 @@
   "oauth_error": "Authentication failed. Please try again.",
   "oauth_cancelled": "Authentication was cancelled.",
   "forgot_password": "Forgot password?",
+  "remember_me": "Remember me",
   "forgot_password_title": "Reset your password",
   "forgot_password_subtitle": "Enter your email address and we'll send you a reset link.",
   "send_reset_link": "Send reset link",
