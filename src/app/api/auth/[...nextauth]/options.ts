@@ -11,6 +11,20 @@ const mongoClient = process.env.MONGODB_URI
   : null
 mongoClient?.connect().catch((err) => console.error('MongoDB adapter connection error:', err))
 
+function validateEnv() {
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
+    console.error('Auth: GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET must be set')
+  }
+  if (!process.env.NEXTAUTH_SECRET) {
+    console.error('Auth: NEXTAUTH_SECRET is not set. Google auth will fail in production.')
+  }
+  if (!process.env.NEXTAUTH_URL) {
+    console.error('Auth: NEXTAUTH_URL is not set. Set it to your production URL, e.g. https://bigenda-bite.vercel.app')
+  }
+}
+
+validateEnv()
+
 interface CustomUser extends User {
   id: string
   role: string

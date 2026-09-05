@@ -2,12 +2,15 @@
 
 import { useState, useCallback } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import PageContainer from '@/components/PageContainer'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { getSavedGuides, removeGuide, type SavedGuide } from '@/lib/offline-guides'
 
 export default function OfflineSavedPage() {
+  const pathname = usePathname() || ''
+  const lang = pathname.split('/')[1] || 'en'
   const [savedGuides, setSavedGuides] = useState<SavedGuide[]>(() => {
     if (typeof window === 'undefined') return []
     return getSavedGuides()
@@ -110,7 +113,7 @@ export default function OfflineSavedPage() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <Link href={`/en/guides/${guide.category || ''}/${guide.id}`}>
+                    <Link href={`/${lang}/guides/${guide.category || ''}/${guide.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
                         Open
                       </Button>
