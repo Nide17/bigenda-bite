@@ -3,14 +3,26 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 import type { AppSession } from '@/app/api/auth/[...nextauth]/options'
 import type { NextRequest } from 'next/server'
+import { MongoDBAdapter } from '@auth/mongodb-adapter'
+import { MongoClient } from 'mongodb'
 
 if (!process.env.NEXTAUTH_URL) {
   process.env.NEXTAUTH_URL = 'http://localhost:3000'
 }
 
+async function createSessionClient() {
+  const uri = process.env.MONGODB_URI
+  if (!uri) {
+    throw new Error('MONGODB_URI is not set')
+  }
+  const client = new MongoClient(uri)
+  await client.connect()
+  return client
+}
+
 const sessionOptions = {
   ...authOptions,
-  adapter: undefined,
+  adapter: MongoDBAdapter(createSessionClient),
   providers: undefined,
 }
 
