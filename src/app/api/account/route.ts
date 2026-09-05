@@ -15,7 +15,11 @@ export async function GET() {
 
     const db = await connectToDatabase()
     const users = db.collection('users')
-    const user = await users.findOne({ _id: new ObjectId(session.user.id) })
+    let user = await users.findOne({ _id: new ObjectId(session.user.id) })
+
+    if (!user && session.user.email) {
+      user = await users.findOne({ email: session.user.email })
+    }
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
@@ -54,7 +58,15 @@ export async function PATCH(request: NextRequest) {
 
     const db = await connectToDatabase()
     const users = db.collection('users')
-    const userId = new ObjectId(session.user.id)
+    let userId = new ObjectId(session.user.id)
+
+    if (!session.user.id || session.user.id === 'undefined') {
+      const emailUser = await users.findOne({ email: session.user.email })
+      if (!emailUser) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      }
+      userId = emailUser._id
+    }
 
     const update: Record<string, unknown> = {}
 

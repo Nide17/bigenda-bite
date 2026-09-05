@@ -1,5 +1,5 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter'
-import { MongoClient, ObjectId } from 'mongodb'
+import { MongoClient } from 'mongodb'
 import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import GoogleProvider from 'next-auth/providers/google'
@@ -145,9 +145,9 @@ export const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      if (session.user && token?.sub) {
+      if (session.user) {
         const customUser = session.user as unknown as CustomUser
-        customUser.id = token.sub
+        customUser.id = (token.sub as string) || customUser.id || session.user.email || ''
         customUser.role = (token.role as string) || customUser.role
         customUser.displayName = (token.displayName as string) || customUser.displayName
         customUser.isForeigner = (token.isForeigner as boolean) ?? customUser.isForeigner
@@ -157,11 +157,11 @@ export const authOptions: AuthOptions = {
   },
   events: {
     async signIn({ user, account }) {
-      if (account?.provider === 'google' && user?.id) {
+      if (account?.provider === 'google' && user?.email) {
         try {
           const db = await connectToDatabase()
           await db.collection('users').updateOne(
-            { _id: new ObjectId(user.id) },
+            { email: user.email },
             {
               $setOnInsert: {
                 role: 'reader',
