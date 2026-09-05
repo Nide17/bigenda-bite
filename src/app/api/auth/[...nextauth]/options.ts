@@ -137,6 +137,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         const customUser = user as CustomUser
+        token.sub = customUser.id
         token.role = customUser.role
         token.displayName = customUser.displayName
         token.isForeigner = customUser.isForeigner
@@ -144,12 +145,12 @@ export const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      if (session.user) {
+      if (session.user && token?.sub) {
         const customUser = session.user as unknown as CustomUser
-        customUser.id = token.sub!
-        customUser.role = token.role as string
-        customUser.displayName = token.displayName as string
-        customUser.isForeigner = token.isForeigner as boolean ?? false
+        customUser.id = token.sub
+        customUser.role = (token.role as string) || customUser.role
+        customUser.displayName = (token.displayName as string) || customUser.displayName
+        customUser.isForeigner = (token.isForeigner as boolean) ?? customUser.isForeigner
       }
       return session
     },
