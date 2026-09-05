@@ -1,5 +1,4 @@
 import { getSession } from './session'
-import { redirect } from 'next/navigation'
 
 export type AuthenticatedSession = {
   user: {
@@ -48,7 +47,7 @@ export async function requireAuth(): Promise<AuthResult> {
   const session = await getSession()
 
   if (!session?.user) {
-    redirect('/en/login')
+    return { session: null, error: 'Unauthorized', status: 401 }
   }
 
   return { session: session as AuthenticatedSession, error: null, status: 200 }
