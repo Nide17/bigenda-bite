@@ -31,6 +31,22 @@ function GoogleIcon() {
   )
 }
 
+function MailIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4" />
+    </svg>
+  )
+}
+
 function LoginFormContent({ lang }: { lang: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -120,16 +136,16 @@ function LoginFormContent({ lang }: { lang: string }) {
   }
 
   return (
-    <Card className="p-6 sm:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <Card className="p-8 sm:p-10">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <input type="hidden" name="csrfToken" value={csrfToken} />
         {(oauthErrorMessage || error) && (
-          <div className={`border rounded-lg p-3 text-sm ${errorType === 'unverified' ? 'bg-amber-50 border-amber-200 text-amber-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+          <div className={`rounded-xl p-4 text-sm ${errorType === 'unverified' ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
             {oauthErrorMessage || error}
             {errorType === 'unverified' && !oauthErrorMessage && (
-              <div className="mt-2">
+              <div className="mt-3">
                 {resendSuccess ? (
-                  <span className="text-green-700">Verification email sent! Check your inbox.</span>
+                  <span className="text-green-700 font-medium">Verification email sent! Check your inbox.</span>
                 ) : (
                   <button
                     type="button"
@@ -144,45 +160,46 @@ function LoginFormContent({ lang }: { lang: string }) {
             )}
           </div>
         )}
-        {errorType === 'general' && error && !oauthErrorMessage && (
-          <div className="text-sm text-neutral-600 text-center">
-            <button
-              type="button"
-              onClick={handleResendVerification}
-              disabled={resendLoading}
-              className="text-primary font-medium hover:underline disabled:opacity-50"
-            >
-              {resendLoading ? 'Sending...' : 'Resend verification email'}
-            </button>
-            <span className="ml-1">if you haven&apos;t verified your email yet.</span>
+        <div className="space-y-5">
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <MailIcon />
+            </div>
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="pl-10"
+            />
           </div>
-        )}
-        <Input
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-        <Input
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-        />
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <LockIcon />
+            </div>
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              className="pl-10"
+            />
+          </div>
+        </div>
         <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 text-sm text-neutral-600">
-            <input type="checkbox" className="rounded border-neutral-300" />
+          <label className="flex items-center gap-2.5 text-sm text-neutral-600 cursor-pointer select-none">
+            <input type="checkbox" className="h-4 w-4 rounded border-neutral-300 text-[#1e1b4b] focus:ring-[#1e1b4b]" />
             {t('remember_me')}
           </label>
-          <a href={`/${lang}/forgot-password`} className="text-sm text-primary font-medium hover:underline">
+          <a href={`/${lang}/forgot-password`} className="text-sm font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             {t('forgot_password')}
           </a>
         </div>
-        <Button type="submit" className="w-full" loading={loading}>
+        <Button type="submit" className="w-full" loading={loading} size="lg">
           {t('login')}
         </Button>
 
@@ -191,7 +208,7 @@ function LoginFormContent({ lang }: { lang: string }) {
             <div className="w-full border-t border-neutral-200" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-neutral-500">{t('or_continue_with_google')}</span>
+            <span className="px-3 bg-white text-neutral-500">{t('or_continue_with_google')}</span>
           </div>
         </div>
 
@@ -199,6 +216,7 @@ function LoginFormContent({ lang }: { lang: string }) {
           type="button"
           variant="outline"
           className="w-full"
+          size="lg"
           loading={googleLoading}
           onClick={handleGoogleSignIn}
         >
@@ -207,7 +225,7 @@ function LoginFormContent({ lang }: { lang: string }) {
         </Button>
         <p className="text-sm text-neutral-600 text-center">
           Don&apos;t have an account?{' '}
-          <a href={`/${lang}/register`} className="text-primary font-medium hover:underline">
+          <a href={`/${lang}/register`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             Sign up
           </a>
         </p>

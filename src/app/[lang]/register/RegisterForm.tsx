@@ -31,6 +31,30 @@ function GoogleIcon() {
   )
 }
 
+function UserIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+    </svg>
+  )
+}
+
+function MailIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4" />
+    </svg>
+  )
+}
+
 export default function RegisterForm({ lang }: { lang: string }) {
   const router = useRouter()
   const [name, setName] = useState('')
@@ -68,40 +92,59 @@ export default function RegisterForm({ lang }: { lang: string }) {
   }
 
   return (
-    <Card className="p-6 sm:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <input type="hidden" name="csrfToken" value="" />
+    <Card className="p-8 sm:p-10">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-sm">
             {error}
           </div>
         )}
-        <Input
-          label="Full Name"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          autoComplete="name"
-        />
-        <Input
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-        />
-        <Input
-          label="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="new-password"
-          helperText="At least 6 characters"
-        />
-        <Button type="submit" className="w-full" loading={loading}>
+        <div className="space-y-5">
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <UserIcon />
+            </div>
+            <Input
+              label="Full Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              autoComplete="name"
+              className="pl-10"
+            />
+          </div>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <MailIcon />
+            </div>
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              className="pl-10"
+            />
+          </div>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <LockIcon />
+            </div>
+            <Input
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+              helperText="At least 6 characters"
+              className="pl-10"
+            />
+          </div>
+        </div>
+        <Button type="submit" className="w-full" loading={loading} size="lg">
           {t('register')}
         </Button>
 
@@ -110,7 +153,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
             <div className="w-full border-t border-neutral-200" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-neutral-500">{t('or_continue_with_google')}</span>
+            <span className="px-3 bg-white text-neutral-500">{t('or_continue_with_google')}</span>
           </div>
         </div>
 
@@ -118,6 +161,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
           type="button"
           variant="outline"
           className="w-full"
+          size="lg"
           loading={googleLoading}
           onClick={handleGoogleSignIn}
         >
@@ -126,7 +170,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
         </Button>
         <p className="text-sm text-neutral-600 text-center">
           Already have an account?{' '}
-          <a href={`/${lang}/login`} className="text-primary font-medium hover:underline">
+          <a href={`/${lang}/login`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             Sign in
           </a>
         </p>

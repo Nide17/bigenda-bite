@@ -7,6 +7,14 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 
+function LockIcon() {
+  return (
+    <svg className="w-4 h-4 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4" />
+    </svg>
+  )
+}
+
 function ResetPasswordFormContent({ lang }: { lang: string }) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -16,14 +24,11 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [tokenValid, setTokenValid] = useState<boolean | null>(null)
-
   const token = useMemo(() => searchParams?.get('token') || '', [searchParams])
+  const [tokenValid, setTokenValid] = useState<boolean | null>(() => (token ? null : false))
 
   useEffect(() => {
     if (!token) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTokenValid(false)
       return
     }
     fetch('/api/auth/reset-password/validate', {
@@ -69,15 +74,15 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
 
   if (tokenValid === false) {
     return (
-      <Card className="p-6 sm:p-8">
+      <Card className="p-8 sm:p-10">
         <div className="text-center">
-          <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-primary mb-2">Invalid or expired link</h2>
-          <p className="text-sm text-neutral-600 mb-6">
+          <h2 className="text-xl font-semibold text-primary mb-2">Invalid or expired link</h2>
+          <p className="text-sm text-neutral-600 mb-8">
             This reset link is invalid or has expired. Please request a new one.
           </p>
           <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/forgot-password`)}>
@@ -90,15 +95,15 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
 
   if (success) {
     return (
-      <Card className="p-6 sm:p-8">
+      <Card className="p-8 sm:p-10">
         <div className="text-center">
-          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-lg font-semibold text-primary mb-2">Password reset successful</h2>
-          <p className="text-sm text-neutral-600 mb-6">
+          <h2 className="text-xl font-semibold text-primary mb-2">Password reset successful</h2>
+          <p className="text-sm text-neutral-600 mb-8">
             Your password has been reset. You can now sign in.
           </p>
           <Button className="w-full" onClick={() => router.push(`/${lang}/login`)}>
@@ -110,32 +115,46 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
   }
 
   return (
-    <Card className="p-6 sm:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5">
+    <Card className="p-8 sm:p-10">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-3 text-sm">
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-sm">
             {error}
           </div>
         )}
-        <Input
-          label="New password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={8}
-          autoComplete="new-password"
-        />
-        <Input
-          label="Confirm password"
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
-          minLength={8}
-          autoComplete="new-password"
-        />
-        <Button type="submit" className="w-full" loading={loading}>
+        <div className="space-y-5">
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <LockIcon />
+            </div>
+            <Input
+              label="New password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+              autoComplete="new-password"
+              className="pl-10"
+            />
+          </div>
+          <div className="relative">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+              <LockIcon />
+            </div>
+            <Input
+              label="Confirm password"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={8}
+              autoComplete="new-password"
+              className="pl-10"
+            />
+          </div>
+        </div>
+        <Button type="submit" className="w-full" loading={loading} size="lg">
           Reset password
         </Button>
       </form>
