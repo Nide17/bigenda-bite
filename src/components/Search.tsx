@@ -195,14 +195,14 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
       </div>
 
       {!query && !loading && !hasSearched && (
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="text-xs text-neutral-500 mb-1">Try:</span>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">Try:</span>
           {quickScenarios.map((scenario) => (
             <button
               key={scenario.query}
               type="button"
               onClick={() => handleScenarioClick(scenario.query)}
-              className="px-4 py-2 rounded-full border border-neutral-300 text-sm text-neutral-700 hover:bg-neutral-100 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1e1b4b]/20"
+              className="px-3.5 py-1.5 rounded-full border border-neutral-200 text-sm text-neutral-600 bg-white hover:border-primary hover:text-primary hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#1e1b4b]/20"
             >
               {scenario.label}
             </button>
