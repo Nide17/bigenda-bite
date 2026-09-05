@@ -98,8 +98,8 @@ function LoginFormContent({ lang }: { lang: string }) {
       }),
     })
 
-    const data = await res.json().catch(() => ({}))
-    const authError = (data as { error?: string }).error
+    const data = await res.json().catch(() => null)
+    const authError = data && typeof data === 'object' ? (data as { error?: string }).error : null
 
     if (authError) {
       if (authError === 'email_not_verified') {
@@ -110,7 +110,7 @@ function LoginFormContent({ lang }: { lang: string }) {
         setError('Invalid email or password')
       }
       setLoading(false)
-    } else if (res.ok) {
+    } else if (res.ok && data && (data as { url?: string }).url) {
       router.push(callbackUrl)
     } else {
       setErrorType('general')
