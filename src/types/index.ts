@@ -34,11 +34,40 @@ export interface Fee {
   conditions?: string
 }
 
+export interface EstimatedTime {
+  online?: string
+  inPerson?: string
+}
+
+export interface CostBreakdownItem {
+  item?: string
+  amountRWF?: number
+}
+
+export interface DocumentChecklistItem {
+  documentName?: string
+  isRequired?: boolean
+  fallbackOption?: string
+}
+
+export interface PhysicalLocation {
+  description?: string
+  mapsLink?: string
+}
+
+export interface CopyPasteScript {
+  language?: 'en' | 'rw'
+  scenario?: string
+  text?: string
+}
+
 export interface TaskBlueprint {
-  estimatedTime?: string
-  estimatedCost?: string
-  requiredDocuments?: string[]
-  locationHint?: string
+  estimatedTime?: EstimatedTime
+  costBreakdown?: CostBreakdownItem[]
+  documentChecklist?: DocumentChecklistItem[]
+  physicalLocation?: PhysicalLocation
+  culturalContext?: string
+  copyPasteScripts?: CopyPasteScript[]
   introvertTip?: string
 }
 

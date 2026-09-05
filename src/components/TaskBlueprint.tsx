@@ -1,15 +1,8 @@
 import Card from '@/components/ui/Card'
-
-export interface TaskBlueprintData {
-  estimatedTime?: string
-  estimatedCost?: string
-  requiredDocuments?: string[]
-  locationHint?: string
-  introvertTip?: string
-}
+import type { TaskBlueprint } from '@/types'
 
 interface TaskBlueprintProps {
-  data?: TaskBlueprintData
+  data?: TaskBlueprint
 }
 
 function IconClock() {
@@ -53,69 +46,149 @@ function IconLightbulb() {
   )
 }
 
+function IconClipboard() {
+  return (
+    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+    </svg>
+  )
+}
+
 export default function TaskBlueprint({ data }: TaskBlueprintProps) {
   if (!data) return null
 
-  const { estimatedTime, estimatedCost, requiredDocuments, locationHint, introvertTip } = data
+  const {
+    estimatedTime,
+    costBreakdown,
+    documentChecklist,
+    physicalLocation,
+    culturalContext,
+    copyPasteScripts,
+    introvertTip,
+  } = data
 
-  const hasQuickInfo = estimatedTime || estimatedCost || (requiredDocuments && requiredDocuments.length > 0) || locationHint
+  const hasQuickInfo =
+    estimatedTime ||
+    (costBreakdown && costBreakdown.length > 0) ||
+    (documentChecklist && documentChecklist.length > 0) ||
+    physicalLocation
 
-  if (!hasQuickInfo && !introvertTip) return null
+  const hasCulturalContext = culturalContext && culturalContext.trim().length > 0
+  const hasScripts = copyPasteScripts && copyPasteScripts.length > 0
+
+  if (!hasQuickInfo && !hasCulturalContext && !hasScripts && !introvertTip) return null
 
   return (
     <div className="mb-8">
       {hasQuickInfo && (
         <Card className="p-5 mb-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {estimatedTime && (
+            {estimatedTime && (estimatedTime.online || estimatedTime.inPerson) && (
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
                   <IconClock />
                 </div>
                 <div>
                   <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Time</p>
-                  <p className="text-sm font-semibold text-neutral-900">{estimatedTime}</p>
+                  {estimatedTime.online && <p className="text-sm font-semibold text-neutral-900">Online: {estimatedTime.online}</p>}
+                  {estimatedTime.inPerson && <p className="text-sm font-semibold text-neutral-900">In Person: {estimatedTime.inPerson}</p>}
                 </div>
               </div>
             )}
 
-            {estimatedCost && (
+            {costBreakdown && costBreakdown.length > 0 && (
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
                   <IconBanknote />
                 </div>
                 <div>
                   <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Cost</p>
-                  <p className="text-sm font-semibold text-neutral-900">{estimatedCost}</p>
+                  <ul className="text-sm text-neutral-900 space-y-0.5">
+                    {costBreakdown.map((cost, index) => (
+                      <li key={index} className="flex justify-between gap-2">
+                        <span>{cost.item}</span>
+                        <span className="font-semibold">{cost.amountRWF?.toLocaleString()} RWF</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             )}
 
-            {locationHint && (
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
-                  <IconMapPin />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Where</p>
-                  <p className="text-sm font-semibold text-neutral-900">{locationHint}</p>
-                </div>
-              </div>
-            )}
-
-            {requiredDocuments && requiredDocuments.length > 0 && (
+            {documentChecklist && documentChecklist.length > 0 && (
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
                   <IconFileText />
                 </div>
                 <div>
                   <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Documents</p>
-                  <p className="text-sm font-semibold text-neutral-900">
-                    {requiredDocuments.join(', ')}
-                  </p>
+                  <ul className="text-sm text-neutral-900 space-y-1">
+                    {documentChecklist.map((doc, index) => (
+                      <li key={index}>
+                        <span className="font-medium">{doc.documentName}</span>
+                        {doc.isRequired ? '' : <span className="text-neutral-500"> (optional)</span>}
+                        {doc.fallbackOption && <p className="text-xs text-neutral-500">{doc.fallbackOption}</p>}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             )}
+
+            {physicalLocation && (physicalLocation.description || physicalLocation.mapsLink) && (
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                  <IconMapPin />
+                </div>
+                <div>
+                  <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Where</p>
+                  {physicalLocation.description && <p className="text-sm font-semibold text-neutral-900">{physicalLocation.description}</p>}
+                  {physicalLocation.mapsLink && (
+                    <a href={physicalLocation.mapsLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:text-primary-hover">
+                      View on Map
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </Card>
+      )}
+
+      {hasCulturalContext && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center mt-0.5">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 5h12M9 3v2m1.05 9.15l.9 4.2a2 2 0 01-1.9 2.4H7.9a2 2 0 01-1.9-2.4l.9-4.2M7.9 13.15l-1.05.55a2 2 0 01-2.1-1.8l1-4.2a2 2 0 012.1-1.8h4.3a2 2 0 012.1 1.8l1 4.2a2 2 0 01-2.1 1.8l-1.05-.55" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs font-medium text-emerald-600 uppercase tracking-wide mb-1">Cultural Context</p>
+              <p className="text-sm text-emerald-800 leading-relaxed">{culturalContext}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {hasScripts && (
+        <Card className="p-5 mb-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex-shrink-0 w-8 h-8 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+              <IconClipboard />
+            </div>
+            <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide">Copy-Paste Scripts</p>
+          </div>
+          <div className="space-y-3">
+            {copyPasteScripts.map((script, index) => (
+              <div key={index} className="bg-neutral-50 rounded-lg p-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-xs font-medium text-neutral-600 uppercase">{script.language}</span>
+                  <span className="text-xs text-neutral-500">• {script.scenario}</span>
+                </div>
+                <p className="text-sm text-neutral-800 whitespace-pre-wrap">{script.text}</p>
+              </div>
+            ))}
           </div>
         </Card>
       )}
