@@ -98,17 +98,23 @@ function LoginFormContent({ lang }: { lang: string }) {
       }),
     })
 
-    if (res.ok) {
-      router.push(callbackUrl)
-    } else {
-      const data = await res.json().catch(() => ({}))
-      if (data.error === 'email_not_verified') {
+    const data = await res.json().catch(() => ({}))
+    const authError = (data as { error?: string }).error
+
+    if (authError) {
+      if (authError === 'email_not_verified') {
         setErrorType('unverified')
         setError('Please verify your email before signing in. Check your inbox for the verification link.')
       } else {
         setErrorType('general')
         setError('Invalid email or password')
       }
+      setLoading(false)
+    } else if (res.ok) {
+      router.push(callbackUrl)
+    } else {
+      setErrorType('general')
+      setError('Invalid email or password')
       setLoading(false)
     }
   }
