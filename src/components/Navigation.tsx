@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTranslations } from '@/components/I18nProvider'
@@ -14,13 +14,6 @@ interface NavItem {
 
 interface NavigationProps {
   lang: string
-  user: {
-    id: string
-    email: string
-    displayName: string
-    role: string
-    isForeigner: boolean
-  } | null
 }
 
 const navItems: NavItem[] = [
@@ -62,7 +55,7 @@ function LangSwitcher({ currentLang }: { currentLang: string }) {
   )
 }
 
-export default function Navigation({ lang, user }: NavigationProps) {
+export default function Navigation({ lang }: NavigationProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [accountOpen, setAccountOpen] = useState(false)
   const pathname = usePathname() || ''
@@ -71,6 +64,15 @@ export default function Navigation({ lang, user }: NavigationProps) {
   const toggleRef = useRef<HTMLButtonElement>(null)
   const accountRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
+  const { data: session } = useSession()
+
+  const user = session?.user ? {
+    id: (session.user as unknown as { id?: string }).id || session.user.email || '',
+    email: session.user.email || '',
+    displayName: (session.user as unknown as { displayName?: string }).displayName || session.user.name || session.user.email || '',
+    role: (session.user as unknown as { role?: string }).role || 'reader',
+    isForeigner: (session.user as unknown as { isForeigner?: boolean }).isForeigner || false,
+  } : null
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`)

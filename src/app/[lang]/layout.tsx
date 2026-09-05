@@ -4,7 +4,6 @@ import { headers } from 'next/headers'
 import { routing } from '@/i18n/routing'
 import Navigation from '@/components/Navigation'
 import { I18nProvider } from '@/components/I18nProvider'
-import { getSession } from '@/lib/auth/session'
 import { trackEvent } from '@/lib/analytics'
 import { JsonLd } from '@/components/JsonLd'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
@@ -90,12 +89,9 @@ export default async function RootLayout({
   const orgLd = organizationJsonLd(baseUrl)
   const websiteLd = websiteJsonLd(baseUrl)
 
-  const session = await getSession()
-  const user = session?.user || null
-
   return (
     <I18nProvider messages={messages} locale={lang}>
-      <Navigation lang={lang} user={user} />
+      <Navigation lang={lang} />
       <JsonLd data={orgLd} />
       <JsonLd data={websiteLd} />
       {children}
