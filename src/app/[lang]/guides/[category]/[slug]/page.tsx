@@ -7,7 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
-import TaskBlueprint from '@/components/TaskBlueprint'
+import GuideTaskBlueprintClient from '@/components/GuideTaskBlueprintClient'
 import SubmissionsSection from '@/components/SubmissionsSection'
 import GuideFeedback from '@/components/GuideFeedback'
 import ShareButton from '@/components/ShareButton'
@@ -118,7 +118,12 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         )}
       </div>
 
-      <TaskBlueprint data={guide.taskBlueprint} />
+      <GuideTaskBlueprintClient
+        data={guide.taskBlueprint}
+        guideId={guide._id}
+        guideTitle={data?.title || 'Untitled Guide'}
+        guideCategory={guide.category}
+      />
 
       {guide.steps && guide.steps.length > 0 && (
         <section className="mb-10">

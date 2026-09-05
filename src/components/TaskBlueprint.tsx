@@ -3,16 +3,19 @@
 import { useState, useCallback } from 'react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import { Clock, Banknote, FileCheck, MapPin, MessageSquare, Check, Copy, CheckCheck } from 'lucide-react'
+import { Clock, Banknote, FileCheck, MapPin, MessageSquare, Check, Copy, CheckCheck, Download } from 'lucide-react'
 import type { TaskBlueprint } from '@/types'
 
 interface TaskBlueprintProps {
   data?: TaskBlueprint
+  onSaveOffline?: () => void
+  isSavingOffline?: boolean
+  isSavedOffline?: boolean
 }
 
 const iconClass = 'w-5 h-5 flex-shrink-0 mt-0.5'
 
-export default function TaskBlueprint({ data }: TaskBlueprintProps) {
+export default function TaskBlueprint({ data, onSaveOffline, isSavingOffline, isSavedOffline }: TaskBlueprintProps) {
   const [checkedDocs, setCheckedDocs] = useState<Set<number>>(new Set())
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
 
@@ -245,6 +248,23 @@ export default function TaskBlueprint({ data }: TaskBlueprintProps) {
               <p className="text-sm text-blue-800 leading-relaxed">{introvertTip}</p>
             </div>
           </div>
+        </div>
+      )}
+
+      {onSaveOffline && (
+        <div className="mt-4">
+          <Button
+            type="button"
+            variant={isSavedOffline ? 'secondary' : 'primary'}
+            size="sm"
+            onClick={onSaveOffline}
+            loading={isSavingOffline}
+            disabled={isSavingOffline}
+            className="w-full sm:w-auto"
+          >
+            <Download className="w-4 h-4 mr-2" />
+            {isSavedOffline ? 'Saved Offline' : 'Save Offline'}
+          </Button>
         </div>
       )}
     </div>

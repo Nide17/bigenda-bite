@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { href: '/directory', labelKey: 'directory' },
   { href: '/alerts', labelKey: 'alerts' },
   { href: '/search', labelKey: 'search' },
+  { href: '/offline-saved', labelKey: 'saved_guides' },
 ]
 
 const LANG_OPTIONS = [
