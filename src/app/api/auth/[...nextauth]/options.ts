@@ -131,19 +131,24 @@ export const authOptions: AuthOptions = {
   events: {
     async signIn({ user, account }) {
       if (account?.provider === 'google' && user?.id) {
-        const db = await connectToDatabase()
-        await db.collection('users').updateOne(
-          { _id: new ObjectId(user.id) },
-          {
-            $set: {
-              role: 'reader',
-              displayName: user.name || user.email || 'Google User',
-              emailVerified: true,
-              emailVerifiedAt: new Date(),
-              isForeigner: false,
+        try {
+          const db = await connectToDatabase()
+          await db.collection('users').updateOne(
+            { _id: new ObjectId(user.id) },
+            {
+              $setOnInsert: {
+                role: 'reader',
+                displayName: user.name || user.email || 'Google User',
+                emailVerified: true,
+                emailVerifiedAt: new Date(),
+                isForeigner: false,
+              },
             },
-          }
-        )
+            { upsert: true }
+          )
+        } catch (error) {
+          console.error('Auth signIn event error:', error)
+        }
       }
     },
   },
