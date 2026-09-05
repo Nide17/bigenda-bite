@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -14,10 +14,11 @@ interface UserProfile {
   isForeigner: boolean
 }
 
-function AccountSettingsContent({ lang }: { lang: string }) {
+export default function AccountSettingsContent({ lang }: { lang: string }) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
@@ -32,6 +33,8 @@ function AccountSettingsContent({ lang }: { lang: string }) {
   const [passwordLoading, setPasswordLoading] = useState(false)
 
   useEffect(() => {
+    let cancelled = false
+
     fetch('/api/account')
       .then((res) => {
         if (res.ok) return res.json()
@@ -39,9 +42,10 @@ function AccountSettingsContent({ lang }: { lang: string }) {
           router.push(`/${lang}/login?callbackUrl=/${lang}/account`)
           return null
         }
-        throw new Error('Failed to load profile')
+        return res.json().then((data) => { throw new Error(data.error || 'Failed to load profile') })
       })
       .then((data) => {
+        if (cancelled) return
         if (data) {
           setProfile(data)
           setDisplayName(data.displayName)
@@ -50,9 +54,15 @@ function AccountSettingsContent({ lang }: { lang: string }) {
         }
         setLoading(false)
       })
-      .catch(() => {
+      .catch((err) => {
+        if (cancelled) return
+        setError(err instanceof Error ? err.message : 'Failed to load profile')
         setLoading(false)
       })
+
+    return () => {
+      cancelled = true
+    }
   }, [lang, router])
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
@@ -66,7 +76,7 @@ function AccountSettingsContent({ lang }: { lang: string }) {
       body: JSON.stringify({ displayName, email, isForeigner }),
     })
 
-    const data = await res.json().catch(() => ({}))
+    const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
       setProfileMessage({ type: 'success', text: 'Profile updated successfully.' })
@@ -99,7 +109,7 @@ function AccountSettingsContent({ lang }: { lang: string }) {
       body: JSON.stringify({ currentPassword, newPassword }),
     })
 
-    const data = await res.json().catch(() => ({}))
+    const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
       setPasswordMessage({ type: 'success', text: 'Password changed successfully.' })
@@ -116,6 +126,14 @@ function AccountSettingsContent({ lang }: { lang: string }) {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+        {error}
       </div>
     )
   }
@@ -226,13 +244,5 @@ function AccountSettingsContent({ lang }: { lang: string }) {
         </form>
       </Card>
     </div>
-  )
-}
-
-export default function AccountSettingsContentWrapper({ lang }: { lang: string }) {
-  return (
-    <Suspense fallback={<div className="text-center text-neutral-500">Loading...</div>}>
-      <AccountSettingsContent lang={lang} />
-    </Suspense>
   )
 }
