@@ -44,9 +44,9 @@ Manage ad placements:
 
 | Role | Access |
 |------|--------|
-| `reader` | Default for new users |
-| `editor` | Review updates, manage content |
-| `admin` | Full admin access |
+| `reader` | Default for new users; access to public content and account |
+| `editor` | Review updates, manage content, access admin dashboard |
+| `admin` | Full admin access including user management |
 | `superadmin` | System configuration |
 
 ## Notifications

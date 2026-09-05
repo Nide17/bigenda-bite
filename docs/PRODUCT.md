@@ -40,7 +40,7 @@ Users come to get things done, not browse. The product is organized around tasks
 | Search | Universal search across all content |
 | City Routing | Content and ads personalized by city |
 | i18n | Full EN/FR/RW translations |
-| Auth | Email/password and Google OAuth |
+| Auth | Email/password and Google OAuth; email verification optional |
 | Membership | Subscriptions with MTN MoMo payments |
 | Ads | Impression and click tracking |
 | Admin Dashboard | Users, ads, analytics, content, pending updates |

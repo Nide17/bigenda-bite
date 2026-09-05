@@ -9,8 +9,8 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 │                        Client (Browser)                      │
 │       Next.js App Router + Tailwind CSS + custom i18n        │
 └─────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
+                              │
+                              ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Next.js Application                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
@@ -22,9 +22,9 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 │  │  Components  │  │  Dashboard   │  │  (MoMo, CMS)    │  │
 │  └──────────────┘  └──────────────┘  └─────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                             │
-         ┌───────────────────┼───────────────────┐
-         ▼                   ▼                   ▼
+                              │
+          ┌───────────────────┼───────────────────┐
+          ▼                   ▼                   ▼
 ┌───────────────┐   ┌───────────────┐   ┌───────────────┐
 │   MongoDB     │   │   Sanity      │   │   External    │
 │   (Operational│   │   (Published  │   │   APIs        │
@@ -64,11 +64,11 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 
 ### Auth
 
-NextAuth v4 with Google OAuth and email/password. Sessions stored in MongoDB.
+NextAuth v4 with Google OAuth and email/password. Sessions stored in MongoDB. Email verification is available but not required for login. Google OAuth users are matched by email and created automatically if not present.
 
 ### i18n
 
-Custom lightweight provider. Translations are JSON files loaded by server components. URLs follow `/{lang}/...`.
+Custom lightweight provider replaces next-intl. Translations are JSON files loaded by server components. URLs follow `/{lang}/...`.
 
 ### Scraper Worker
 

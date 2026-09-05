@@ -32,7 +32,13 @@
 1. Create a webhook in your channel settings
 2. Copy the webhook URL for `DISCORD_WEBHOOK_URL`
 
-## 5. Vercel
+## 5. Google OAuth (optional)
+
+1. Create OAuth 2.0 credentials in Google Cloud Console
+2. Add authorized redirect URI: `https://yourdomain.com/api/auth/callback/google`
+3. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Vercel
+
+## 6. Vercel
 
 ### Deploy via Git
 
@@ -61,6 +67,10 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=your_token
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
+
+# Optional — Google OAuth
+GOOGLE_CLIENT_ID=your_client_id
+GOOGLE_CLIENT_SECRET=your_client_secret
 
 # Optional — Payments
 MTN_MOMO_API_URL=https://sandbox.momodeveloper.mtn.com
@@ -104,3 +114,4 @@ GMAIL_PASSWORD=your_app_password
 - **DB connection issues:** Verify connection string and IP whitelist
 - **Sanity not showing:** Check projectId, dataset, and publish status
 - **Payment errors:** Verify MoMo credentials and callback URL
+- **Auth errors:** Ensure `NEXTAUTH_SECRET` is set and `NEXTAUTH_URL` matches your domain

@@ -26,6 +26,7 @@
 - Session tokens are HTTP-only cookies
 - CSRF protection on auth endpoints
 - Passwords hashed with bcrypt
+- Google OAuth users are matched by email and created automatically if not present
 
 ## Database
 

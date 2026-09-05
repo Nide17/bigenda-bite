@@ -24,7 +24,7 @@ Sign in with email and password.
 }
 ```
 
-Returns `302` redirect on success, `401` on failure.
+Returns a JSON response. On bad credentials, the body contains `{ "error": "CredentialsSignin" }`. On success, it may return a redirect or JSON with a `url` field.
 
 #### POST `/api/register`
 
@@ -111,9 +111,24 @@ Get the current user's profile.
 
 Update profile (displayName, email). Email changes reset verification.
 
+```json
+{
+  "displayName": "string",
+  "email": "string",
+  "isForeigner": true
+}
+```
+
 #### PATCH `/api/account/password`
 
 Change password. Requires current password.
+
+```json
+{
+  "currentPassword": "string",
+  "newPassword": "string"
+}
+```
 
 ### Password Reset
 
