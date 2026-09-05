@@ -23,7 +23,6 @@ async function createSessionClient() {
 const sessionOptions = {
   ...authOptions,
   adapter: MongoDBAdapter(createSessionClient),
-  providers: undefined,
 }
 
 export async function getSession(request?: NextRequest): Promise<AppSession | null> {
@@ -32,7 +31,8 @@ export async function getSession(request?: NextRequest): Promise<AppSession | nu
       ? await (getServerSession as any)(request, undefined, sessionOptions)
       : await getServerSession(sessionOptions)
     return session as AppSession | null
-  } catch {
+  } catch (error) {
+    console.error('getSession failed:', error)
     return null
   }
 }
