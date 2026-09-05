@@ -24,9 +24,31 @@ async function createMongoClient(): Promise<MongoClient> {
   if (!process.env.MONGODB_URI) {
     throw new Error('MONGODB_URI is not set')
   }
-  const client = new MongoClient(process.env.MONGODB_URI)
-  await client.connect()
-  return client
+  
+  const maxRetries = 3
+  let lastError: Error | null = null
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const client = new MongoClient(process.env.MONGODB_URI, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000,
+      })
+      await client.connect()
+      console.log(`✅ MongoDB connected on attempt ${attempt}`)
+      return client
+    } catch (error) {
+      lastError = error as Error
+      console.error(`MongoDB connection attempt ${attempt}/${maxRetries} failed:`, lastError.message)
+      
+      if (attempt < maxRetries) {
+        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 5000)
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+  
+  throw lastError || new Error('Failed to connect to MongoDB after retries')
 }
 
 interface CustomUser extends User {
@@ -160,5 +182,5 @@ export const authOptions: AuthOptions = {
     signIn: '/en/login',
   },
   session: { strategy: 'database' as const },
-  debug: true,
+  debug: false,
 }

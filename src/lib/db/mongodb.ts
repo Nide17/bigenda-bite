@@ -1,8 +1,5 @@
 import { MongoClient, Db, FindOptions, UpdateOptions, InsertOneOptions, SortDirection } from 'mongodb'
 
-let client: MongoClient | null = null
-let db: Db | null = null
-
 type MockCursor<T> = {
   toArray: () => Promise<T[]>
   sort: (sort: Record<string, SortDirection | { $meta: string }>) => MockCursor<T>
@@ -41,18 +38,39 @@ function createMockDb(): MockDb {
   }
 }
 
+let client: MongoClient | null = null
+
+async function getClient(): Promise<MongoClient | null> {
+  if (!process.env.MONGODB_URI) {
+    return null
+  }
+
+  if (!client) {
+    client = new MongoClient(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+    })
+    await client.connect()
+  }
+
+  return client
+}
+
 export async function connectToDatabase() {
   if (!process.env.MONGODB_URI) {
     return createMockDb() as unknown as Db
   }
 
-  if (!client) {
-    client = new MongoClient(process.env.MONGODB_URI)
-    await client.connect()
-    await client.db('bigenda-bite').collection('businesses').createIndex({ location: '2dsphere' })
+  const mongoClient = await getClient()
+  if (!mongoClient) {
+    return createMockDb() as unknown as Db
   }
 
-  db = client.db('bigenda-bite')
+  const db = mongoClient.db('bigenda-bite')
+  try {
+    await db.collection('businesses').createIndex({ location: '2dsphere' })
+  } catch {
+    // index may already exist
+  }
   return db
 }
-
