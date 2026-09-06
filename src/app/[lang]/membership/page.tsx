@@ -14,31 +14,31 @@ export default async function MembershipPage({ params }: { params: Promise<{ lan
   const plans = [
     {
       id: 'free',
-      name: 'Free',
+      nameKey: 'membership_plan_free',
       price: '0',
-      description: 'Basic listing, no lead capture',
-      features: ['Basic listing', 'Contact button', 'Standard placement'],
-      cta: 'Get Started',
+      descriptionKey: 'membership_plan_free_desc',
+      featureKeys: ['membership_feature_basic_listing', 'membership_feature_contact_button', 'membership_feature_standard_placement'],
+      ctaKey: 'get_started',
       href: `/${lang}/register`,
       popular: false,
     },
     {
       id: 'basic',
-      name: 'Basic',
+      nameKey: 'membership_plan_basic',
       price: '2,000',
-      description: 'Verified badge, contact button, better placement',
-      features: ['Verified badge', 'Contact button', 'Better placement', 'Analytics dashboard'],
-      cta: 'Choose Basic',
+      descriptionKey: 'membership_plan_basic_desc',
+      featureKeys: ['membership_feature_verified_badge', 'membership_feature_contact_button', 'membership_feature_better_placement', 'membership_feature_analytics_dashboard'],
+      ctaKey: 'choose_basic',
       href: `/${lang}/membership/checkout?plan=basic`,
       popular: true,
     },
     {
       id: 'pro',
-      name: 'Pro',
+      nameKey: 'membership_plan_pro',
       price: '5,000',
-      description: 'Lead form + analytics, featured spot',
-      features: ['Lead form + analytics', 'Featured spot', 'Priority support', 'Custom badge'],
-      cta: 'Choose Pro',
+      descriptionKey: 'membership_plan_pro_desc',
+      featureKeys: ['membership_feature_lead_form_analytics', 'membership_feature_featured_spot', 'membership_feature_priority_support', 'membership_feature_custom_badge'],
+      ctaKey: 'choose_pro',
       href: `/${lang}/membership/checkout?plan=pro`,
       popular: false,
     },
@@ -49,7 +49,7 @@ export default async function MembershipPage({ params }: { params: Promise<{ lan
       <div className="text-center mb-12">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-3">{t('membership')}</h1>
         <p className="text-neutral-600 max-w-2xl mx-auto">
-          Choose the right plan for your business. All plans include a basic listing in our directory.
+          {t('membership_choose_plan_text')}
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -63,24 +63,24 @@ export default async function MembershipPage({ params }: { params: Promise<{ lan
             {plan.popular && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
-                  Most Popular
+                  {t('most_popular')}
                 </span>
               </div>
             )}
             <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-primary mb-1">{plan.name}</h2>
+              <h2 className="text-xl font-bold text-primary mb-1">{t(plan.nameKey)}</h2>
               <p className="text-3xl font-bold text-primary mb-2">
-                {plan.price === '0' ? 'Free' : `${plan.price} RWF`}
+                {plan.price === '0' ? t('membership_price_free') : `${plan.price} RWF`}
               </p>
-              <p className="text-sm text-neutral-600">{plan.description}</p>
+              <p className="text-sm text-neutral-600">{t(plan.descriptionKey)}</p>
             </div>
             <ul className="space-y-3 mb-8">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2.5 text-sm">
+              {plan.featureKeys.map((featureKey) => (
+                <li key={featureKey} className="flex items-start gap-2.5 text-sm">
                   <svg className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-neutral-700">{feature}</span>
+                  <span className="text-neutral-700">{t(featureKey)}</span>
                 </li>
               ))}
             </ul>
@@ -92,7 +92,7 @@ export default async function MembershipPage({ params }: { params: Promise<{ lan
                   : 'bg-primary-light text-primary hover:bg-primary hover:text-white border border-primary/20'
               }`}
             >
-              {plan.cta}
+              {t(plan.ctaKey)}
             </Link>
           </div>
         ))}

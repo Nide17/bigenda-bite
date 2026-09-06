@@ -79,7 +79,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({})) as { error?: string }
 
     if (!res.ok) {
-      setError(data.error || 'Registration failed. Please try again.')
+      setError(data.error || t('register_failed'))
       setLoading(false)
       return
     }
@@ -103,7 +103,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
         )}
         <div className="space-y-5">
           <Input
-            label="Full Name"
+            label={t('full_name')}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -112,7 +112,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
             leftIcon={<UserIcon />}
           />
           <Input
-            label="Email"
+            label={t('email')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -121,13 +121,13 @@ export default function RegisterForm({ lang }: { lang: string }) {
             leftIcon={<MailIcon />}
           />
           <Input
-            label="Password"
+            label={t('password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="new-password"
-            helperText="At least 6 characters"
+            helperText={t('register_password_helper')}
             leftIcon={<LockIcon />}
           />
         </div>
@@ -156,9 +156,9 @@ export default function RegisterForm({ lang }: { lang: string }) {
           {t('continue_with_google')}
         </Button>
         <p className="text-sm text-neutral-600 text-center">
-          Already have an account?{' '}
+          {t('already_have_account')}{' '}
           <a href={`/${lang}/login`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
-            Sign in
+            {t('sign_in')}
           </a>
         </p>
       </form>

@@ -74,24 +74,24 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
       setSuccess(true)
     } else {
       const data = await res.json().catch(() => ({}))
-      setError(data.error || 'Something went wrong. Please try again.')
+      setError(data.error || t('reset_password_error'))
     }
     setLoading(false)
   }
 
   if (tokenValid === false) {
-    let title = 'Invalid or expired link'
-    let description = 'This reset link is invalid or has expired. Please request a new one.'
+    let title = t('reset_password_invalid_title')
+    let description = t('reset_password_invalid_text')
 
     if (validationError === 'expired') {
-      title = 'Link expired'
-      description = 'This reset link has expired. Please request a new one.'
+      title = t('reset_password_expired_title')
+      description = t('reset_password_expired_text')
     } else if (validationError === 'used') {
-      title = 'Link already used'
-      description = 'This reset link has already been used. Please request a new one.'
+      title = t('reset_password_used_title')
+      description = t('reset_password_used_text')
     } else if (validationError === 'missing') {
-      title = 'Missing reset token'
-      description = 'This reset link is missing a token. Please request a new one.'
+      title = t('reset_password_missing_title')
+      description = t('reset_password_missing_text')
     }
 
     return (
@@ -105,7 +105,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
           <h2 className="text-xl font-semibold text-primary mb-2">{title}</h2>
           <p className="text-sm text-neutral-600 mb-8">{description}</p>
           <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/forgot-password`)} size="md">
-            Request new link
+            {t('reset_password_request_new')}
           </Button>
         </div>
       </Card>
@@ -121,12 +121,12 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-primary mb-2">Password reset successful</h2>
+          <h2 className="text-xl font-semibold text-primary mb-2">{t('password_reset_success')}</h2>
           <p className="text-sm text-neutral-600 mb-8">
-            Your password has been reset. You can now sign in.
+            {t('reset_password_success_text')}
           </p>
           <Button className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
-            Sign in
+            {t('sign_in')}
           </Button>
         </div>
       </Card>
@@ -143,7 +143,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
         )}
         <div className="space-y-5">
           <Input
-            label="New password"
+            label={t('new_password')}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -153,7 +153,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
             leftIcon={<LockIcon />}
           />
           <Input
-            label="Confirm password"
+            label={t('confirm_password')}
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -164,7 +164,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
           />
         </div>
         <Button type="submit" className="w-full" loading={loading} size="md">
-          Reset password
+          {t('reset_password')}
         </Button>
       </form>
     </Card>

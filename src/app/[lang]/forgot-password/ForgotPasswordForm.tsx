@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -16,6 +17,7 @@ function MailIcon() {
 
 function ForgotPasswordFormContent({ lang }: { lang: string }) {
   const router = useRouter()
+  const t = useTranslations()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
@@ -36,7 +38,7 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
       setSuccess(true)
     } else {
       const data = await res.json().catch(() => ({}))
-      setError(data.error || 'Something went wrong. Please try again.')
+      setError(data.error || t('forgot_password_error'))
     }
     setLoading(false)
   }
@@ -50,12 +52,12 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-primary mb-2">Check your email</h2>
+          <h2 className="text-xl font-semibold text-primary mb-2">{t('forgot_password_check_email_title')}</h2>
           <p className="text-sm text-neutral-600 mb-8">
-            If an account exists with that email, a reset link has been sent.
+            {t('forgot_password_success_text')}
           </p>
           <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
-            Back to sign in
+            {t('forgot_password_back_to_login')}
           </Button>
         </div>
       </Card>
@@ -71,7 +73,7 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
           </div>
         )}
         <Input
-          label="Email"
+          label={t('email')}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -80,11 +82,11 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
           leftIcon={<MailIcon />}
         />
         <Button type="submit" className="w-full" loading={loading} size="md">
-          Send reset link
+          {t('send_reset_link')}
         </Button>
         <p className="text-sm text-neutral-600 text-center">
           <a href={`/${lang}/login`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
-            Back to sign in
+            {t('forgot_password_back_to_login')}
           </a>
         </p>
       </form>

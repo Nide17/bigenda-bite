@@ -64,7 +64,7 @@ function LoginFormContent({ lang }: { lang: string }) {
   const oauthError = searchParams?.get('error') || null
 
   const oauthErrorMessage = oauthError === 'OAuthAccountNotLinked'
-    ? 'This Google account is already linked to a different sign-in method. Please use your original sign-in method.'
+    ? t('login_oauth_linked_error')
     : oauthError === 'AccessDenied'
       ? t('oauth_cancelled')
       : oauthError
@@ -89,17 +89,17 @@ function LoginFormContent({ lang }: { lang: string }) {
       if (result?.error) {
         if (result.error === 'email_not_verified') {
           setErrorType('unverified')
-          setError('Please verify your email before signing in. Check your inbox for the verification link.')
+          setError(t('login_unverified_email'))
         } else {
           setErrorType('general')
-          setError('Invalid email or password')
+          setError(t('login_invalid_credentials'))
         }
         setLoading(false)
       } else if (result?.ok) {
         router.push(callbackUrl)
       } else {
         setErrorType('general')
-        setError('Invalid email or password')
+        setError(t('login_invalid_credentials'))
         setLoading(false)
       }
     } catch {
@@ -140,7 +140,7 @@ function LoginFormContent({ lang }: { lang: string }) {
             {errorType === 'unverified' && !oauthErrorMessage && (
               <div className="mt-3">
                 {resendSuccess ? (
-                  <span className="text-green-700 font-medium">Verification email sent! Check your inbox.</span>
+                  <span className="text-green-700 font-medium">{t('login_resend_success')}</span>
                 ) : (
                   <button
                     type="button"
@@ -148,7 +148,7 @@ function LoginFormContent({ lang }: { lang: string }) {
                     disabled={resendLoading}
                     className="text-amber-800 font-medium underline hover:no-underline disabled:opacity-50"
                   >
-                    {resendLoading ? 'Sending...' : 'Resend verification email'}
+                    {resendLoading ? t('login_sending') : t('login_resend_verification')}
                   </button>
                 )}
               </div>

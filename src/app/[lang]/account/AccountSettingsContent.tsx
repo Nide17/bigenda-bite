@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import { useTranslations } from '@/components/I18nProvider'
 
 interface UserProfile {
   displayName: string
@@ -16,6 +17,7 @@ interface UserProfile {
 
 export default function AccountSettingsContent({ lang }: { lang: string }) {
   const router = useRouter()
+  const t = useTranslations()
   const [loading, setLoading] = useState(true)
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -79,10 +81,10 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
-      setProfileMessage({ type: 'success', text: 'Profile updated successfully.' })
+      setProfileMessage({ type: 'success', text: t('account_profile_updated') })
       setProfile((prev) => prev ? { ...prev, displayName, email, isForeigner } : prev)
     } else {
-      setProfileMessage({ type: 'error', text: data.error || 'Failed to update profile.' })
+      setProfileMessage({ type: 'error', text: data.error || t('account_profile_update_failed') })
     }
     setProfileLoading(false)
   }
@@ -92,12 +94,12 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
     setPasswordMessage(null)
 
     if (newPassword !== confirmPassword) {
-      setPasswordMessage({ type: 'error', text: 'New passwords do not match.' })
+      setPasswordMessage({ type: 'error', text: t('account_passwords_do_not_match') })
       return
     }
 
     if (newPassword.length < 8) {
-      setPasswordMessage({ type: 'error', text: 'Password must be at least 8 characters.' })
+      setPasswordMessage({ type: 'error', text: t('account_password_min_length') })
       return
     }
 
@@ -112,12 +114,12 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
-      setPasswordMessage({ type: 'success', text: 'Password changed successfully.' })
+      setPasswordMessage({ type: 'success', text: t('account_password_changed') })
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     } else {
-      setPasswordMessage({ type: 'error', text: data.error || 'Failed to change password.' })
+      setPasswordMessage({ type: 'error', text: data.error || t('account_password_change_failed') })
     }
     setPasswordLoading(false)
   }
@@ -145,7 +147,7 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
   return (
     <div className="space-y-6">
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-primary mb-4">Profile Information</h2>
+        <h2 className="text-lg font-semibold text-primary mb-4">{t('account_profile_information')}</h2>
         <form onSubmit={handleProfileSubmit} className="space-y-4">
           {profileMessage && (
             <div className={`rounded-lg p-3 text-sm ${profileMessage.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
@@ -153,29 +155,29 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
             </div>
           )}
           <Input
-            label="Display Name"
+            label={t('account_display_name')}
             type="text"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
             required
           />
           <Input
-            label="Email"
+            label={t('email')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            helperText={!profile.emailVerified ? 'Email not verified. Check your inbox or request a new verification link.' : undefined}
+            helperText={!profile.emailVerified ? t('account_email_not_verified') : undefined}
           />
           <div className="flex items-center gap-2">
-            <span className="text-sm text-neutral-500">Role:</span>
+            <span className="text-sm text-neutral-500">{t('account_role_label')}</span>
             <span className="text-sm font-medium text-primary capitalize">{profile.role}</span>
           </div>
           <div className="flex items-start justify-between py-3 border-t border-neutral-200">
             <div className="space-y-1">
-              <label className="text-sm font-medium text-neutral-700">Foreigner Mode</label>
+              <label className="text-sm font-medium text-neutral-700">{t('account_foreigner_mode')}</label>
               <p className="text-xs text-neutral-500">
-                Show content specific to non-Rwandan visitors (e.g. visa info, foreigner-exclusive tips).
+                {t('account_foreigner_mode_description')}
               </p>
             </div>
             <button
@@ -196,14 +198,14 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
           </div>
           <div className="flex justify-end">
             <Button type="submit" loading={profileLoading}>
-              Save Changes
+              {t('account_save_changes')}
             </Button>
           </div>
         </form>
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-lg font-semibold text-primary mb-4">Change Password</h2>
+        <h2 className="text-lg font-semibold text-primary mb-4">{t('account_change_password')}</h2>
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
           {passwordMessage && (
             <div className={`rounded-lg p-3 text-sm ${passwordMessage.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
@@ -211,7 +213,7 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
             </div>
           )}
           <Input
-            label="Current Password"
+            label={t('account_current_password')}
             type="password"
             value={currentPassword}
             onChange={(e) => setCurrentPassword(e.target.value)}
@@ -219,7 +221,7 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
             autoComplete="current-password"
           />
           <Input
-            label="New Password"
+            label={t('new_password')}
             type="password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
@@ -228,7 +230,7 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
             autoComplete="new-password"
           />
           <Input
-            label="Confirm New Password"
+            label={t('account_confirm_new_password')}
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -238,7 +240,7 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
           />
           <div className="flex justify-end">
             <Button type="submit" loading={passwordLoading}>
-              Change Password
+              {t('account_change_password_btn')}
             </Button>
           </div>
         </form>
