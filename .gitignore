@@ -39,6 +39,9 @@ next-env.d.ts
 .kilo
 .playwright-mcp
 test_*.js
+test_*.ts
+test-*.js
+test-*.ts
 test-*.txt
 node_test.txt
 tmp-*.js
@@ -56,3 +59,4 @@ eslintcache
 /playwright-report
 /test-results
 /local_tests
+/src/app/api/test-*

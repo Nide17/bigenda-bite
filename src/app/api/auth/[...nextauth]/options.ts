@@ -93,26 +93,22 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials: unknown) {
         try {
+          const email = (credentials as Record<string, unknown>)?.email
+          const password = String((credentials as Record<string, unknown>)?.password || '')
+
           const db = await connectToDatabase()
           const users = db.collection('users')
-          const user = await users.findOne({ email: (credentials as Record<string, unknown>)?.email })
+          const user = await users.findOne({ email })
 
           if (!user) {
-            console.error('Auth: user not found for email', (credentials as Record<string, unknown>)?.email)
             return null
           }
 
-          const passwordMatch = await bcrypt.compare(
-            String((credentials as Record<string, unknown>)?.password || ''),
-            user.password
-          )
+          const passwordMatch = await bcrypt.compare(password, user.password)
 
           if (!passwordMatch) {
-            console.error('Auth: password mismatch for email', (credentials as Record<string, unknown>)?.email)
             return null
           }
-
-          console.error('Auth: login success for email', (credentials as Record<string, unknown>)?.email, 'role', user.role)
 
           return {
             id: user._id.toString(),
@@ -177,6 +173,6 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: '/en/login',
   },
-  session: { strategy: 'database' as const },
+  session: { strategy: 'jwt' as const },
   debug: false,
 }
