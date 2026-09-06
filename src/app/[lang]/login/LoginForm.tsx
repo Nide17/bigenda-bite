@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useTranslations } from '@/components/I18nProvider'
@@ -55,7 +55,6 @@ function LoginFormContent({ lang }: { lang: string }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [errorType, setErrorType] = useState<'general' | 'unverified'>('general')
-  const [csrfToken, setCsrfToken] = useState('')
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [resendLoading, setResendLoading] = useState(false)
@@ -63,13 +62,6 @@ function LoginFormContent({ lang }: { lang: string }) {
 
   const callbackUrl = searchParams?.get('callbackUrl') || `/${lang}`
   const oauthError = searchParams?.get('error') || null
-
-  useEffect(() => {
-    fetch('/api/auth/csrf')
-      .then((res) => res.json())
-      .then((data) => setCsrfToken(data.csrfToken || ''))
-      .catch(() => setCsrfToken(''))
-  }, [])
 
   const oauthErrorMessage = oauthError === 'OAuthAccountNotLinked'
     ? 'This Google account is already linked to a different sign-in method. Please use your original sign-in method.'
@@ -86,33 +78,31 @@ function LoginFormContent({ lang }: { lang: string }) {
     setErrorType('general')
     setResendSuccess(false)
 
-    const res = await fetch('/api/auth/callback/credentials', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({
-        csrfToken,
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
         email,
         password,
         callbackUrl,
-        redirect: 'false',
-      }),
-    })
+      })
 
-    const data = await res.json().catch(() => null)
-    const authError = data && typeof data === 'object' ? (data as { error?: string }).error : null
-
-    if (authError) {
-      if (authError === 'email_not_verified') {
-        setErrorType('unverified')
-        setError('Please verify your email before signing in. Check your inbox for the verification link.')
+      if (result?.error) {
+        if (result.error === 'email_not_verified') {
+          setErrorType('unverified')
+          setError('Please verify your email before signing in. Check your inbox for the verification link.')
+        } else {
+          setErrorType('general')
+          setError('Invalid email or password')
+        }
+        setLoading(false)
+      } else if (result?.ok) {
+        router.push(callbackUrl)
       } else {
         setErrorType('general')
         setError('Invalid email or password')
+        setLoading(false)
       }
-      setLoading(false)
-    } else if (res.ok) {
-      router.push(callbackUrl)
-    } else {
+    } catch {
       setErrorType('general')
       setError('Invalid email or password')
       setLoading(false)
@@ -144,7 +134,6 @@ function LoginFormContent({ lang }: { lang: string }) {
   return (
     <Card className="p-8 sm:p-10">
       <form onSubmit={handleSubmit} className="space-y-6">
-        <input type="hidden" name="csrfToken" value={csrfToken} />
         {(oauthErrorMessage || error) && (
           <div className={`rounded-xl p-4 text-sm ${errorType === 'unverified' ? 'bg-amber-50 border border-amber-200 text-amber-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
             {oauthErrorMessage || error}
