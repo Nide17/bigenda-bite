@@ -102,49 +102,34 @@ export default function RegisterForm({ lang }: { lang: string }) {
           </div>
         )}
         <div className="space-y-5">
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <UserIcon />
-            </div>
-            <Input
-              label="Full Name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              autoComplete="name"
-              className="pl-10"
-            />
-          </div>
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <MailIcon />
-            </div>
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              autoComplete="email"
-              className="pl-10"
-            />
-          </div>
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <LockIcon />
-            </div>
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              autoComplete="new-password"
-              helperText="At least 6 characters"
-              className="pl-10"
-            />
-          </div>
+          <Input
+            label="Full Name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            autoComplete="name"
+            leftIcon={<UserIcon />}
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            leftIcon={<MailIcon />}
+          />
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="new-password"
+            helperText="At least 6 characters"
+            leftIcon={<LockIcon />}
+          />
         </div>
         <Button type="submit" className="w-full" loading={loading} size="lg">
           {t('register')}

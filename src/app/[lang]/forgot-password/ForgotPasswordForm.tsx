@@ -70,20 +70,15 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
             {error}
           </div>
         )}
-        <div className="relative">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-            <MailIcon />
-          </div>
-          <Input
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            autoComplete="email"
-            className="pl-10"
-          />
-        </div>
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          autoComplete="email"
+          leftIcon={<MailIcon />}
+        />
         <Button type="submit" className="w-full" loading={loading} size="lg">
           Send reset link
         </Button>

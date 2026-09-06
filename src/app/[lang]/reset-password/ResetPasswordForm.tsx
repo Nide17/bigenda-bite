@@ -142,36 +142,26 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
           </div>
         )}
         <div className="space-y-5">
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <LockIcon />
-            </div>
-            <Input
-              label="New password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-              autoComplete="new-password"
-              className="pl-10"
-            />
-          </div>
-          <div className="relative">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-              <LockIcon />
-            </div>
-            <Input
-              label="Confirm password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              minLength={8}
-              autoComplete="new-password"
-              className="pl-10"
-            />
-          </div>
+          <Input
+            label="New password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={8}
+            autoComplete="new-password"
+            leftIcon={<LockIcon />}
+          />
+          <Input
+            label="Confirm password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            minLength={8}
+            autoComplete="new-password"
+            leftIcon={<LockIcon />}
+          />
         </div>
         <Button type="submit" className="w-full" loading={loading} size="lg">
           Reset password
