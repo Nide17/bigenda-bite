@@ -11,6 +11,7 @@ import GuideTaskBlueprintClient from '@/components/GuideTaskBlueprintClient'
 import SubmissionsSection from '@/components/SubmissionsSection'
 import GuideFeedback from '@/components/GuideFeedback'
 import ShareButton from '@/components/ShareButton'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { CommunityContribution } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, howToJsonLd } from '@/lib/seo'
@@ -18,7 +19,7 @@ import { JsonLd } from '@/components/JsonLd'
 
 const baseUrl = 'https://bigendabite.com'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
   const { lang, category, slug } = await params

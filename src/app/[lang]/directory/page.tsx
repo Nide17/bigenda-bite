@@ -3,19 +3,15 @@ import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
 import Badge from '@/components/ui/Badge'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { Business } from '@/types'
 import { pageMetadata, breadcrumbJsonLd } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+export const revalidate = 60
 
 const baseUrl = 'https://bigendabite.com'
-
-export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -38,6 +34,7 @@ interface FilterState {
 export default async function DirectoryPage({ params, searchParams }: { params: Promise<{ lang: string }>; searchParams: Promise<{ city?: string; englishSpeaking?: string; acceptsMomo?: string; bigendaVerified?: string }> }) {
   const { lang } = await params
   const sp = await searchParams
+  const t = getMessages(lang)
 
   const filters: FilterState = {
     city: sp.city || 'all',
@@ -63,8 +60,6 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
   }
 
   const businesses = await db.collection('businesses').find(query).sort({ name: 1 }).limit(50).toArray() as unknown as Business[]
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
 
   const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
     { name: t('directory'), url: `/${lang}/directory` },

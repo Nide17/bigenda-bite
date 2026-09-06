@@ -2,12 +2,10 @@ import { Suspense } from 'react'
 import SearchResults from './SearchResults'
 import Search from '@/components/Search'
 import PageContainer from '@/components/PageContainer'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+export const revalidate = 60
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -24,8 +22,7 @@ interface SearchPageProps {
 export default async function SearchPage({ params, searchParams }: SearchPageProps) {
   const { lang } = await params
   const { q, type } = await searchParams
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   return (
     <PageContainer>

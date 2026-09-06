@@ -2,15 +2,11 @@ import { getAlerts } from '@/lib/cms/sanity'
 import PageContainer from '@/components/PageContainer'
 import AlertsSection from '@/components/AlertsSection'
 import EmptyState from '@/components/ui/EmptyState'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import { pageMetadata } from '@/lib/seo'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
-
-export const dynamic = 'force-dynamic'
+export const revalidate = 60
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -19,15 +15,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: 'Important updates and announcements from official sources in Rwanda.',
     pathname: '/alerts',
     locale: lang,
-    keywords: ['Rwanda alerts', 'official updates', 'announcements', 'government notices'],
+    keywords: ['alerts', 'announcements', 'Rwanda', 'updates'],
   })
 }
 
 export default async function AlertsPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
+  const t = getMessages(lang)
   const alerts = await getAlerts()
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
 
   return (
     <PageContainer>

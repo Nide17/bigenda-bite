@@ -1,16 +1,13 @@
 import { Suspense } from 'react'
 import RegisterForm from './RegisterForm'
 import PageContainer from '@/components/PageContainer'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+export const dynamic = 'force-dynamic'
 
 export default async function RegisterPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   return (
     <PageContainer maxWidth="sm">

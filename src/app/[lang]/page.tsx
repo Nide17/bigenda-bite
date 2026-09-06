@@ -6,17 +6,13 @@ import Search from '@/components/Search'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import Card from '@/components/ui/Card'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { Process, Guide, Alert } from '@/types'
 import type { Business } from '@/types'
 import { pageMetadata } from '@/lib/seo'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
-
-export const dynamic = 'force-dynamic'
+export const revalidate = 120
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -33,6 +29,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
   const { lang } = await params
   const { city } = await searchParams
   const cityName = city || await getCityFromCookie()
+  const t = getMessages(lang)
 
   let processes: Process[] = []
   let guides: Guide[] = []
@@ -58,9 +55,6 @@ export default async function HomePage({ params, searchParams }: { params: Promi
   } catch (error) {
     console.error('Home page data fetch error:', error)
   }
-
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
 
   const categories = Array.from(new Set([
     ...processes.map(p => p.category).filter((c): c is string => Boolean(c)),

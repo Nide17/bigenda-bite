@@ -3,6 +3,7 @@
 import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { signIn } from 'next-auth/react'
+import Link from 'next/link'
 import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -184,9 +185,9 @@ function LoginFormContent({ lang }: { lang: string }) {
             <input type="checkbox" className="h-4 w-4 rounded border-neutral-300 text-[#1e1b4b] focus:ring-[#1e1b4b]" />
             {t('remember_me')}
           </label>
-          <a href={`/${lang}/forgot-password`} className="text-sm font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
+          <Link href={`/${lang}/forgot-password`} className="text-sm font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             {t('forgot_password')}
-          </a>
+          </Link>
         </div>
         <Button type="submit" className="w-full" loading={loading} size="md">
           {t('login')}
@@ -214,9 +215,9 @@ function LoginFormContent({ lang }: { lang: string }) {
         </Button>
         <p className="text-sm text-neutral-600 text-center">
           Don&apos;t have an account?{' '}
-          <a href={`/${lang}/register`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
+          <Link href={`/${lang}/register`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             Sign up
-          </a>
+          </Link>
         </p>
       </form>
     </Card>

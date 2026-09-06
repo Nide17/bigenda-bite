@@ -2,7 +2,7 @@ import { NextResponse, NextRequest } from 'next/server'
 import { requireEditor } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
-import { parseJson, requireFields, fail } from '@/lib/api/validate'
+import { parseJson, requireFields, fail, isValidUrl } from '@/lib/api/validate'
 
 export async function GET() {
   try {
@@ -35,6 +35,14 @@ export async function POST(request: NextRequest) {
     if (missing) return NextResponse.json(missing, { status: missing.status })
 
     const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = parsed.data
+
+    if (!isValidUrl(linkUrl)) {
+      return NextResponse.json(fail('Invalid linkUrl: must be a valid http/https URL'), { status: 400 })
+    }
+
+    if (!isValidUrl(imageUrl)) {
+      return NextResponse.json(fail('Invalid imageUrl: must be a valid http/https URL'), { status: 400 })
+    }
 
     const db = await connectToDatabase()
 
@@ -75,6 +83,14 @@ export async function PATCH(request: NextRequest) {
     if (!parsed.ok) return parsed.response
 
     const { title, placement, city, linkUrl, imageUrl, active, startDate, endDate } = parsed.data
+
+    if (linkUrl !== undefined && !isValidUrl(linkUrl)) {
+      return NextResponse.json(fail('Invalid linkUrl: must be a valid http/https URL'), { status: 400 })
+    }
+
+    if (imageUrl !== undefined && !isValidUrl(imageUrl)) {
+      return NextResponse.json(fail('Invalid imageUrl: must be a valid http/https URL'), { status: 400 })
+    }
 
     const db = await connectToDatabase()
     const update: Record<string, unknown> = {}

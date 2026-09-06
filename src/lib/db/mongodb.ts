@@ -49,6 +49,9 @@ async function getClient(): Promise<MongoClient | null> {
     client = new MongoClient(process.env.MONGODB_URI, {
       serverSelectionTimeoutMS: 10000,
       connectTimeoutMS: 10000,
+      maxPoolSize: 20,
+      minPoolSize: 5,
+      maxIdleTimeMS: 30000,
     })
     await client.connect()
   }
@@ -66,11 +69,5 @@ export async function connectToDatabase() {
     return createMockDb() as unknown as Db
   }
 
-  const db = mongoClient.db('bigenda-bite')
-  try {
-    await db.collection('businesses').createIndex({ location: '2dsphere' })
-  } catch {
-    // index may already exist
-  }
-  return db
+  return mongoClient.db('bigenda-bite')
 }

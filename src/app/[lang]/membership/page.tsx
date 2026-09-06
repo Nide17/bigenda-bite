@@ -1,15 +1,28 @@
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import Card from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
+import Button from '@/components/ui/Button'
+import { getMessages } from '@/lib/i18n'
+import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+export const revalidate = 300
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    title: 'Membership | Bigenda Bite',
+    description: 'Choose the right plan for your business. All plans include a basic listing in our directory.',
+    pathname: '/membership',
+    locale: lang,
+    keywords: ['membership', 'subscription', 'business', 'Rwanda'],
+  })
+}
 
 export default async function MembershipPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   const plans = [
     {

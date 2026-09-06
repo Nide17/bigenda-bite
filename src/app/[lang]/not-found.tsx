@@ -4,11 +4,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import Button from '@/components/ui/Button'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
-
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+import { getMessages } from '@/lib/i18n'
 
 const POPULAR_PAGES = [
   { key: 'processes', href: '/processes', icon: '📋' },
@@ -21,8 +17,7 @@ export default function NotFound() {
   const params = useParams()
   const router = useRouter()
   const lang = (params?.lang as string) || 'en'
-  const messages = messagesMap[lang] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   return (
     <PageContainer maxWidth="md">

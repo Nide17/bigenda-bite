@@ -34,3 +34,15 @@ export function requireFields(data: Record<string, unknown>, fields: string[]): 
 export function methodNotAllowed(allowed: string[]) {
   return NextResponse.json({ error: `Method not allowed. Allowed: ${allowed.join(', ')}` }, { status: 405 })
 }
+
+const ALLOWED_URL_SCHEMES = ['http:', 'https:']
+
+export function isValidUrl(value: unknown): boolean {
+  if (typeof value !== 'string') return false
+  try {
+    const url = new URL(value)
+    return ALLOWED_URL_SCHEMES.includes(url.protocol)
+  } catch {
+    return false
+  }
+}

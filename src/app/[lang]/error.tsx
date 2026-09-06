@@ -4,11 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Button from '@/components/ui/Button'
 import Link from 'next/link'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
-
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+import { getMessages } from '@/lib/i18n'
 
 const POPULAR_LINKS = [
   { key: 'processes', href: '/processes', icon: '📋' },
@@ -21,8 +17,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   const params = useParams()
   const router = useRouter()
   const lang = (params?.lang as string) || 'en'
-  const messages = messagesMap[lang] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   const [searchQuery, setSearchQuery] = useState('')
 

@@ -2,16 +2,12 @@ import { getProcesses } from '@/lib/cms/sanity'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
 import EmptyState from '@/components/ui/EmptyState'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { Process } from '@/types'
 import { pageMetadata } from '@/lib/seo'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
-
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
@@ -20,15 +16,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     description: 'Browse official government processes and procedures in Rwanda. Verified and regularly updated.',
     pathname: '/processes',
     locale: lang,
-    keywords: ['Rwanda processes', 'government procedures', 'RDB', 'RRA', 'Irembo'],
+    keywords: ['processes', 'government', 'Rwanda', 'official procedures'],
   })
 }
 
 export default async function ProcessesPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
   const processes = await getProcesses(lang)
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   return (
     <PageContainer>

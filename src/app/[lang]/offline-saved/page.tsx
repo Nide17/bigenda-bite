@@ -36,7 +36,7 @@ export default function OfflineSavedPage() {
             <p className="text-neutral-600 mb-4">
               Save guides for offline access when you need them without internet.
             </p>
-            <Link href="/en/guides">
+            <Link href={`/${lang}/guides`}>
               <Button>Browse Guides</Button>
             </Link>
           </Card>

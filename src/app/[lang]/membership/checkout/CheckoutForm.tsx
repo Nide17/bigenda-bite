@@ -15,7 +15,7 @@ const PLANS: Record<string, { id: string; name: string; price: number; features:
   pro: { id: 'pro', name: 'Pro', price: 5000, features: ['Lead form + analytics', 'Featured spot', 'Priority support'] },
 }
 
-export default function CheckoutForm({ planId }: { planId: string }) {
+export default function CheckoutForm({ planId, lang }: { planId: string; lang: string }) {
   const t = useTranslations()
   const router = useRouter()
   const [phone, setPhone] = useState('')
@@ -63,7 +63,7 @@ export default function CheckoutForm({ planId }: { planId: string }) {
           clearInterval(interval)
           setStatus('success')
           setLoading(false)
-          setTimeout(() => { router.push('/en/membership') }, 2000)
+          setTimeout(() => { router.push(`/${lang}/membership`) }, 2000)
         } else if (data.status === 'FAILED' || data.status === 'CANCELLED') {
           clearInterval(interval)
           setStatus('failed')

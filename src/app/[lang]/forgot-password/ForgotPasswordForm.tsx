@@ -2,6 +2,7 @@
 
 import { useState, Suspense } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -85,9 +86,9 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
           {t('send_reset_link')}
         </Button>
         <p className="text-sm text-neutral-600 text-center">
-          <a href={`/${lang}/login`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
+          <Link href={`/${lang}/login`} className="font-medium text-[#1e1b4b] hover:text-[#312e6b] hover:underline">
             {t('forgot_password_back_to_login')}
-          </a>
+          </Link>
         </p>
       </form>
     </Card>

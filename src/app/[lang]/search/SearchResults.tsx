@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { SearchResult, SearchResultType } from '@/types/search'
 
@@ -32,6 +33,7 @@ interface SearchResultsProps {
 }
 
 export default function SearchResults({ query, typeFilter, lang }: SearchResultsProps) {
+  const router = useRouter()
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
@@ -56,8 +58,8 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
     } else {
       params.delete('type')
     }
-    window.location.search = params.toString()
-  }, [activeTypes])
+    router.push(`?${params.toString()}`)
+  }, [activeTypes, router])
 
   useEffect(() => {
     if (!query || query.trim().length < 2) {

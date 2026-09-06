@@ -5,9 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs'
 import Badge from '@/components/ui/Badge'
 import Card from '@/components/ui/Card'
 import SubmissionsSection from '@/components/SubmissionsSection'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { Business } from '@/types'
 import { pageMetadata, breadcrumbJsonLd, localBusinessJsonLd } from '@/lib/seo'
@@ -16,9 +14,7 @@ import LeadForm from './LeadForm'
 
 const baseUrl = 'https://bigendabite.com'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
-
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; businessSlug: string }> }): Promise<Metadata> {
   const { lang, businessSlug } = await params
@@ -43,8 +39,7 @@ export default async function BusinessDetailPage({ params }: { params: Promise<{
   const { lang, businessSlug } = await params
   const db = await connectToDatabase()
   const business = await db.collection('businesses').findOne({ slug: businessSlug }) as Business | null
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   if (!business) {
     notFound()

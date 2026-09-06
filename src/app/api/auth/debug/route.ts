@@ -1,8 +1,18 @@
 import { NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { getSession } from '@/lib/auth/session'
+import { requireSuperadmin } from '@/lib/auth/authorize'
 
 export async function GET() {
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ error: 'Not available in production' }, { status: 404 })
+  }
+
+  const auth = await requireSuperadmin()
+  if (auth.error) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status })
+  }
+
   const env = {
     MONGODB_URI: process.env.MONGODB_URI ? 'set' : 'missing',
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'missing',

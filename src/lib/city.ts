@@ -18,6 +18,7 @@ export async function setCityCookie(city: string): Promise<void> {
   cookieStore.set(CITY_COOKIE, city, {
     httpOnly: true,
     sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 30 * 24 * 60 * 60,
   })

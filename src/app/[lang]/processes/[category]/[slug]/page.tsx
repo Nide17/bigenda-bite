@@ -9,19 +9,15 @@ import TaskBlueprint from '@/components/TaskBlueprint'
 import BeforeYouGo from '@/components/BeforeYouGo'
 import SubmissionsSection from '@/components/SubmissionsSection'
 import ShareButton from '@/components/ShareButton'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
+import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { ProcessStep, Fee } from '@/types'
 import { pageMetadata, breadcrumbJsonLd } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
 
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
-
 const baseUrl = 'https://bigendabite.com'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 300
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }): Promise<Metadata> {
   const { lang, category, slug } = await params
@@ -46,8 +42,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
   const process = await getProcessBySlug(slug)
   const session = await getSession()
   const isForeigner = session?.user?.isForeigner ?? false
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   if (!process) {
     notFound()

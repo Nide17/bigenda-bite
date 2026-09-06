@@ -3,11 +3,7 @@ import { redirect } from 'next/navigation'
 import LoginForm from './LoginForm'
 import PageContainer from '@/components/PageContainer'
 import { getSession } from '@/lib/auth/session'
-import messagesEn from '@/i18n/messages/en.json'
-import messagesFr from '@/i18n/messages/fr.json'
-import messagesRw from '@/i18n/messages/rw.json'
-
-const messagesMap: Record<string, Record<string, string>> = { en: messagesEn, fr: messagesFr, rw: messagesRw }
+import { getMessages } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
 
@@ -19,8 +15,7 @@ export default async function LoginPage({ params }: { params: Promise<{ lang: st
     redirect(`/${lang}/account`)
   }
 
-  const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   return (
     <PageContainer maxWidth="sm">
