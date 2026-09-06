@@ -54,7 +54,7 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
           <p className="text-sm text-neutral-600 mb-8">
             If an account exists with that email, a reset link has been sent.
           </p>
-          <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)}>
+          <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
             Back to sign in
           </Button>
         </div>
@@ -79,7 +79,7 @@ function ForgotPasswordFormContent({ lang }: { lang: string }) {
           autoComplete="email"
           leftIcon={<MailIcon />}
         />
-        <Button type="submit" className="w-full" loading={loading} size="lg">
+        <Button type="submit" className="w-full" loading={loading} size="md">
           Send reset link
         </Button>
         <p className="text-sm text-neutral-600 text-center">

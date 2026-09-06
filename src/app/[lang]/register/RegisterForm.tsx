@@ -131,7 +131,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
             leftIcon={<LockIcon />}
           />
         </div>
-        <Button type="submit" className="w-full" loading={loading} size="lg">
+        <Button type="submit" className="w-full" loading={loading} size="md">
           {t('register')}
         </Button>
 
@@ -148,7 +148,7 @@ export default function RegisterForm({ lang }: { lang: string }) {
           type="button"
           variant="outline"
           className="w-full"
-          size="lg"
+          size="md"
           loading={googleLoading}
           onClick={handleGoogleSignIn}
         >

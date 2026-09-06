@@ -195,7 +195,7 @@ function LoginFormContent({ lang }: { lang: string }) {
             {t('forgot_password')}
           </a>
         </div>
-        <Button type="submit" className="w-full" loading={loading} size="lg">
+        <Button type="submit" className="w-full" loading={loading} size="md">
           {t('login')}
         </Button>
 
@@ -212,7 +212,7 @@ function LoginFormContent({ lang }: { lang: string }) {
           type="button"
           variant="outline"
           className="w-full"
-          size="lg"
+          size="md"
           loading={googleLoading}
           onClick={handleGoogleSignIn}
         >

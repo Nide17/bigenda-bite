@@ -104,7 +104,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
           </div>
           <h2 className="text-xl font-semibold text-primary mb-2">{title}</h2>
           <p className="text-sm text-neutral-600 mb-8">{description}</p>
-          <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/forgot-password`)}>
+          <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/forgot-password`)} size="md">
             Request new link
           </Button>
         </div>
@@ -125,7 +125,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
           <p className="text-sm text-neutral-600 mb-8">
             Your password has been reset. You can now sign in.
           </p>
-          <Button className="w-full" onClick={() => router.push(`/${lang}/login`)}>
+          <Button className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
             Sign in
           </Button>
         </div>
@@ -163,7 +163,7 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
             leftIcon={<LockIcon />}
           />
         </div>
-        <Button type="submit" className="w-full" loading={loading} size="lg">
+        <Button type="submit" className="w-full" loading={loading} size="md">
           Reset password
         </Button>
       </form>

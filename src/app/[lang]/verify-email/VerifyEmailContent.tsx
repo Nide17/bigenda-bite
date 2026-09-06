@@ -49,9 +49,9 @@ function VerifyEmailContent({ lang }: { lang: string }) {
           </div>
           <h2 className="text-xl font-semibold text-primary mb-2">Missing verification token</h2>
           <p className="text-sm text-neutral-600 mb-8">This verification link is missing a token. Please request a new verification email.</p>
-          <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)}>
-            Back to sign in
-          </Button>
+            <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
+              Back to sign in
+            </Button>
         </div>
       </Card>
     )
@@ -85,7 +85,7 @@ function VerifyEmailContent({ lang }: { lang: string }) {
           </div>
           <h2 className="text-xl font-semibold text-primary mb-2">Email verified!</h2>
           <p className="text-sm text-neutral-600 mb-8">{message}</p>
-          <Button className="w-full" onClick={() => router.push(`/${lang}/login`)}>
+          <Button className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
             Sign in
           </Button>
         </div>
@@ -103,7 +103,7 @@ function VerifyEmailContent({ lang }: { lang: string }) {
         </div>
         <h2 className="text-xl font-semibold text-primary mb-2">Verification failed</h2>
         <p className="text-sm text-neutral-600 mb-8">{message}</p>
-        <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)}>
+        <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/login`)} size="md">
           Back to sign in
         </Button>
       </div>
