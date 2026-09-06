@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     const missing = requireFields(parsed.data, ['email'])
     if (missing) return NextResponse.json(missing, { status: missing.status })
 
-    const { email } = parsed.data
+    const { email, lang } = parsed.data
 
     const db = await connectToDatabase()
     const users = db.collection('users')
@@ -44,7 +44,8 @@ export async function POST(request: NextRequest) {
         ? `https://${process.env.VERCEL_URL}`
         : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'
 
-      const resetUrl = `${baseUrl}/en/reset-password?token=${token}`
+      const locale = lang && ['en', 'fr', 'rw'].includes(lang) ? lang : 'en'
+      const resetUrl = `${baseUrl}/${locale}/reset-password?token=${token}`
 
       await sendMail({
         to: email,

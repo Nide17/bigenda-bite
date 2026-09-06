@@ -24,8 +24,9 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [validationError, setValidationError] = useState<string | null>(() => (searchParams?.get('token') ? null : 'missing'))
+  const [tokenValid, setTokenValid] = useState<boolean | null>(() => (searchParams?.get('token') ? null : false))
   const token = useMemo(() => searchParams?.get('token') || '', [searchParams])
-  const [tokenValid, setTokenValid] = useState<boolean | null>(() => (token ? null : false))
 
   useEffect(() => {
     if (!token) {
@@ -36,14 +37,20 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
     })
-      .then((res) => {
-        if (res.ok) {
+      .then((res) => res.json().catch(() => ({})))
+      .then((data) => {
+        if (data && data.valid) {
           setTokenValid(true)
+          setValidationError(null)
         } else {
           setTokenValid(false)
+          setValidationError(data?.reason || 'invalid')
         }
       })
-      .catch(() => setTokenValid(false))
+      .catch(() => {
+        setTokenValid(false)
+        setValidationError('invalid')
+      })
   }, [token])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -73,6 +80,20 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
   }
 
   if (tokenValid === false) {
+    let title = 'Invalid or expired link'
+    let description = 'This reset link is invalid or has expired. Please request a new one.'
+
+    if (validationError === 'expired') {
+      title = 'Link expired'
+      description = 'This reset link has expired. Please request a new one.'
+    } else if (validationError === 'used') {
+      title = 'Link already used'
+      description = 'This reset link has already been used. Please request a new one.'
+    } else if (validationError === 'missing') {
+      title = 'Missing reset token'
+      description = 'This reset link is missing a token. Please request a new one.'
+    }
+
     return (
       <Card className="p-8 sm:p-10">
         <div className="text-center">
@@ -81,10 +102,8 @@ function ResetPasswordFormContent({ lang }: { lang: string }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-primary mb-2">Invalid or expired link</h2>
-          <p className="text-sm text-neutral-600 mb-8">
-            This reset link is invalid or has expired. Please request a new one.
-          </p>
+          <h2 className="text-xl font-semibold text-primary mb-2">{title}</h2>
+          <p className="text-sm text-neutral-600 mb-8">{description}</p>
           <Button variant="outline" className="w-full" onClick={() => router.push(`/${lang}/forgot-password`)}>
             Request new link
           </Button>

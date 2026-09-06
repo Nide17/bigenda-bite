@@ -28,6 +28,16 @@ export async function POST(request: NextRequest) {
     })
 
     if (!resetRecord) {
+      const expired = await passwordResets.findOne({
+        token,
+        used: { $ne: true },
+        expiresAt: { $lte: new Date() },
+      })
+
+      if (expired) {
+        return NextResponse.json(fail('Reset link expired. Please request a new one.', 400), { status: 400 })
+      }
+
       return NextResponse.json(fail('Invalid or expired reset token', 400), { status: 400 })
     }
 
