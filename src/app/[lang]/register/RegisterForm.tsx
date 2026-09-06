@@ -76,8 +76,10 @@ export default function RegisterForm({ lang }: { lang: string }) {
       body: JSON.stringify({ name, email, password }),
     })
 
+    const data = await res.json().catch(() => ({})) as { error?: string }
+
     if (!res.ok) {
-      setError('Registration failed. Please try again.')
+      setError(data.error || 'Registration failed. Please try again.')
       setLoading(false)
       return
     }
