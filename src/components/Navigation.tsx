@@ -198,83 +198,32 @@ export default function Navigation({ lang }: NavigationProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            {user ? (
-              <div className="relative" ref={accountRef}>
-                <button
-                  onClick={() => setAccountOpen(!accountOpen)}
-                  className={`
-                    px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150 flex items-center gap-1
-                    ${isActive(`/${lang}/account`) || isActive(`/${lang}/membership`)
-                      ? 'bg-[#eef2ff] text-[#1e1b4b]'
-                      : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
-                    }
-                  `}
-                  aria-expanded={accountOpen}
-                >
-                  <span className="max-w-[120px] truncate">{user.displayName || user.email}</span>
-                  <svg className="w-3.5 h-3.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {accountOpen && (
-                  <div className="absolute right-0 mt-1 w-40 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
-                    <Link
-                      href={`/${lang}/account`}
-                      className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
-                      onClick={() => setAccountOpen(false)}
-                    >
-                      {t('account')}
-                    </Link>
-                    <Link
-                      href={`/${lang}/membership`}
-                      className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
-                      onClick={() => setAccountOpen(false)}
-                    >
-                      {t('membership')}
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => signOut()}
-                      className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-neutral-50 transition-colors"
-                    >
-                      Sign out
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <nav className="hidden md:flex items-center gap-1" aria-label="Account">
-                <Link
-                  href={`/${lang}/login`}
-                  className={`
-                    px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150
-                    ${isActive(`/${lang}/login`)
-                      ? 'bg-[#eef2ff] text-[#1e1b4b]'
-                      : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
-                    }
-                  `}
-                >
-                  {t('sign_in')}
-                </Link>
-                <div className="relative" ref={accountRef}>
-                  <button
-                    onClick={() => setAccountOpen(!accountOpen)}
-                    className={`
-                      px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150 flex items-center gap-1
-                      ${isActive(`/${lang}/account`) || isActive(`/${lang}/membership`)
-                        ? 'bg-[#eef2ff] text-[#1e1b4b]'
-                        : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
-                      }
-                    `}
-                    aria-expanded={accountOpen}
-                  >
-                    {t('account')}
-                    <svg className="w-3.5 h-3.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  {accountOpen && (
-                    <div className="absolute right-0 mt-1 w-40 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
+            <div className="relative" ref={accountRef}>
+              <button
+                onClick={() => setAccountOpen(!accountOpen)}
+                className={`
+                  px-2.5 py-1.5 rounded-md text-sm font-medium transition-all duration-150 flex items-center gap-1
+                  ${isActive(`/${lang}/account`) || isActive(`/${lang}/membership`)
+                    ? 'bg-[#eef2ff] text-[#1e1b4b]'
+                    : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
+                  }
+                `}
+                aria-expanded={accountOpen}
+              >
+                <span className="max-w-[120px] truncate">
+                  {user ? (user.displayName || user.email) : t('account')}
+                </span>
+                <svg className="w-3.5 h-3.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {accountOpen && (
+                <div className="absolute right-0 mt-1 w-40 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
+                  {user ? (
+                    <>
+                      <div className="px-3 py-2 text-sm font-medium text-neutral-900 border-b border-neutral-100">
+                        {user.displayName || user.email}
+                      </div>
                       <Link
                         href={`/${lang}/account`}
                         className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
@@ -289,11 +238,44 @@ export default function Navigation({ lang }: NavigationProps) {
                       >
                         {t('membership')}
                       </Link>
-                    </div>
+                      <button
+                        type="button"
+                        onClick={() => signOut()}
+                        className="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-neutral-50 transition-colors"
+                      >
+                        Sign out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href={`/${lang}/account`}
+                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        onClick={() => setAccountOpen(false)}
+                      >
+                        {t('account')}
+                      </Link>
+                      <Link
+                        href={`/${lang}/membership`}
+                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        onClick={() => setAccountOpen(false)}
+                      >
+                        {t('membership')}
+                      </Link>
+                      <div className="border-t border-neutral-100 mt-1 pt-1">
+                        <Link
+                          href={`/${lang}/login`}
+                          className="block px-3 py-2 text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                          onClick={() => setAccountOpen(false)}
+                        >
+                          {t('sign_in')}
+                        </Link>
+                      </div>
+                    </>
                   )}
                 </div>
-              </nav>
-            )}
+              )}
+            </div>
             <LangSwitcher currentLang={lang} />
             <NotificationBell />
             <button
@@ -378,13 +360,15 @@ export default function Navigation({ lang }: NavigationProps) {
                   >
                     {t('membership')}
                   </Link>
-                  <Link
-                    href={`/${lang}/login`}
-                    onClick={closeMenu}
-                    className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
-                  >
-                    {t('sign_in')}
-                  </Link>
+                  <div className="border-t border-neutral-100 mt-1 pt-1">
+                    <Link
+                      href={`/${lang}/login`}
+                      onClick={closeMenu}
+                      className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                    >
+                      {t('sign_in')}
+                    </Link>
+                  </div>
                 </>
               )}
             </div>
