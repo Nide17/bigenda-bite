@@ -9,8 +9,8 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 │                        Client (Browser)                      │
 │       Next.js App Router + Tailwind CSS + custom i18n        │
 └─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
+                               │
+                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │                      Next.js Application                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
@@ -20,11 +20,12 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 │  ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
 │  │  Client      │  │  Admin       │  │  Webhooks       │  │
 │  │  Components  │  │  Dashboard   │  │  (MoMo, CMS)    │  │
+│  │  (Toasts)    │  │              │  │                 │  │
 │  └──────────────┘  └──────────────┘  └─────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
-                              │
-          ┌───────────────────┼───────────────────┐
-          ▼                   ▼                   ▼
+                               │
+           ┌───────────────────┼───────────────────┐
+           ▼                   ▼                   ▼
 ┌───────────────┐   ┌───────────────┐   ┌───────────────┐
 │   MongoDB     │   │   Sanity      │   │   External    │
 │   (Operational│   │   (Published  │   │   APIs        │
@@ -36,6 +37,7 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 │ - Payments    │   │               │   │ - RDB         │
 │ - Leads       │   │               │   │               │
 │ - Analytics   │   │               │   │               │
+│ - Submissions │   │               │   │               │
 └───────────────┘   └───────────────┘   └───────────────┘
 ```
 
@@ -44,31 +46,35 @@ Bigenda Bite is a Next.js 15 app that helps Rwandans find official processes, gu
 | Layer | Technology |
 |-------|-----------|
 | Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
+| Language | TypeScript 5.9 |
 | Styling | Tailwind CSS 3 |
 | i18n | Custom provider (EN/FR/RW) |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | NextAuth v4 (Google OAuth + credentials) |
+| Auth | Custom credentials + Google OAuth |
 | Payments | MTN MoMo API |
-| Notifications | Discord Webhooks |
+| Notifications | Discord Webhooks + Sonner toasts |
 | Deployment | Vercel |
 
 ## Key Decisions
 
 ### Dual Database
 
-- **MongoDB** — Operational data: users, sessions, ads, payments, leads, analytics
+- **MongoDB** — Operational data: users, sessions, ads, payments, leads, analytics, submissions, pending updates
 - **Sanity** — Published content: processes, guides, alerts
 - Sanity gives editors a real-time CMS; MongoDB handles transactional data better
 
 ### Auth
 
-NextAuth v4 with Google OAuth and email/password. Sessions stored in MongoDB. Email verification is available but not required for login. Google OAuth users are matched by email and created automatically if not present.
+NextAuth v4 with Google OAuth and custom credentials provider. Sessions stored as JWTs in HTTP-only cookies. Email verification is available but not required for login. Google OAuth users are matched by email and created automatically if not present. The `next-auth/next` import provides Next.js 15 App Router compatibility.
 
 ### i18n
 
 Custom lightweight provider replaces next-intl. Translations are JSON files loaded by server components. URLs follow `/{lang}/...`.
+
+### Toast Notifications
+
+Sonner provides ephemeral toast feedback for form submissions, admin actions, and system events. Toasts appear in the bottom-right corner with rich colors.
 
 ### Scraper Worker
 
@@ -112,6 +118,13 @@ Server-side page view tracking in layout. Client-side events via `useTrackEvent`
 2. POST `/api/momo/collect` initiates payment
 3. Client polls `/api/momo/status`
 4. Webhook confirms server-side
+
+### Submissions
+
+1. User submits feedback/edit suggestion/review from content pages
+2. POST `/api/submissions` stores in MongoDB
+3. Editors review at `/admin/submissions`
+4. Can approve, reject, or publish to Sanity
 
 ## Security
 

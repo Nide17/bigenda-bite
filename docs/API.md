@@ -4,7 +4,7 @@ Base URL: `/api`
 
 ## Authentication
 
-Most endpoints require a session cookie (`next-auth.session-token`).
+Most endpoints require a session cookie (`next-auth.session-token`). Admin endpoints require `editor` role or above.
 
 ## Endpoints
 
@@ -43,6 +43,26 @@ Returns `201` on success, `409` if email exists.
 #### GET `/api/auth/csrf`
 
 Get a CSRF token for auth requests.
+
+#### POST `/api/auth/forgot-password`
+
+Send a password reset email. Body: `{ "email": "string" }`
+
+#### POST `/api/auth/reset-password/validate`
+
+Validate a reset token.
+
+#### POST `/api/auth/reset-password`
+
+Set a new password. Body: `{ "token": "string", "password": "string" }`
+
+#### POST `/api/auth/verify-email`
+
+Verify email with token. Body: `{ "token": "string" }`
+
+#### POST `/api/auth/verify-email/resend`
+
+Resend verification email.
 
 ### Ads
 
@@ -83,6 +103,40 @@ Submit a community tip for a guide.
   "city": "Kigali"
 }
 ```
+
+### Feedback
+
+#### POST `/api/guides/[id]/feedback`
+
+Submit feedback for a guide.
+
+```json
+{
+  "rating": 5,
+  "text": "Very helpful guide"
+}
+```
+
+### Submissions
+
+#### POST `/api/submissions`
+
+Submit user-generated content (comment, edit suggestion, review).
+
+```json
+{
+  "type": "comment",
+  "contentType": "guide",
+  "contentId": "string",
+  "contentSlug": "string",
+  "text": "string",
+  "rating": 5
+}
+```
+
+#### POST `/api/admin/submissions`
+
+Approve, reject, or publish a submission. Body: `{ "action": "approve", "id": "string", "reviewNote": "string" }`
 
 ### Leads
 
@@ -179,13 +233,23 @@ Update a user (role, ban status, email verification).
 
 List scraper updates awaiting review.
 
-#### PATCH `/api/admin/pending-updates/approve`
+#### POST `/api/admin/pending-updates/approve`
 
-Approve a pending update. Body: `{ "id": "string" }`
+Approve a pending update. Body: `{ "updateId": "string" }`
 
-#### PATCH `/api/admin/pending-updates/reject`
+#### POST `/api/admin/pending-updates/reject`
 
-Reject a pending update.
+Reject a pending update. Body: `{ "updateId": "string" }`
+
+### Admin — Submissions
+
+#### GET `/api/admin/submissions`
+
+List user submissions. Query: `status`, `contentType`, `type`
+
+#### POST `/api/admin/submissions`
+
+Approve, reject, or publish a submission. Body: `{ "action": "approve", "id": "string", "reviewNote": "string" }`
 
 ### Admin — Ads
 
@@ -207,13 +271,20 @@ Create an ad.
 }
 ```
 
-#### PATCH `/api/admin/ads/[id]`
+#### PATCH `/api/admin/ads`
 
-Update an ad.
+Update an ad. Query: `id`
 
-#### DELETE `/api/admin/ads/[id]`
+```json
+{
+  "title": "string",
+  "active": true
+}
+```
 
-Delete an ad.
+#### DELETE `/api/admin/ads`
+
+Delete an ad. Query: `id`
 
 ### Analytics
 

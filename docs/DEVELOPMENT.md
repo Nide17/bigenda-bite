@@ -33,6 +33,7 @@ NEXTAUTH_SECRET=your_secret_key
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
 SANITY_API_TOKEN=your_api_token
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
 ## Scripts
@@ -55,19 +56,49 @@ SANITY_API_TOKEN=your_api_token
 src/
 ├── app/                    # Next.js App Router
 │   ├── [lang]/            # Localized routes
-│   ├── admin/             # Admin dashboard
+│   │   ├── (legal)/       # Static legal pages
+│   │   ├── account/       # Account settings
+│   │   ├── admin/         # Admin dashboard
+│   │   ├── alerts/        # Alerts page
+│   │   ├── api/           # API routes
+│   │   ├── directory/     # Business directory
+│   │   ├── forgot-password/
+│   │   ├── guides/        # How-to guides
+│   │   ├── login/         # Login form
+│   │   ├── membership/    # Membership plans + checkout
+│   │   ├── offline-saved/ # Saved guides
+│   │   ├── processes/     # Official processes
+│   │   ├── register/      # Registration form
+│   │   ├── reset-password/
+│   │   ├── search/        # Search results
+│   │   └── verify-email/
+│   ├── admin/             # Admin routes
 │   ├── api/               # API routes
 │   └── layout.tsx         # Root layout
 ├── components/            # React components
-│   ├── ui/                # Design system
+│   ├── ui/                # Design system (Card, Button, Input, Badge)
+│   ├── Navigation.tsx     # Header navigation
+│   ├── SessionProviderWrapper.tsx
+│   ├── AlertsSection.tsx
+│   ├── NotificationBell.tsx
+│   ├── Search.tsx
+│   ├── TaskBlueprint.tsx
+│   ├── SubmissionForm.tsx
 │   └── ...
 ├── lib/                   # Core utilities
 │   ├── analytics.ts       # Event tracking
-│   ├── auth/              # Authentication
+│   ├── auth/              # Authentication (session, authorize)
 │   ├── cms/               # Sanity client
-│   ├── db/                # MongoDB
+│   ├── db/                # MongoDB connection
+│   ├── discord/           # Discord webhooks
+│   ├── email.ts           # Nodemailer
+│   ├── momo/              # MTN MoMo client
+│   ├── notifications.ts   # In-app notifications
+│   ├── scrapers/          # Scraper logic
 │   └── ...
 ├── i18n/                  # Translations
+│   ├── messages/          # en.json, fr.json, rw.json
+│   └── routing.ts         # Locale config
 └── types/                 # TypeScript types
 ```
 
@@ -77,6 +108,8 @@ src/
 - Server components by default, `'use client'` only when needed
 - camelCase for variables/functions, PascalCase for components
 - Group imports (React, Next.js, third-party, local)
+- Use `useTranslations()` hook for all user-facing strings
+- Use `toast.success()` / `toast.error()` from `sonner` for action feedback
 
 ## Commits
 

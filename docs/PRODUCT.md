@@ -43,13 +43,14 @@ Users come to get things done, not browse. The product is organized around tasks
 | Auth | Email/password and Google OAuth; email verification optional |
 | Membership | Subscriptions with MTN MoMo payments |
 | Ads | Impression and click tracking |
-| Admin Dashboard | Users, ads, analytics, content, pending updates |
+| Admin Dashboard | Users, ads, analytics, content, pending updates, submissions |
 | Analytics | Page views, events, summary stats |
-| Notifications | In-app bell with unread counts |
+| Notifications | In-app bell with unread counts + Discord webhooks |
 | Scraper Worker | Automated scraping with approval workflow |
 | Discord Integration | Editor notifications |
 | Error Pages | Localized 404/error with search and recovery |
 | CI/CD | GitHub Actions for typecheck, lint, build, tests |
+| Toast Notifications | Real-time feedback for forms and admin actions |
 
 ### In Progress
 

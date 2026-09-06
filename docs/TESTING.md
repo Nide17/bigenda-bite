@@ -14,7 +14,9 @@ Bigenda Bite uses Playwright for E2E smoke tests.
 | Directory | Page loads |
 | Alerts | Page loads |
 | Search | Input visible, results render, empty state |
-| Auth | Login form renders |
+| Auth | Login form renders, login flow |
+| Account | Settings page loads after login |
+| Admin | Dashboard sections render for authorized users |
 
 ## Running Tests
 
@@ -70,3 +72,4 @@ await page.route('**/api/search*', async (route) => {
 
 - **CI fails locally passes:** Check Node version (22), Playwright browsers installed
 - **Linux install issues:** `npx playwright install --with-deps chromium`
+- **Auth tests fail:** Ensure `MONGODB_URI` is set in test environment

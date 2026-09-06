@@ -1,7 +1,7 @@
 # Bigenda Bite
 
 ![Next.js](https://img.shields.io/badge/Next.js-15.5-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-blue?logo=tailwind-css)
 ![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green?logo=mongodb)
 ![Sanity](https://img.shields.io/badge/Sanity-3.8-red?logo=sanity)
@@ -18,20 +18,22 @@ A platform for Rwandans to navigate official processes, access how-to guides, di
 - **Alerts** — Real-time official announcements with severity levels
 - **Search** — Universal search across all content types
 - **Membership** — Subscription plans with MTN MoMo payments
-- **Admin Dashboard** — User management, ads, analytics, content review
+- **Admin Dashboard** — User management, ads, analytics, content review, submissions
 - **i18n** — English, French, Kinyarwanda
+- **Toast Notifications** — Real-time feedback for user actions
 
 ## Tech Stack
 
 | Category | Technology |
 |----------|-----------|
 | Framework | Next.js 15 (App Router) |
-| Language | TypeScript |
+| Language | TypeScript 5.9 |
 | Styling | Tailwind CSS 3 |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | NextAuth v4 (Google OAuth + credentials) |
+| Auth | Custom credentials + Google OAuth |
 | Payments | MTN MoMo API |
+| Notifications | Sonner toasts + in-app notification bell |
 | Deployment | Vercel |
 
 ## Quick Start

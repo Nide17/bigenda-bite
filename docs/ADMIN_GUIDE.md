@@ -15,6 +15,14 @@ Scraper updates waiting for review.
 - **Approve** — Creates/updates the Sanity document
 - **Reject** — Discards the update
 
+### Submissions
+
+User-generated content awaiting review.
+
+- **Approve** — Marks as approved
+- **Reject** — Marks as rejected
+- **Publish** — Publishes directly to Sanity (for edit suggestions)
+
 ### Analytics
 
 Summary stats: page views, ad clicks, payments, contributions, leads. Filter by date range (default: 7 days).
@@ -52,3 +60,7 @@ Manage ad placements:
 ## Notifications
 
 Editors get Discord notifications when the scraper finds updates to review.
+
+## Feedback
+
+All admin actions show toast notifications for success/failure feedback.

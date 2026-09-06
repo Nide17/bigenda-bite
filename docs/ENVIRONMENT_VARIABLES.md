@@ -18,7 +18,7 @@ For development setup, see [DEVELOPMENT.md](DEVELOPMENT.md).
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
 | `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (e.g. `production`) |
 | `SANITY_API_TOKEN` | Sanity write token |
-| `NEXT_PUBLIC_BASE_URL` | App base URL |
+| `NEXT_PUBLIC_BASE_URL` | App base URL for emails and links |
 
 > **Production:** Set `NEXTAUTH_URL` explicitly in Vercel for custom domains.
 
@@ -44,18 +44,24 @@ Used for password reset and lead notification emails.
 
 | Variable | Description |
 |----------|-------------|
-| `MTN_MOMO_API_URL` | API base URL |
-| `MTN_MOMO_API_KEY` | API key |
-| `MTN_MOMO_API_SECRET` | API secret |
-| `MTN_MOMO_SUBSCRIPTION_KEY` | Subscription key |
-| `MTN_MOMO_CALLBACK_URL` | Webhook callback URL |
-| `MTN_MOMO_PAYEE_CODE` | Payee code |
+| `MOMO_API_USER` | MoMo API user |
+| `MOMO_API_KEY` | MoMo API key |
+| `MOMO_SUBSCRIPTION_KEY` | MoMo subscription key |
+| `MOMO_ENVIRONMENT` | `sandbox` or `production` |
+| `MOMO_ACCESS_TOKEN` | MoMo access token |
 
 ### Discord
 
 | Variable | Description |
 |----------|-------------|
 | `DISCORD_WEBHOOK_URL` | Webhook for editor notifications |
+| `DISCORD_BOT_INVITE` | Bot invite link |
+
+### Sanity Webhooks
+
+| Variable | Description |
+|----------|-------------|
+| `SANITY_WEBHOOK_TOKEN` | Secret token for CMS revalidation webhook |
 
 ## Security
 

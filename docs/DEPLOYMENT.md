@@ -73,15 +73,15 @@ GOOGLE_CLIENT_ID=your_client_id
 GOOGLE_CLIENT_SECRET=your_client_secret
 
 # Optional — Payments
-MTN_MOMO_API_URL=https://sandbox.momodeveloper.mtn.com
-MTN_MOMO_API_KEY=your_key
-MTN_MOMO_API_SECRET=your_secret
-MTN_MOMO_SUBSCRIPTION_KEY=your_key
-MTN_MOMO_CALLBACK_URL=https://yourdomain.com/api/webhooks/momo
-MTN_MOMO_PAYEE_CODE=your_code
+MOMO_API_USER=your_momo_api_user
+MOMO_API_KEY=your_momo_api_key
+MOMO_SUBSCRIPTION_KEY=your_momo_subscription_key
+MOMO_ENVIRONMENT=sandbox
+MOMO_ACCESS_TOKEN=your_momo_access_token
 
 # Optional — Notifications
 DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+DISCORD_BOT_INVITE=https://discord.gg/...
 
 # Optional — Email (for password reset, lead notifications)
 GMAIL_USER=your_email@gmail.com
@@ -94,11 +94,14 @@ GMAIL_PASSWORD=your_app_password
 
 - [ ] Homepage loads
 - [ ] Registration and login work
+- [ ] Email verification flow works
 - [ ] Sanity content displays
 - [ ] City selector works
 - [ ] Ads load
 - [ ] Payment flow works (sandbox)
 - [ ] Admin dashboard accessible
+- [ ] Notifications bell works
+- [ ] Toast notifications appear
 - [ ] 404/error pages work
 - [ ] Mobile responsive
 
