@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { toast } from 'sonner'
 
 export interface UserRecord {
   _id: string
@@ -16,7 +17,6 @@ const VALID_ROLES = ['reader', 'editor', 'admin', 'superadmin'] as const
 
 export default function UsersClient({ users }: { users: UserRecord[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState<string>('all')
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -43,7 +43,6 @@ export default function UsersClient({ users }: { users: UserRecord[] }) {
 
   async function updateUser(userId: string, data: Record<string, unknown>) {
     setLoadingId(userId)
-    setMessage(null)
 
     try {
       const res = await fetch('/api/admin/users', {
@@ -57,10 +56,10 @@ export default function UsersClient({ users }: { users: UserRecord[] }) {
         throw new Error(result.error || 'Failed to update user')
       }
 
-      setMessage({ type: 'success', text: 'User updated successfully' })
+      toast.success('User updated successfully')
       setTimeout(() => window.location.reload(), 1000)
     } catch (error) {
-      setMessage({ type: 'error', text: error instanceof Error ? error.message : 'Failed to update user' })
+      toast.error(error instanceof Error ? error.message : 'Failed to update user')
     } finally {
       setLoadingId(null)
       setConfirmAction(null)
@@ -73,12 +72,6 @@ export default function UsersClient({ users }: { users: UserRecord[] }) {
 
   return (
     <div className="space-y-4">
-      {message && (
-        <div className={`p-4 rounded border ${message.type === 'success' ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
-          {message.text}
-        </div>
-      )}
-
       {confirmAction && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl">

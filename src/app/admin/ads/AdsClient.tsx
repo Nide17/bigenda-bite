@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 export interface AdRecord {
   _id: string
@@ -18,7 +19,6 @@ export interface AdRecord {
 
 export default function AdsClient({ ads }: { ads: AdRecord[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [editingAd, setEditingAd] = useState<AdRecord | null>(null)
 
@@ -66,7 +66,6 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
   async function submitForm(e: React.FormEvent) {
     e.preventDefault()
     setLoadingId(editingAd ? editingAd._id : 'new')
-    setMessage(null)
 
     try {
       const url = editingAd ? `/api/admin/ads?id=${editingAd._id}` : '/api/admin/ads'
@@ -87,11 +86,11 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
         throw new Error(data.error || `Failed to ${editingAd ? 'update' : 'create'} ad`)
       }
 
-      setMessage(`Ad ${editingAd ? 'updated' : 'created'} successfully`)
+      toast.success(`Ad ${editingAd ? 'updated' : 'created'} successfully`)
       setShowForm(false)
       window.location.reload()
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : `Failed to ${editingAd ? 'update' : 'create'} ad`)
+      toast.error(error instanceof Error ? error.message : `Failed to ${editingAd ? 'update' : 'create'} ad`)
     } finally {
       setLoadingId(null)
     }
@@ -101,7 +100,6 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
     if (!confirm('Are you sure you want to delete this ad?')) return
 
     setLoadingId(adId)
-    setMessage(null)
 
     try {
       const res = await fetch(`/api/admin/ads?id=${adId}`, {
@@ -113,10 +111,10 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
         throw new Error(data.error || 'Failed to delete ad')
       }
 
-      setMessage('Ad deleted successfully')
+      toast.success('Ad deleted successfully')
       window.location.reload()
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Failed to delete ad')
+      toast.error(error instanceof Error ? error.message : 'Failed to delete ad')
     } finally {
       setLoadingId(null)
     }
@@ -124,10 +122,6 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
 
   return (
     <div className="space-y-6">
-      {message && (
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded">{message}</div>
-      )}
-
       {showForm && (
         <div className="border rounded p-6 bg-white">
           <h2 className="text-xl font-semibold mb-4">{editingAd ? 'Edit Ad' : 'Create New Ad'}</h2>

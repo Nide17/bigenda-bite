@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { UserSubmission } from '@/types'
+import { toast } from 'sonner'
 
 interface AdminClientProps {
   submissions: UserSubmission[]
@@ -33,9 +34,12 @@ export default function AdminClient({ submissions: initialSubmissions }: AdminCl
             return { ...s, ...update }
           })
         )
+        toast.success(`Submission ${action}d successfully`)
+      } else {
+        toast.error(`Failed to ${action} submission`)
       }
     } catch (error) {
-      console.error('Action failed:', error)
+      toast.error('Action failed. Please try again.')
     } finally {
       setActionLoading(null)
     }

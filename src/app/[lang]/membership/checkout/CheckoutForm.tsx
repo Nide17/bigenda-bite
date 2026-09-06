@@ -7,6 +7,8 @@ import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import { useTranslations } from '@/components/I18nProvider'
+import { toast } from 'sonner'
 
 const PLANS: Record<string, { id: string; name: string; price: number; features: string[] }> = {
   basic: { id: 'basic', name: 'Basic', price: 2000, features: ['Verified badge', 'Contact button', 'Better placement'] },
@@ -14,6 +16,7 @@ const PLANS: Record<string, { id: string; name: string; price: number; features:
 }
 
 export default function CheckoutForm({ planId }: { planId: string }) {
+  const t = useTranslations()
   const router = useRouter()
   const [phone, setPhone] = useState('')
   const [loading, setLoading] = useState(false)
@@ -40,11 +43,13 @@ export default function CheckoutForm({ planId }: { planId: string }) {
         }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Payment initiation failed')
+      if (!res.ok) throw new Error(data.error || t('checkout_failed_text'))
       setStatus('pending')
       pollStatus(data.transactionId)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      const message = err instanceof Error ? err.message : t('checkout_failed_text')
+      setError(message)
+      toast.error(message)
       setLoading(false)
     }
   }
@@ -75,8 +80,8 @@ export default function CheckoutForm({ planId }: { planId: string }) {
         {status === 'success' && (
           <div className="text-center py-8">
             <div className="text-5xl mb-4">🎉</div>
-            <h2 className="text-2xl font-bold text-primary mb-2">Payment Successful!</h2>
-            <p className="text-neutral-600 mb-6">Your membership is being activated. Redirecting...</p>
+            <h2 className="text-2xl font-bold text-primary mb-2">{t('checkout_success_title')}</h2>
+            <p className="text-neutral-600 mb-6">{t('checkout_success_text')}</p>
             <div className="w-full bg-neutral-200 rounded-full h-2 overflow-hidden">
               <div className="bg-emerald-600 h-2 rounded-full animate-pulse" style={{ width: '100%' }} />
             </div>
@@ -86,10 +91,10 @@ export default function CheckoutForm({ planId }: { planId: string }) {
         {status === 'failed' && (
           <div className="text-center py-8">
             <div className="text-5xl mb-4">😔</div>
-            <h2 className="text-2xl font-bold text-primary mb-2">Payment Failed</h2>
-            <p className="text-neutral-600 mb-6">The transaction was cancelled or failed. Please try again.</p>
+            <h2 className="text-2xl font-bold text-primary mb-2">{t('checkout_failed_title')}</h2>
+            <p className="text-neutral-600 mb-6">{t('checkout_failed_text')}</p>
             <Button onClick={() => setStatus('idle')} variant="outline">
-              Try Again
+              {t('error_retry')}
             </Button>
           </div>
         )}
@@ -97,14 +102,14 @@ export default function CheckoutForm({ planId }: { planId: string }) {
         {status === 'idle' && (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <h1 className="text-2xl font-bold text-primary mb-1">Checkout</h1>
-              <p className="text-sm text-neutral-600">Complete your payment to activate your membership</p>
+              <h1 className="text-2xl font-bold text-primary mb-1">{t('checkout_title')}</h1>
+              <p className="text-sm text-neutral-600">{t('checkout_subtitle')}</p>
             </div>
 
             <div className="bg-primary-light border border-primary/10 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-semibold text-primary">{plan.name} Plan</h2>
-                <Badge variant="info">Popular</Badge>
+                <h2 className="text-lg font-semibold text-primary">{t('checkout_plan_title').replace('{planName}', plan.name)}</h2>
+                <Badge variant="info">{t('most_popular')}</Badge>
               </div>
               <p className="text-3xl font-bold text-primary mb-3">{plan.price.toLocaleString()} RWF</p>
               <ul className="space-y-1.5">
@@ -126,22 +131,22 @@ export default function CheckoutForm({ planId }: { planId: string }) {
             )}
 
             <Input
-              label="Phone Number (MTN MoMo)"
+              label={t('checkout_phone_label')}
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+250788000000"
+              placeholder={t('checkout_phone_placeholder')}
               required
               disabled={loading}
-              helperText="Enter the phone number linked to your MTN MoMo account"
+              helperText={t('checkout_phone_helper')}
             />
 
             <Button type="submit" className="w-full" size="lg" loading={loading}>
-              {loading ? 'Processing...' : `Pay ${plan.price.toLocaleString()} RWF`}
+              {loading ? t('checkout_processing') : t('checkout_pay_btn').replace('{price}', plan.price.toLocaleString())}
             </Button>
 
             <p className="text-xs text-neutral-500 text-center">
-              Secured by MTN Mobile Money. You will receive a prompt on your phone to authorize the payment.
+              {t('checkout_security_text')}
             </p>
           </form>
         )}

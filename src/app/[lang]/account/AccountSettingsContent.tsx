@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { useTranslations } from '@/components/I18nProvider'
+import { toast } from 'sonner'
 
 interface UserProfile {
   displayName: string
@@ -24,14 +25,12 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
 
   const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
-  const [profileMessage, setProfileMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [profileLoading, setProfileLoading] = useState(false)
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [isForeigner, setIsForeigner] = useState(false)
-  const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [passwordLoading, setPasswordLoading] = useState(false)
 
   useEffect(() => {
@@ -70,7 +69,6 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setProfileLoading(true)
-    setProfileMessage(null)
 
     const res = await fetch('/api/account', {
       method: 'PATCH',
@@ -81,25 +79,24 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
-      setProfileMessage({ type: 'success', text: t('account_profile_updated') })
       setProfile((prev) => prev ? { ...prev, displayName, email, isForeigner } : prev)
+      toast.success(t('account_profile_updated'))
     } else {
-      setProfileMessage({ type: 'error', text: data.error || t('account_profile_update_failed') })
+      toast.error(data.error || t('account_profile_update_failed'))
     }
     setProfileLoading(false)
   }
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setPasswordMessage(null)
 
     if (newPassword !== confirmPassword) {
-      setPasswordMessage({ type: 'error', text: t('account_passwords_do_not_match') })
+      toast.error(t('account_passwords_do_not_match'))
       return
     }
 
     if (newPassword.length < 8) {
-      setPasswordMessage({ type: 'error', text: t('account_password_min_length') })
+      toast.error(t('account_password_min_length'))
       return
     }
 
@@ -114,12 +111,12 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({} as { error?: string }))
 
     if (res.ok) {
-      setPasswordMessage({ type: 'success', text: t('account_password_changed') })
+      toast.success(t('account_password_changed'))
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     } else {
-      setPasswordMessage({ type: 'error', text: data.error || t('account_password_change_failed') })
+      toast.error(data.error || t('account_password_change_failed'))
     }
     setPasswordLoading(false)
   }
@@ -149,11 +146,6 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
       <Card className="p-6">
         <h2 className="text-lg font-semibold text-primary mb-4">{t('account_profile_information')}</h2>
         <form onSubmit={handleProfileSubmit} className="space-y-4">
-          {profileMessage && (
-            <div className={`rounded-lg p-3 text-sm ${profileMessage.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
-              {profileMessage.text}
-            </div>
-          )}
           <Input
             label={t('account_display_name')}
             type="text"
@@ -207,11 +199,6 @@ export default function AccountSettingsContent({ lang }: { lang: string }) {
       <Card className="p-6">
         <h2 className="text-lg font-semibold text-primary mb-4">{t('account_change_password')}</h2>
         <form onSubmit={handlePasswordSubmit} className="space-y-4">
-          {passwordMessage && (
-            <div className={`rounded-lg p-3 text-sm ${passwordMessage.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'}`}>
-              {passwordMessage.text}
-            </div>
-          )}
           <Input
             label={t('account_current_password')}
             type="password"

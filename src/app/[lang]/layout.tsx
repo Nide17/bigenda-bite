@@ -7,6 +7,7 @@ import { I18nProvider } from '@/components/I18nProvider'
 import { trackEvent } from '@/lib/analytics'
 import { JsonLd } from '@/components/JsonLd'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
+import { Toaster } from 'sonner'
 import '../globals.css'
 import messagesEn from '@/i18n/messages/en.json'
 import messagesFr from '@/i18n/messages/fr.json'
@@ -95,6 +96,7 @@ export default async function RootLayout({
       <JsonLd data={orgLd} />
       <JsonLd data={websiteLd} />
       {children}
+      <Toaster position="bottom-right" richColors />
     </I18nProvider>
   )
 }

@@ -2,14 +2,13 @@
 
 import { useState } from 'react'
 import type { PendingUpdate } from '@/types'
+import { toast } from 'sonner'
 
 export default function ContentClient({ items }: { items: PendingUpdate[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
 
   async function handleAction(updateId: string, action: 'approve' | 'reject') {
     setLoadingId(updateId)
-    setMessage(null)
 
     try {
       const res = await fetch(`/api/admin/pending-updates/${action}`, {
@@ -23,10 +22,10 @@ export default function ContentClient({ items }: { items: PendingUpdate[] }) {
         throw new Error(data.error || `Failed to ${action}`)
       }
 
-      setMessage(`Successfully ${action === 'approve' ? 'approved' : 'rejected'} content.`)
+      toast.success(`Successfully ${action === 'approve' ? 'approved' : 'rejected'} content.`)
       window.location.reload()
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : `Failed to ${action}`)
+      toast.error(error instanceof Error ? error.message : `Failed to ${action}`)
     } finally {
       setLoadingId(null)
     }
@@ -47,10 +46,6 @@ export default function ContentClient({ items }: { items: PendingUpdate[] }) {
 
   return (
     <div className="space-y-6">
-      {message && (
-        <div className="p-4 bg-blue-50 border border-blue-200 rounded">{message}</div>
-      )}
-
       {items.length === 0 ? (
         <p className="text-gray-600">No content items found.</p>
       ) : (

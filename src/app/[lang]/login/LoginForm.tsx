@@ -7,6 +7,7 @@ import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import { toast } from 'sonner'
 
 function GoogleIcon() {
   return (
@@ -93,6 +94,7 @@ function LoginFormContent({ lang }: { lang: string }) {
         } else {
           setErrorType('general')
           setError(t('login_invalid_credentials'))
+          toast.error(t('login_invalid_credentials'))
         }
         setLoading(false)
       } else if (result?.ok) {
@@ -100,11 +102,13 @@ function LoginFormContent({ lang }: { lang: string }) {
       } else {
         setErrorType('general')
         setError(t('login_invalid_credentials'))
+        toast.error(t('login_invalid_credentials'))
         setLoading(false)
       }
     } catch {
       setErrorType('general')
-      setError('Invalid email or password')
+      setError(t('login_invalid_credentials'))
+      toast.error(t('login_invalid_credentials'))
       setLoading(false)
     }
   }

@@ -7,6 +7,7 @@ import { useTranslations } from '@/components/I18nProvider'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import { toast } from 'sonner'
 
 function GoogleIcon() {
   return (
@@ -79,7 +80,9 @@ export default function RegisterForm({ lang }: { lang: string }) {
     const data = await res.json().catch(() => ({})) as { error?: string }
 
     if (!res.ok) {
-      setError(data.error || t('register_failed'))
+      const message = data.error || t('register_failed')
+      setError(message)
+      toast.error(message)
       setLoading(false)
       return
     }

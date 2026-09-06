@@ -4,6 +4,8 @@ import { useState } from 'react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import type { SubmissionType } from '@/types'
+import { useTranslations } from '@/components/I18nProvider'
+import { toast } from 'sonner'
 
 interface SubmissionFormProps {
   contentType: string
@@ -20,6 +22,7 @@ const SUBMISSION_TYPES: { value: SubmissionType; label: string; description: str
 ]
 
 export default function SubmissionForm({ contentType, contentId, contentSlug, onSuccess }: SubmissionFormProps) {
+  const t = useTranslations()
   const [type, setType] = useState<SubmissionType>('comment')
   const [text, setText] = useState('')
   const [rating, setRating] = useState(0)
@@ -49,35 +52,28 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
       if (res.ok) {
         setSubmitted(true)
         onSuccess?.()
+        toast.success(t('submission_thank_you'))
       } else {
         const data = await res.json().catch(() => ({}))
-        setError(data.error || 'Submission failed')
+        const message = data.error || t('submission_failed')
+        setError(message)
+        toast.error(message)
       }
     } catch {
-      setError('Network error. Please try again.')
+      const message = t('submission_failed')
+      setError(message)
+      toast.error(message)
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (submitted) {
-    return (
-      <Card className="p-6">
-        <div className="text-center">
-          <div className="text-4xl mb-3">✅</div>
-          <h3 className="text-lg font-semibold text-primary mb-2">Thank you!</h3>
-          <p className="text-neutral-600">Your submission has been sent for review.</p>
-        </div>
-      </Card>
-    )
-  }
-
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold text-primary mb-4">Contribute to this page</h3>
+      <h3 className="text-lg font-semibold text-primary mb-4">{t('submission_contribute_title')}</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-2">What would you like to do?</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-2">{t('submission_choose_action')}</label>
           <div className="grid grid-cols-2 gap-2">
             {SUBMISSION_TYPES.map((option) => (
               <button
@@ -90,8 +86,8 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
                     : 'border-neutral-200 hover:border-neutral-300'
                 }`}
               >
-                <div className="text-sm font-medium">{option.label}</div>
-                <div className="text-xs text-neutral-500 mt-0.5">{option.description}</div>
+                <div className="text-sm font-medium">{t(option.label.toLowerCase().replace(/ /g, '_'))}</div>
+                <div className="text-xs text-neutral-500 mt-0.5">{t(option.description.toLowerCase().replace(/ /g, '_'))}</div>
               </button>
             ))}
           </div>
@@ -99,7 +95,7 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
 
         {type === 'review' && (
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-2">Rating</label>
+            <label className="block text-sm font-medium text-neutral-700 mb-2">{t('submission_rating_label')}</label>
             <div className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -117,7 +113,7 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
 
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2">
-            {type === 'edit_suggestion' ? 'Describe the changes you suggest' : 'Your message'}
+            {type === 'edit_suggestion' ? t('submission_describe_changes') : t('submission_your_message')}
           </label>
           <textarea
             value={text}
@@ -127,10 +123,10 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
             required
             placeholder={
               type === 'edit_suggestion'
-                ? 'e.g., The fee amount is outdated, should be 1,500 RWF...'
+                ? t('submission_placeholder_edit')
                 : type === 'review'
-                ? 'Share your experience...'
-                : 'Your comment or additional information...'
+                ? t('submission_placeholder_review')
+                : t('submission_placeholder_default')
             }
           />
         </div>
@@ -142,7 +138,7 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
         )}
 
         <Button type="submit" loading={submitting} className="w-full">
-          Submit for Review
+          {t('submission_submit_btn')}
         </Button>
       </form>
     </Card>
