@@ -110,7 +110,7 @@ function LoginFormContent({ lang }: { lang: string }) {
         setError('Invalid email or password')
       }
       setLoading(false)
-    } else if (res.ok && data && (data as { url?: string }).url) {
+    } else if (res.ok) {
       router.push(callbackUrl)
     } else {
       setErrorType('general')

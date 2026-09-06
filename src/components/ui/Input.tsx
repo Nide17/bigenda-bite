@@ -28,12 +28,12 @@ export default function Input({ label, error, helperText, className = '', id, le
         <input
           id={inputId}
           className={`
-            w-full border rounded-lg text-base
+            w-full px-3 py-2.5 border rounded-lg text-base
             bg-white text-neutral-900 placeholder:text-neutral-400
             transition-all duration-150
             focus:outline-none focus:ring-2 focus:ring-[#1e1b4b]/20 focus:border-[#1e1b4b]
             ${error ? 'border-[#dc2626] focus:ring-[#dc2626]/20 focus:border-[#dc2626]' : 'border-neutral-300'}
-            ${leftIcon ? 'pl-10' : 'px-3'}
+            ${leftIcon ? 'pl-10' : ''}
             ${className}
           `}
           {...props}
