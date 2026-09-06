@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       })
 
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-        || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+        || 'https://bigenda-bite.vercel.app'
 
       const locale = lang && ['en', 'fr', 'rw'].includes(lang) ? lang : 'en'
       const resetUrl = `${baseUrl}/${locale}/reset-password?token=${token}`

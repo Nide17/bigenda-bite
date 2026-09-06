@@ -61,7 +61,7 @@ export async function POST(request: Request) {
     })
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+      || 'https://bigenda-bite.vercel.app'
 
     const verifyUrl = `${baseUrl}/en/verify-email?token=${token}`
 
