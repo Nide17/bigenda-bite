@@ -13,7 +13,7 @@ export function validateProductionConfig() {
 
   if (missing.length > 0) {
     console.error('Missing required environment variables:', missing)
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE !== 'phase-production-build') {
       throw new Error(`Missing required environment variables: ${missing.join(', ')}`)
     }
   }

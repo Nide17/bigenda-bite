@@ -5,7 +5,7 @@ import AlertsSection from '@/components/AlertsSection'
 import Search from '@/components/Search'
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
-import Card from '@/components/ui/Card'
+import EmptyState from '@/components/ui/EmptyState'
 import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import type { Process, Guide, Alert } from '@/types'
@@ -63,18 +63,22 @@ export default async function HomePage({ params, searchParams }: { params: Promi
 
   return (
     <div className="min-h-screen">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-primary focus:rounded-lg focus:shadow-lg">
+        Skip to main content
+      </a>
+
       <header>
-        <section className="bg-[#1e1b4b] text-white py-16 md:py-24">
+        <section className="bg-[#1e1b4b] text-white py-12 md:py-20 lg:py-24">
           <PageContainer maxWidth="xl">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 tracking-tight">
                 {t('hero_task_title')}
               </h1>
-              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-10">
+              <p className="text-base md:text-lg text-white/80 leading-relaxed mb-8 md:mb-10">
                 {t('hero_task_subtitle')}
               </p>
 
-              <div className="mb-8">
+              <div className="mb-6 md:mb-8">
                 <div className="bg-white rounded-2xl p-2 shadow-2xl shadow-black/20">
                   <Search
                     lang={lang}
@@ -98,7 +102,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link
                   href={`/${lang}/processes`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-xl transition-all shadow-lg hover:shadow-xl min-h-[44px]"
                 >
                   {t('browse_processes')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -107,7 +111,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 </Link>
                 <Link
                   href={`/${lang}/guides`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/20 min-h-[44px]"
                 >
                   {t('read_guides')}
                 </Link>
@@ -117,61 +121,37 @@ export default async function HomePage({ params, searchParams }: { params: Promi
         </section>
       </header>
 
-      <main>
+      <main id="main-content">
         <PageContainer maxWidth="xl">
-          {alerts.length > 0 && (
-            <section className="py-8" aria-labelledby="alerts-heading">
-              <AlertsSection
-                alerts={alerts.slice(0, 3)}
-                lang={lang}
-                variant="compact"
-                t={t}
-              />
-            </section>
-          )}
-
-          {categories.length > 0 && (
-            <section className="py-10 md:py-14" aria-labelledby="categories-heading">
-              <div className="max-w-2xl mb-6">
-                <h2 id="categories-heading" className="text-xl md:text-2xl font-bold text-primary mb-2">
-                  {t('browse_by_category_title')}
-                </h2>
-                <p className="text-neutral-600">
-                  Explore official processes and how-to guides by topic.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                {categories.map((category) => (
-                  <Link
-                    key={category}
-                    href={`/${lang}/processes?category=${encodeURIComponent(category)}`}
-                    className="px-4 py-2.5 bg-white border border-neutral-200 rounded-xl text-sm font-medium text-neutral-700 hover:border-primary hover:text-primary transition-colors shadow-sm"
-                  >
-                    {category}
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {processes.length > 0 && (
+          {processes.length > 0 ? (
             <section className="py-10 md:py-14" aria-labelledby="popular-tasks-heading">
-              <div className="max-w-2xl mb-6">
-                <h2 id="popular-tasks-heading" className="text-xl md:text-2xl font-bold text-primary mb-2">
-                  {t('popular_tasks_title')}
-                </h2>
-                <p className="text-neutral-600">
-                  {t('popular_tasks_subtitle')}
-                </p>
+              <div className="flex items-end justify-between mb-6">
+                <div>
+                  <h2 id="popular-tasks-heading" className="text-xl md:text-2xl font-bold text-primary mb-1">
+                    {t('popular_tasks_title')}
+                  </h2>
+                  <p className="text-neutral-600 text-sm md:text-base">
+                    {t('popular_tasks_subtitle')}
+                  </p>
+                </div>
+                <Link
+                  href={`/${lang}/processes`}
+                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors hidden sm:inline-flex items-center gap-1 min-h-[44px]"
+                >
+                  {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {processes.slice(0, 6).map((process: Process) => (
                   <Link
                     key={process._id}
                     href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
-                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
+                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   >
-                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
+                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1.5 text-base">
                       {process.translations?.[lang]?.title || process.translations?.en?.title}
                     </h3>
                     {(process.translations?.[lang]?.summary || process.translations?.en?.summary) && (
@@ -182,20 +162,70 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </Link>
                 ))}
               </div>
+              <div className="mt-6 sm:hidden">
+                <Link
+                  href={`/${lang}/processes`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-hover transition-colors"
+                >
+                  {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </section>
+          ) : (
+            <section className="py-10 md:py-14" aria-labelledby="popular-tasks-heading">
+              <h2 id="popular-tasks-heading" className="text-xl md:text-2xl font-bold text-primary mb-6">
+                {t('popular_tasks_title')}
+              </h2>
+              <EmptyState
+                icon="📋"
+                title={t('no_processes_found')}
+                description={t('check_back_processes')}
+              />
             </section>
           )}
 
-          {guides.length > 0 && (
+          {alerts.length > 0 ? (
+            <section className="py-10 md:py-14" aria-labelledby="alerts-heading">
+              <AlertsSection
+                alerts={alerts.slice(0, 3)}
+                lang={lang}
+                variant="compact"
+                t={t}
+              />
+            </section>
+          ) : (
+            <section className="py-10 md:py-14" aria-labelledby="alerts-heading">
+              <h2 id="alerts-heading" className="text-xl md:text-2xl font-bold text-primary mb-4">
+                {t('important_alerts_title')}
+              </h2>
+              <div className="bg-white border border-neutral-200 rounded-xl p-6 text-center">
+                <p className="text-sm text-neutral-600">{t('alerts_all_clear')}</p>
+              </div>
+            </section>
+          )}
+
+          {guides.length > 0 ? (
             <section className="py-10 md:py-14" aria-labelledby="latest-guides-heading">
-              <div className="flex items-center justify-between mb-6">
-                <h2 id="latest-guides-heading" className="text-xl md:text-2xl font-bold text-primary">
-                  {t('latest_guides')}
-                </h2>
+              <div className="flex items-end justify-between mb-6">
+                <div>
+                  <h2 id="latest-guides-heading" className="text-xl md:text-2xl font-bold text-primary mb-1">
+                    {t('latest_guides')}
+                  </h2>
+                  <p className="text-neutral-600 text-sm md:text-base">
+                    {t('guides_page_subtitle')}
+                  </p>
+                </div>
                 <Link
                   href={`/${lang}/guides`}
-                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
+                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors hidden sm:inline-flex items-center gap-1 min-h-[44px]"
                 >
                   {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -203,9 +233,9 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <Link
                     key={guide._id}
                     href={`/${lang}/guides/${guide.category}/${guide.slug?.current || guide._id}`}
-                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
+                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   >
-                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
+                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1.5 text-base">
                       {guide.translations?.[lang]?.title || guide.translations?.en?.title}
                     </h3>
                     {(guide.translations?.[lang]?.summary || guide.translations?.en?.summary) && (
@@ -221,20 +251,50 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   </Link>
                 ))}
               </div>
+              <div className="mt-6 sm:hidden">
+                <Link
+                  href={`/${lang}/guides`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-hover transition-colors"
+                >
+                  {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </section>
+          ) : (
+            <section className="py-10 md:py-14" aria-labelledby="latest-guides-heading">
+              <h2 id="latest-guides-heading" className="text-xl md:text-2xl font-bold text-primary mb-6">
+                {t('latest_guides')}
+              </h2>
+              <EmptyState
+                icon="📚"
+                title={t('no_guides_found')}
+                description={t('check_back_later')}
+              />
             </section>
           )}
 
-          {businesses.length > 0 && (
+          {businesses.length > 0 ? (
             <section className="py-10 md:py-14" aria-labelledby="businesses-heading">
-              <div className="flex items-center justify-between mb-6">
-                <h2 id="businesses-heading" className="text-xl md:text-2xl font-bold text-primary">
-                  {t('businesses_near_you_title')}
-                </h2>
+              <div className="flex items-end justify-between mb-6">
+                <div>
+                  <h2 id="businesses-heading" className="text-xl md:text-2xl font-bold text-primary mb-1">
+                    {t('businesses_near_you_title')}
+                  </h2>
+                  <p className="text-neutral-600 text-sm md:text-base">
+                    {t('directory_subtitle')}
+                  </p>
+                </div>
                 <Link
                   href={`/${lang}/directory`}
-                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
+                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors hidden sm:inline-flex items-center gap-1 min-h-[44px]"
                 >
                   {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -242,69 +302,88 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <Link
                     key={business._id.toString()}
                     href={`/${lang}/directory/${business.slug || business._id.toString()}`}
-                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
+                    className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   >
-                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
+                    <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1.5 text-base">
                       {business.name}
                     </h3>
-                    <p className="text-sm text-neutral-600">{business.category}</p>
+                    <p className="text-sm text-neutral-600 mb-1">{business.category}</p>
                     <p className="text-sm text-neutral-500">{business.city || cityName}</p>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-6 sm:hidden">
+                <Link
+                  href={`/${lang}/directory`}
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-hover transition-colors"
+                >
+                  {t('view_all')}
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </section>
+          ) : (
+            <section className="py-10 md:py-14" aria-labelledby="businesses-heading">
+              <h2 id="businesses-heading" className="text-xl md:text-2xl font-bold text-primary mb-6">
+                {t('businesses_near_you_title')}
+              </h2>
+              <EmptyState
+                icon="🏢"
+                title={t('no_businesses_found')}
+                description={t('try_adjusting_filters')}
+                action={
+                  <Link
+                    href={`/${lang}/directory`}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors min-h-[44px]"
+                  >
+                    {t('directory')}
+                  </Link>
+                }
+              />
+            </section>
+          )}
+
+          {categories.length > 0 && (
+            <section className="py-10 md:py-14" aria-labelledby="categories-heading">
+              <div className="max-w-2xl mb-5">
+                <h2 id="categories-heading" className="text-lg md:text-xl font-bold text-primary mb-1.5">
+                  {t('browse_by_category_title')}
+                </h2>
+                <p className="text-sm text-neutral-600">
+                  {t('home_browse_categories_subtitle')}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2.5">
+                {categories.map((category) => (
+                  <Link
+                    key={category}
+                    href={`/${lang}/processes?category=${encodeURIComponent(category)}`}
+                    className="px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm font-medium text-neutral-700 hover:border-primary hover:text-primary transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[44px] inline-flex items-center"
+                  >
+                    {category}
                   </Link>
                 ))}
               </div>
             </section>
           )}
 
-          {processes.length > 0 && (
-            <section className="pb-10 md:pb-14" aria-labelledby="updates-heading">
-              <div className="flex items-center justify-between mb-6">
-                <h2 id="updates-heading" className="text-xl md:text-2xl font-bold text-primary">
-                  {t('latest_updates_title')}
-                </h2>
-                <Link
-                  href={`/${lang}/processes`}
-                  className="text-sm font-medium text-primary hover:text-primary-hover transition-colors"
-                >
-                  {t('view_all')}
-                </Link>
-              </div>
-              <ul className="space-y-3">
-                {processes.slice(0, 5).map((process: Process) => (
-                  <li key={process._id}>
-                    <Link
-                      href={`/${lang}/processes/${process.category}/${process.slug?.current || process._id}`}
-                      className="group block bg-white border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all"
-                    >
-                      <h3 className="font-semibold text-primary group-hover:text-primary-hover transition-colors mb-1">
-                        {process.translations?.[lang]?.title || process.translations?.en?.title}
-                      </h3>
-                      {(process.translations?.[lang]?.summary || process.translations?.en?.summary) && (
-                        <p className="text-sm text-neutral-600 leading-relaxed line-clamp-2">
-                          {process.translations?.[lang]?.summary || process.translations?.en?.summary}
-                        </p>
-                      )}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
           <section className="pb-10 md:pb-14">
-            <Card className="p-6 md:p-8">
+            <div className="bg-white border border-neutral-200 rounded-2xl p-6 md:p-8 shadow-sm">
               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-primary mb-1">Bigenda Bite for Organizations</h3>
-                  <p className="text-sm text-neutral-600">Reach users at the moment they need your service. Sponsored placements available.</p>
+                <div className="text-center md:text-left">
+                  <h3 className="text-lg font-semibold text-primary mb-1">{t('home_organizations_title')}</h3>
+                  <p className="text-sm text-neutral-600">{t('home_organizations_subtitle')}</p>
                 </div>
                 <Link
                   href="/membership"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors shadow-md"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-colors shadow-md min-h-[44px] w-full md:w-auto"
                 >
-                  Become a Member
+                  {t('home_become_member')}
                 </Link>
               </div>
-            </Card>
+            </div>
           </section>
         </PageContainer>
       </main>
