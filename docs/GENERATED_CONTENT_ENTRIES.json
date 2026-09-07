@@ -1,0 +1,585 @@
+[
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Development Board",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["registration", "rdb", "business"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Register a Business in Rwanda",
+        "summary": "Register a sole proprietorship or limited company through RDB or Irembo."
+      },
+      "fr": {
+        "title": "Enregistrer une entreprise au Rwanda",
+        "summary": "Enregistrez une entreprise individuelle ou une societe a responsabilite limitee via RDB ou Irembo."
+      },
+      "rw": {
+        "title": "Kwiyandikisha ubucuruzi mu Rwanda",
+        "summary": "Kwiyandikisha umucuruzi ku giti cyangwa sosiyete ya LLD binyuze muri RDB cyangwa Irembo."
+      }
+    },
+    "summary": "Register a sole proprietorship or limited company through RDB or Irembo.",
+    "eligibility": ["Rwandan citizens", "Foreign investors with valid permits", "Residents with valid IDs"],
+    "requirements": ["Valid ID or passport", "TIN certificate", "Proof of address"],
+    "steps": [
+      { "order": 1, "text": { "en": "Reserve your company name on Irembo or at RDB.", "fr": "Reservez le nom de votre entreprise sur Irembo ou a la RDB.", "rw": "Goreserwa izina ry'ubucuruzi kuri Irembo cyangwa ku biro bya RDB." }, "estimatedTime": "15 minutes" },
+      { "order": 2, "text": { "en": "Prepare registration documents and pay the fee.", "fr": "Preparez les documents d'enregistrement et payez les frais.", "rw": "Tegura inyandiko zo kwiyandikisha wishyure igiciro." }, "estimatedTime": "1 day" },
+      { "order": 3, "text": { "en": "Submit application and collect your certificate.", "fr": "Deposez la demande et retirez votre certificat.", "rw": "Saba ifomero uhabwe inyandiko y'kwiyandikisha." }, "estimatedTime": "2-3 business days" }
+    ],
+    "processingTime": "2-3 business days",
+    "fees": [
+      { "label": "Name reservation", "amountRWF": 10000, "conditions": "Non-refundable" },
+      { "label": "Business registration", "amountRWF": 15000, "conditions": "Varies by business type" }
+    ],
+    "requiredDocuments": ["ID or passport", "TIN", "Passport photos", "Proof of address"],
+    "whereToApply": {
+      "description": "RDB Head Office, Kigali, or online via Irembo",
+      "mapsLink": "https://maps.google.com/?q=RDB+Kigali"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "email": "info@rdb.rw",
+      "website": "https://rdb.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://rdb.rw/", "https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "15 minutes", "inPerson": "2-3 hours" },
+      "costBreakdown": [
+        { "item": "Name reservation", "amountRWF": 10000 },
+        { "item": "Registration fee", "amountRWF": 15000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID or passport", "isRequired": true, "fallbackOption": "If no passport, national ID works" },
+        { "documentName": "TIN certificate", "isRequired": true, "fallbackOption": "Get TIN first if you don't have one" },
+        { "documentName": "Passport photos", "isRequired": true, "fallbackOption": "Available at most photo studios in Kigali for ~2,000 RWF" },
+        { "documentName": "Proof of address", "isRequired": false, "fallbackOption": "Utility bill, tenancy agreement, or letter from village chief" }
+      ],
+      "physicalLocation": {
+        "description": "RDB Head Office, Kigali. Many services are also available at Irembo service centers.",
+        "mapsLink": "https://maps.google.com/?q=RDB+Kigali"
+      },
+      "culturalContext": "Arrive early to avoid long queues. Dress neatly. Bring extra copies of all documents.",
+      "copyPasteScripts": [
+        { "language": "en", "scenario": "Requesting business registration", "text": "Hello, I would like to register a business. What documents do I need?" },
+        { "language": "rw", "scenario": "Requesting business registration", "text": "Muraho, nshaka kwiyandikisha ubucuruzi. Ni inyandiko zikenewe?" }
+      ],
+      "introvertTip": "Use Irembo online to skip queues. English is widely understood at RDB."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Irembo / National ID Authority",
+    "category": "identity",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["national-id", "identity", "irembo"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a National ID",
+        "summary": "Get your Rwandan National ID through Irembo or your local sector office."
+      },
+      "fr": {
+        "title": "Demander une carte d'identite nationale",
+        "summary": "Obtenez votre carte d'identite nationale rwandaise via Irembo ou votre bureau de secteur local."
+      },
+      "rw": {
+        "title": "Gusaba Indangamuntu y'u Rwanda",
+        "summary": "Kubona Indangamuntu y'u Rwanda binyuze muri Irembo cyangwa ku biro by'umurenge wawe."
+      }
+    },
+    "summary": "Get your Rwandan National ID through Irembo or your local sector office.",
+    "eligibility": ["Rwandan citizens", "Age 16 and above", "Residents with valid proof of identity"],
+    "requirements": ["Birth certificate", "Proof of residence", "Passport photos"],
+    "steps": [
+      { "order": 1, "text": { "en": "Visit Irembo.gov.rw or your local sector office.", "fr": "Visitez Irembo.gov.rw ou votre bureau de secteur local.", "rw": "Musura Irembo.gov.rw cyangwa ku biro by'umurenge." }, "estimatedTime": "10 minutes" },
+      { "order": 2, "text": { "en": "Fill the application form and upload required documents.", "fr": "Remplissez le formulaire et telechargez les documents requis.", "rw": "Uzuza ifomero wo gusaba wohereza inyandiko zisabwa." }, "estimatedTime": "20 minutes" },
+      { "order": 3, "text": { "en": "Collect your National ID at the appointed office.", "fr": "Retirez votre carte d'identite au bureau indique.", "rw": "Gura Indangamuntu yawe ku biro by'umurenge." }, "estimatedTime": "1-2 weeks" }
+    ],
+    "processingTime": "1-2 weeks",
+    "fees": [
+      { "label": "Application fee", "amountRWF": 0, "conditions": "Free" }
+    ],
+    "requiredDocuments": ["Birth certificate", "Proof of residence", "Passport photos"],
+    "whereToApply": {
+      "description": "Online via Irembo or at your local sector office"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://irembo.gov.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "20 minutes", "inPerson": "30 minutes" },
+      "costBreakdown": [
+        { "item": "Application fee", "amountRWF": 0 }
+      ],
+      "documentChecklist": [
+        { "documentName": "Birth certificate", "isRequired": true, "fallbackOption": "Get from your local sector office if lost" },
+        { "documentName": "Proof of residence", "isRequired": true, "fallbackOption": "Tenancy agreement, utility bill, or village chief letter" },
+        { "documentName": "Passport photos", "isRequired": true, "fallbackOption": "Available at photo studios in Kigali for ~2,000 RWF" }
+      ],
+      "physicalLocation": {
+        "description": "Local sector office or Irembo service center"
+      },
+      "culturalContext": "Carry extra copies of documents. Arrive before 11 AM for faster service.",
+      "introvertTip": "Apply online via Irembo to avoid in-person queues."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Directorate General of Immigration and Emigration",
+    "category": "immigration",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["visa", "entry", "immigration"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Rwandan Visa",
+        "summary": "Apply for a tourist, business, or transit visa online or on arrival."
+      },
+      "fr": {
+        "title": "Demander un visa rwandais",
+        "summary": "Demandez un visa touristique, d'affaires ou de transit en ligne ou a l'arrivee."
+      },
+      "rw": {
+        "title": "Gusaba viza y'u Rwanda",
+        "summary": "Gusaba viza y'uruzinduko, ubucuruzi, cyangwa transit kuri interineti cyangwa igihe uje."
+      }
+    },
+    "summary": "Apply for a tourist, business, or transit visa online or on arrival.",
+    "eligibility": ["Foreign nationals with valid passport", "Passport valid for at least 6 months", "Yellow fever vaccination certificate"],
+    "requirements": ["Valid passport", "Passport photo", "Yellow fever certificate", "Return ticket"],
+    "steps": [
+      { "order": 1, "text": { "en": "Determine visa type and check requirements.", "fr": "Determinez le type de visa et verifiez les exigences.", "rw": "Menya ubwoko bwa viza kandi ube usabije ibisabwa." }, "estimatedTime": "10 minutes" },
+      { "order": 2, "text": { "en": "Apply online via the immigration portal or on arrival.", "fr": "Demandez en ligne via le portail de l'immigration ou a l'arrivee.", "rw": "Saba kuri interineti binyuze muri portal ya immigration cyangwa igihe uje." }, "estimatedTime": "1 day" },
+      { "order": 3, "text": { "en": "Pay the visa fee and collect your visa.", "fr": "Payez les frais de visa et retirez votre visa.", "rw": "Wishyure igiciro cya viza uhabwe viza." }, "estimatedTime": "3-5 business days" }
+    ],
+    "processingTime": "3-5 business days",
+    "fees": [
+      { "label": "Tourist visa", "amountRWF": 50000, "conditions": "Single entry" },
+      { "label": "Business visa", "amountRWF": 50000, "conditions": "Single entry" }
+    ],
+    "requiredDocuments": ["Passport", "Passport photo", "Yellow fever certificate", "Return ticket"],
+    "whereToApply": {
+      "description": "Online at https://www.migration.gov.rw/ or at port of entry"
+    },
+    "onlineApplicationUrl": "https://www.migration.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.migration.gov.rw/"
+    },
+    "officialPortal": "https://www.migration.gov.rw/",
+    "sourceUrl": ["https://www.migration.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "30 minutes", "inPerson": "1-2 hours at port" },
+      "costBreakdown": [
+        { "item": "Tourist visa", "amountRWF": 50000 },
+        { "item": "Business visa", "amountRWF": 50000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "Passport", "isRequired": true, "fallbackOption": "Must be valid for at least 6 months" },
+        { "documentName": "Yellow fever certificate", "isRequired": true, "fallbackOption": "Required for all travelers" }
+      ],
+      "physicalLocation": {
+        "description": "Online or at port of entry"
+      },
+      "culturalContext": "Have cash ready for visa fees at the airport. Keep documents handy for inspection.",
+      "introvertTip": "Apply online before flying to skip queues at the airport."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceSource": "Ministry of Health",
+    "officialSource": "Ministry of Health",
+    "category": "health",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["health-insurance", "mutuelle", "health"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Enroll in Mutuelle de Sante",
+        "summary": "Join Rwanda's community health insurance at your local health center."
+      },
+      "fr": {
+        "title": "S'inscrire a la Mutuelle de Sante",
+        "summary": "Rejoignez l'assurance maladie communautaire du Rwanda dans votre centre de sante local."
+      },
+      "rw": {
+        "title": "Kwiyandikisha mu Mutuelle de Sante",
+        "summary": "Kwinjira mu ifatanyabikorwa ry'ubuzima bw'abaturage mu Rwanda ku kigo cy'ubuzima cya hafi."
+      }
+    },
+    "summary": "Join Rwanda's community health insurance at your local health center.",
+    "eligibility": ["All Rwandan residents", "Foreign residents with valid documents"],
+    "requirements": ["ID", "Proof of residence"],
+    "steps": [
+      { "order": 1, "text": { "en": "Visit your nearest health center (Centre de Sante).", "fr": "Visitez votre centre de sante le plus proche.", "rw": "Musura ikigo cy'ubuzima kiri hafi." }, "estimatedTime": "30 minutes" },
+      { "order": 2, "text": { "en": "Provide your ID and proof of residence.", "fr": "Fournissez votre piece d'identite et preuve de domicile.", "rw": "Tanga indangamuntu n'igitabo cy'iwe." }, "estimatedTime": "15 minutes" },
+      { "order": 3, "text": { "en": "Pay your contribution and receive your insurance card.", "fr": "Payez votre contribution et recevez votre carte d'assurance.", "rw": "Wishyure umusoro uhabwe ikarita y'umwanya." }, "estimatedTime": "Same day" }
+    ],
+    "processingTime": "Same day",
+    "fees": [
+      { "label": "Annual contribution", "amountRWF": 0, "conditions": "Income-based; often free or very low cost" }
+    ],
+    "requiredDocuments": ["ID", "Proof of residence"],
+    "whereToApply": {
+      "description": "Local health center (Centre de Sante)"
+    },
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.mutuelle.gov.rw/"
+    },
+    "officialPortal": "https://www.mutuelle.gov.rw/",
+    "sourceUrl": ["https://www.mutuelle.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "Not available", "inPerson": "45 minutes" },
+      "costBreakdown": [
+        { "item": "Annual contribution", "amountRWF": 0 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID", "isRequired": true, "fallbackOption": "National ID or passport" },
+        { "documentName": "Proof of residence", "isRequired": true, "fallbackOption": "Tenancy agreement, utility bill, or village chief letter" }
+      ],
+      "physicalLocation": {
+        "description": "Local health center (Centre de Sante)"
+      },
+      "culturalContext": "Mutuelle covers most public health services. Bring your card whenever you visit a clinic.",
+      "introvertTip": "Go early in the morning before 10 AM to avoid crowds."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Revenue Authority",
+    "category": "tax",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["tax", "TIN", "RRA"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Register for Tax with RRA",
+        "summary": "Get a TIN and register for tax obligations through RRA online or in person."
+      },
+      "fr": {
+        "title": "S'inscrire aux impots avec la RRA",
+        "summary": "Obtenez un TIN et inscrivez-vous aux obligations fiscales via la RRA en ligne ou en personne."
+      },
+      "rw": {
+        "title": "Kwiyandikisha mu misoro ku RRA",
+        "summary": "Kubona TIN no kwiyandikisha ku misoro binyuze muri RRA kuri interineti cyangwa ku giti."
+      }
+    },
+    "summary": "Get a TIN and register for tax obligations through RRA online or in person.",
+    "eligibility": ["Business owners", "Self-employed individuals", "Employees needing TIN"],
+    "requirements": ["ID", "Business registration certificate"],
+    "steps": [
+      { "order": 1, "text": { "en": "Visit RRA website or office.", "fr": "Visitez le site web ou le bureau de la RRA.", "rw": "Musura urubuga rwa RRA cyangwa ku biro." }, "estimatedTime": "10 minutes" },
+      { "order": 2, "text": { "en": "Fill TIN application form.", "fr": "Remplissez le formulaire de demande de TIN.", "rw": "Uzuza ifomero yo gusaba TIN." }, "estimatedTime": "15 minutes" },
+      { "order": 3, "text": { "en": "Submit documents and receive your TIN.", "fr": "Deposez les documents et recevez votre TIN.", "rw": "Saba inyandiko uhabwe TIN." }, "estimatedTime": "1-2 business days" }
+    ],
+    "processingTime": "1-2 business days",
+    "fees": [
+      { "label": "TIN registration", "amountRWF": 0, "conditions": "Free" }
+    ],
+    "requiredDocuments": ["ID", "Business registration certificate"],
+    "whereToApply": {
+      "description": "RRA office or online via RRA portal"
+    },
+    "onlineApplicationUrl": "https://www.rra.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.rra.gov.rw/"
+    },
+    "officialPortal": "https://www.rra.gov.rw/",
+    "sourceUrl": ["https://www.rra.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "20 minutes", "inPerson": "30 minutes" },
+      "costBreakdown": [
+        { "item": "TIN registration", "amountRWF": 0 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID", "isRequired": true, "fallbackOption": "National ID or passport" },
+        { "documentName": "Business registration certificate", "isRequired": true, "fallbackOption": "Get from RDB first if not yet registered" }
+      ],
+      "physicalLocation": {
+        "description": "RRA offices in Kigali and major towns"
+      },
+      "culturalContext": "Keep your TIN safe; you will need it for invoices, contracts, and bank accounts.",
+      "introvertTip": "Register online via RRA website to avoid visiting the office."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Irembo / Ministry of Justice",
+    "category": "identity",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["birth-certificate", "identity", "irembo"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Birth Certificate",
+        "summary": "Get a Rwandan birth certificate from your local sector office or via Irembo."
+      },
+      "fr": {
+        "title": "Demander un acte de naissance",
+        "summary": "Obtenez un acte de naissance rwandais aupres de votre bureau de secteur local ou via Irembo."
+      },
+      "rw": {
+        "title": "Gusaba inyandiko y'ivuka",
+        "summary": "Kubona inyandiko y'ivuka y'u Rwanda ku biro by'umurenge cyangwa kuri Irembo."
+      }
+    },
+    "summary": "Get a Rwandan birth certificate from your local sector office or via Irembo.",
+    "eligibility": ["Rwandan citizens", "Parents or legal guardians applying for children"],
+    "requirements": ["Hospital birth record or notification", "Parents' IDs", "Marriage certificate if applicable"],
+    "steps": [
+      { "order": 1, "text": { "en": "Gather required documents and visit your local sector office.", "fr": "Rassemblez les documents requis et visitez votre bureau de secteur local.", "rw": "Tegura inyandiko zisabwa musure ku biro by'umurenge." }, "estimatedTime": "30 minutes" },
+      { "order": 2, "text": { "en": "Fill the application form and pay the fee.", "fr": "Remplissez le formulaire et payez les frais.", "rw": "Uzuza ifomero ushure igiciro." }, "estimatedTime": "1 day" },
+      { "order": 3, "text": { "en": "Collect your birth certificate.", "fr": "Retirez votre acte de naissance.", "rw": "Gura inyandiko y'ivuka." }, "estimatedTime": "3-7 business days" }
+    ],
+    "processingTime": "3-7 business days",
+    "fees": [
+      { "label": "Application fee", "amountRWF": 2000, "conditions": "May vary by sector" }
+    ],
+    "requiredDocuments": ["Hospital birth record", "Parents' IDs", "Marriage certificate if applicable"],
+    "whereToApply": {
+      "description": "Local sector office or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://irembo.gov.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "20 minutes", "inPerson": "45 minutes" },
+      "costBreakdown": [
+        { "item": "Application fee", "amountRWF": 2000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "Hospital birth record", "isRequired": true, "fallbackOption": "Get from the hospital where birth occurred" },
+        { "documentName": "Parents' IDs", "isRequired": true, "fallbackOption": "National ID or passport" }
+      ],
+      "physicalLocation": {
+        "description": "Local sector office"
+      },
+      "culturalContext": "Bring extra copies. Some offices require both parents to be present.",
+      "introvertTip": "Apply online via Irembo where available."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Ministry of Health",
+    "category": "health",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["passport", "travel", "immigration"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Rwandan Passport",
+        "summary": "Apply for a new or renewed Rwandan passport at immigration offices or via Irembo."
+      },
+      "fr": {
+        "title": "Demander un passeport rwandais",
+        "summary": "Demandez un nouveau passeport rwandais ou renouvelez-le aux bureaux d'immigration ou via Irembo."
+      },
+      "rw": {
+        "title": "Gusaba pasiporo y'u Rwanda",
+        "summary": "Gusaba pasiporo nshya cyangwa kuyivugurura ku biro by'ubwivumbugashi cyangwa kuri Irembo."
+      }
+    },
+    "summary": "Apply for a new or renewed Rwandan passport at immigration offices or via Irembo.",
+    "eligibility": ["Rwandan citizens", "Age 16 and above", "Holders of expired passports applying for renewal"],
+    "requirements": ["National ID", "Birth certificate", "Passport photos", "Previous passport if renewing"],
+    "steps": [
+      { "order": 1, "text": { "en": "Visit Irembo or the Directorate General of Immigration.", "fr": "Visitez Irembo ou la Direction Generale de l'Immigration.", "rw": "Musura Irembo cyangwa ku biro by'ubwivumbugashi." }, "estimatedTime": "20 minutes" },
+      { "order": 2, "text": { "en": "Fill the application form and upload required documents.", "fr": "Remplissez le formulaire et telechargez les documents requis.", "rw": "Uzuza ifomero wohereza inyandiko zisabwa." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Pay the fee and collect your passport.", "fr": "Payez les frais et retirez votre passeport.", "rw": "Wishyure uhabwe pasiporo." }, "estimatedTime": "5-10 business days" }
+    ],
+    "processingTime": "5-10 business days",
+    "fees": [
+      { "label": "Ordinary passport", "amountRWF": 50000, "conditions": "5 years" },
+      { "label": "Renewal", "amountRWF": 50000, "conditions": "5 years" }
+    ],
+    "requiredDocuments": ["National ID", "Birth certificate", "Passport photos", "Previous passport if renewing"],
+    "whereToApply": {
+      "description": "Directorate General of Immigration offices or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://www.migration.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.migration.gov.rw/"
+    },
+    "officialPortal": "https://www.migration.gov.rw/",
+    "sourceUrl": ["https://www.migration.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "30 minutes", "inPerson": "1 hour" },
+      "costBreakdown": [
+        { "item": "Ordinary passport", "amountRWF": 50000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "National ID", "isRequired": true, "fallbackOption": "Required for identity verification" },
+        { "documentName": "Birth certificate", "isRequired": true, "fallbackOption": "Required for first-time applicants" }
+      ],
+      "physicalLocation": {
+        "description": "Immigration offices in Kigali"
+      },
+      "culturalContext": "Wear formal attire for passport photos. Arrive early to avoid long queues.",
+      "introvertTip": "Apply online via Irembo and track status digitally."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Development Board",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["driving-permit", "transport", "RDB"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Driving Permit",
+        "summary": "Get a Rwandan driving permit through RDB after passing the driving test."
+      },
+      "fr": {
+        "title": "Demander un permis de conduire",
+        "summary": "Obtenez un permis de conduire rwandais via la RDB apres avoir reussi l'examen de conduite."
+      },
+      "rw": {
+        "title": "Gusaba uruhushya rwo gutwara",
+        "summary": "Kubona uruhushya rwo gutwara mu Rwanda binyuze muri RDB nyuma y'ikizami cy'uburyo bwo gutwara."
+      }
+    },
+    "summary": "Get a Rwandan driving permit through RDB after passing the driving test.",
+    "eligibility": ["Rwandan citizens", "Foreign residents with valid permits", "Age 18 and above"],
+    "requirements": ["ID", "Driving test certificate", "Medical certificate"],
+    "steps": [
+      { "order": 1, "text": { "en": "Attend a recognized driving school and pass the theory and practical tests.", "fr": "Inscrivez-vous dans une auto-ecole reconnue et reussissez les tests theorique et pratique.", "rw": "Jya mu ishuri ry'uburyo bwo gutwara ryemewe kandi umare ikizami cy'ibitekerezo n'icy'uburyo." }, "estimatedTime": "1-2 months" },
+      { "order": 2, "text": { "en": "Apply for the permit at RDB with your test certificate.", "fr": "Demandez le permis a la RDB avec votre certificat d'examen.", "rw": "Saba uruhushya kuri RDB ufite icyemezo cy'ikizami." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Pay the fee and collect your driving permit.", "fr": "Payez les frais et retirez votre permis de conduire.", "rw": "Wishyure uhabwe uruhushya." }, "estimatedTime": "3-5 business days" }
+    ],
+    "processingTime": "3-5 business days after test",
+    "fees": [
+      { "label": "Driving permit", "amountRWF": 15000, "conditions": "Varies by category" }
+    ],
+    "requiredDocuments": ["ID", "Driving test certificate", "Medical certificate"],
+    "whereToApply": {
+      "description": "RDB offices or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://rdb.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://rdb.rw/", "https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "30 minutes", "inPerson": "1 hour" },
+      "costBreakdown": [
+        { "item": "Driving permit", "amountRWF": 15000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID", "isRequired": true, "fallbackOption": "National ID or passport" },
+        { "documentName": "Driving test certificate", "isRequired": true, "fallbackOption": "From a recognized driving school" },
+        { "documentName": "Medical certificate", "isRequired": true, "fallbackOption": "From a certified clinic" }
+      ],
+      "physicalLocation": {
+        "description": "RDB offices"
+      },
+      "culturalContext": "Many driving schools in Kigali offer packages including the test. Shop around for prices.",
+      "introvertTip": "Complete the theory test online if available, then book the practical test."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Utilities Regulatory Authority / ISPs",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["internet", "telecom", "home-internet"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "Get Home Internet in Kigali",
+        "summary": "Compare and sign up for home internet from MTN, Airtel, or Liquid Telecom."
+      },
+      "fr": {
+        "title": "Obtenir internet a la maison a Kigali",
+        "summary": "Comparez et souscrivez a internet domestique aupres de MTN, Airtel ou Liquid Telecom."
+      },
+      "rw": {
+        "title": "Kubona internet mu rugo i Kigali",
+        "summary": "Gereranya kandi winjire mu internet y'urugo kuri MTN, Airtel, cyangwa Liquid Telecom."
+      }
+    },
+    "summary": "Compare and sign up for home internet from MTN, Airtel, or Liquid Telecom.",
+    "eligibility": ["Anyone with a valid ID", "Home or business address"],
+    "requirements": ["ID", "Proof of residence"],
+    "steps": [
+      { "order": 1, "text": { "en": "Compare providers: MTN, Airtel, Liquid Telecom.", "fr": "Comparez les fournisseurs: MTN, Airtel, Liquid Telecom.", "rw": "Gereranya abahawe serivisi: MTN, Airtel, Liquid Telecom." }, "estimatedTime": "1 hour" },
+      { "order": 2, "text": { "en": "Visit a provider store or website and choose a plan.", "fr": "Visitez un magasin ou le site web du fournisseur et choisissez un forfait.", "rw": "Musura iduka cyangwa urubuga rwa serivisi uhitemo forfait." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Provide ID and proof of residence, pay installation fee if any, and schedule installation.", "fr": "Fournissez votre piece d'identite et preuve de domicile, payez les frais d'installation et planifiez l'installation.", "rw": "Tanga indangamuntu n'igitabo cy'iwe, wishyure igiciro cy'installation maze ugenera itariki." }, "estimatedTime": "1-3 days" }
+    ],
+    "processingTime": "1-3 days for installation",
+    "fees": [
+      { "label": "Installation fee", "amountRWF": 15000, "conditions": "Varies by provider" },
+      { "label": "Monthly plan", "amountRWF": 25000, "conditions": "Starting price; varies by speed" }
+    ],
+    "requiredDocuments": ["ID", "Proof of residence"],
+    "whereToApply": {
+      "description": "Provider stores in Kigali or online"
+    },
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.mtn.co.rw/"
+    },
+    "officialPortal": "https://www.mtn.co.rw/",
+    "sourceUrl": ["https://www.mtn.co.rw/", "https://www.airtel.co.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "20 minutes", "inPerson": "1 hour" },
+      "costBreakdown": [
+        { "item": "Installation fee", "amountRWF": 15000 },
+        { "item": "Monthly plan", "amountRWF": 25000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID", "isRequired": true, "fallbackOption": "National ID or passport" },
+        { "documentName": "Proof of residence", "isRequired": true, "fallbackOption": "Tenancy agreement or utility bill" }
+      ],
+      "physicalLocation": {
+        "description": "Provider stores in Kigali"
+      },
+      "culturalContext": "MTN and Airtel have the widest coverage. Liquid Telecom is stronger in office/business fiber.",
+      "introvertTip": "Order online for home installation without visiting a store."
+    }
+  }
+]
