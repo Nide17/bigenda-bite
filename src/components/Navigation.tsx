@@ -226,14 +226,14 @@ export default function Navigation({ lang }: NavigationProps) {
                       </div>
                       <Link
                         href={`/${lang}/account`}
-                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        className="px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
                         onClick={() => setAccountOpen(false)}
                       >
                         {t('account')}
                       </Link>
                       <Link
                         href={`/${lang}/membership`}
-                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        className="px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
                         onClick={() => setAccountOpen(false)}
                       >
                         {t('membership')}
@@ -250,14 +250,14 @@ export default function Navigation({ lang }: NavigationProps) {
                     <>
                       <Link
                         href={`/${lang}/account`}
-                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        className="px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
                         onClick={() => setAccountOpen(false)}
                       >
                         {t('account')}
                       </Link>
                       <Link
                         href={`/${lang}/membership`}
-                        className="block px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
+                        className="px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-[#1e1b4b] transition-colors"
                         onClick={() => setAccountOpen(false)}
                       >
                         {t('membership')}
@@ -265,7 +265,7 @@ export default function Navigation({ lang }: NavigationProps) {
                       <div className="border-t border-neutral-100 mt-1 pt-1">
                         <Link
                           href={`/${lang}/login`}
-                          className="block px-3 py-2 text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                          className="px-3 py-2 text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                           onClick={() => setAccountOpen(false)}
                         >
                           {t('sign_in')}
@@ -308,7 +308,7 @@ export default function Navigation({ lang }: NavigationProps) {
                 href={`/${lang}${item.href}`}
                 onClick={closeMenu}
                 className={`
-                  block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
+                  min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
                   ${isActive(`/${lang}${item.href}`)
                     ? 'bg-[#eef2ff] text-[#1e1b4b]'
                     : 'text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50'
@@ -325,14 +325,14 @@ export default function Navigation({ lang }: NavigationProps) {
                   <Link
                     href={`/${lang}/account`}
                     onClick={closeMenu}
-                    className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                    className="min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                   >
                     {t('account')}
                   </Link>
                   <Link
                     href={`/${lang}/membership`}
                     onClick={closeMenu}
-                    className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                    className="min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                   >
                     {t('membership')}
                   </Link>
@@ -349,14 +349,14 @@ export default function Navigation({ lang }: NavigationProps) {
                   <Link
                     href={`/${lang}/account`}
                     onClick={closeMenu}
-                    className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                    className="min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                   >
                     {t('account')}
                   </Link>
                   <Link
                     href={`/${lang}/membership`}
                     onClick={closeMenu}
-                    className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                    className="min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                   >
                     {t('membership')}
                   </Link>
@@ -364,7 +364,7 @@ export default function Navigation({ lang }: NavigationProps) {
                     <Link
                       href={`/${lang}/login`}
                       onClick={closeMenu}
-                      className="block min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
+                      className="min-h-[44px] flex items-center px-3 py-2.5 rounded-lg text-sm font-medium text-[#1e1b4b] hover:bg-neutral-50 transition-colors"
                     >
                       {t('sign_in')}
                     </Link>
