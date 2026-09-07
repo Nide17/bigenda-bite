@@ -30,9 +30,3 @@ export function validateProductionConfig() {
     console.log('Production mode: MongoDB URI is configured')
   }
 }
-  }
-
-  if (process.env.MONGODB_URI && process.env.NODE_ENV === 'production') {
-    console.log('Production mode: MongoDB URI is configured')
-  }
-}
