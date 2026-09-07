@@ -56,6 +56,16 @@ export default async function HomePage({ params, searchParams }: { params: Promi
     console.error('Home page data fetch error:', error)
   }
 
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Home page data counts:', {
+      processes: processes.length,
+      guides: guides.length,
+      alerts: alerts.length,
+      businesses: businesses.length,
+      city: cityName,
+    })
+  }
+
   const categories = Array.from(new Set([
     ...processes.map(p => p.category).filter((c): c is string => Boolean(c)),
     ...guides.map(g => g.category).filter((c): c is string => Boolean(c)),

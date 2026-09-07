@@ -19,6 +19,17 @@ export function validateProductionConfig() {
     if (!isTest && !isBuild && !isDev) {
       throw new Error(`Missing required environment variables: ${missing.join(', ')}`)
     }
+    if (isDev) {
+      console.warn('Running in development mode with missing env vars. Some features may not work.')
+    }
+  } else {
+    console.log('All required environment variables are set.')
+  }
+
+  if (process.env.MONGODB_URI && process.env.NODE_ENV === 'production') {
+    console.log('Production mode: MongoDB URI is configured')
+  }
+}
   }
 
   if (process.env.MONGODB_URI && process.env.NODE_ENV === 'production') {
