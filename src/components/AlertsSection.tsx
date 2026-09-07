@@ -25,7 +25,8 @@ export function deduplicateAlerts(alerts: Alert[]): Alert[] {
       typeof alert.translations?.en === 'string'
         ? alert.translations.en
         : alert.translations?.en?.title || alert.translations?.[Object.keys(alert.translations || {})[0]]?.title || ''
-    const key = `${alert._id}-${title}`
+    const key = title.trim().toLowerCase()
+    if (!key) return false
     if (seen.has(key)) return false
     seen.add(key)
     return true
