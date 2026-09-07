@@ -1,7 +1,7 @@
 ﻿import { defineConfig } from 'sanity'
-import { schemaTypes } from './schemas/index'
-import StudioListTool from './StudioListTool'
-import StudioDashboard from './StudioDashboard'
+import { schemaTypes } from './sanity/schemas/index'
+import StudioListTool from './sanity/StudioListTool'
+import StudioDashboard from './sanity/StudioDashboard'
 import {
   DocumentsIcon,
   HomeIcon,

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { createClient } from '@sanity/client'
-import { DocumentsIcon, ChartBarIcon, ExclamationCircleIcon } from '@sanity/icons'
+import { DocumentsIcon, HomeIcon, BarChartIcon, ErrorOutlineIcon } from '@sanity/icons'
 
 const readClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'fallback',
@@ -45,7 +45,7 @@ export default function StudioDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <StatCard title="Processes" count={stats.processes} icon={DocumentsIcon} color="bg-blue-50 text-blue-700 border-blue-200" loading={loading} />
           <StatCard title="Guides" count={stats.guides} icon={DocumentsIcon} color="bg-emerald-50 text-emerald-700 border-emerald-200" loading={loading} />
-          <StatCard title="Alerts" count={stats.alerts} icon={ExclamationCircleIcon} color="bg-amber-50 text-amber-700 border-amber-200" loading={loading} />
+          <StatCard title="Alerts" count={stats.alerts} icon={ErrorOutlineIcon} color="bg-amber-50 text-amber-700 border-amber-200" loading={loading} />
         </div>
 
         <div className="rounded-xl border border-neutral-200 bg-white p-5">
