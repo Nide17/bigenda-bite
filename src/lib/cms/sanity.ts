@@ -83,7 +83,7 @@ export const getProcesses = cache(
         ? `*[_type == "process" && status == "published" && category == $category] | order(_createdAt desc)[0...100]`
         : `*[_type == "process" && status == "published"] | order(_createdAt desc)[0...100]`
       const params = category ? { category } : {}
-      const result = await client.fetch<Process[]>(`${baseQuery} {${PROCESS_LIST_PROJECTION}}`, params)
+      const result = await client.fetch<Process[]>(`${baseQuery} ${PROCESS_LIST_PROJECTION}`, params)
       if (process.env.NODE_ENV === 'production') {
         console.log(`Sanity fetch: ${result.length} processes returned`)
       }
@@ -101,7 +101,7 @@ export const getProcessBySlug = cache(
     if (!client) return null
     try {
       return await client.fetch<Process | null>(
-        `*[_type == "process" && (slug.current == $slug || _id == $slug) && status == "published"][0] {${PROCESS_LIST_PROJECTION}}`,
+        `*[_type == "process" && (slug.current == $slug || _id == $slug) && status == "published"][0] ${PROCESS_LIST_PROJECTION}`,
         { slug }
       )
     } catch (error) {
@@ -120,7 +120,7 @@ export const getGuides = cache(
         ? `*[_type == "guide" && status == "published" && category == $category] | order(_createdAt desc)[0...100]`
         : `*[_type == "guide" && status == "published"] | order(_createdAt desc)[0...100]`
       const params = category ? { category } : {}
-      const result = await client.fetch<Guide[]>(`${baseQuery} {${GUIDE_LIST_PROJECTION}}`, params)
+      const result = await client.fetch<Guide[]>(`${baseQuery} ${GUIDE_LIST_PROJECTION}`, params)
       if (process.env.NODE_ENV === 'production') {
         console.log(`Sanity fetch: ${result.length} guides returned`)
       }
@@ -138,7 +138,7 @@ export const getGuideBySlug = cache(
     if (!client) return null
     try {
       return await client.fetch<Guide | null>(
-        `*[_type == "guide" && (slug.current == $slug || _id == $slug) && status == "published"][0] {${GUIDE_LIST_PROJECTION}}`,
+        `*[_type == "guide" && (slug.current == $slug || _id == $slug) && status == "published"][0] ${GUIDE_LIST_PROJECTION}`,
         { slug }
       )
     } catch (error) {
@@ -152,9 +152,9 @@ export const getAlerts = cache(async (): Promise<Alert[]> => {
   const client = getSanityClient()
   if (!client) return []
   try {
-    const result = await client.fetch<Alert[]>(
-      `*[_type == "alert" && status == "published" && expiresAt > now()] | order(severity desc, _createdAt desc)[0...50] {${ALERT_LIST_PROJECTION}}`
-    )
+      const result = await client.fetch<Alert[]>(
+        `*[_type == "alert" && status == "published" && expiresAt > now()] | order(severity desc, _createdAt desc)[0...50] ${ALERT_LIST_PROJECTION}`
+      )
     if (process.env.NODE_ENV === 'production') {
       console.log(`Sanity fetch: ${result.length} alerts returned`)
     }
