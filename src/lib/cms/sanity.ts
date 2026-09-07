@@ -27,12 +27,15 @@ const PROCESS_LIST_PROJECTION = `{
     _createdAt,
     slug,
     sourceType,
+    officialSource,
     category,
     city,
     translations,
+    summary,
     status,
     tags,
-    lastVerifiedDate
+    lastVerifiedDate,
+    nextReviewDate
   }`
 
 const GUIDE_LIST_PROJECTION = `{
@@ -44,11 +47,12 @@ const GUIDE_LIST_PROJECTION = `{
     category,
     city,
     translations,
+    summary,
     status,
     tags,
     lastReviewedDate,
     lastVerifiedDate,
-    aiDraftStatus
+    nextReviewDate
   }`
 
 const ALERT_LIST_PROJECTION = `{
@@ -57,6 +61,8 @@ const ALERT_LIST_PROJECTION = `{
     _createdAt,
     type,
     severity,
+    sourceName,
+    sourceUrl,
     city,
     relatedProcessId,
     translations,

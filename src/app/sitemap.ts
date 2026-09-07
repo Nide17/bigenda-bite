@@ -76,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const alert of alerts) {
-      const slug = toSlug(alert.translations?.en || alert._id)
+      const slug = toSlug(typeof alert.translations?.en === 'string' ? alert.translations.en : alert.translations?.en?.title || alert._id)
       const lastModified = alert._updatedAt ? new Date(alert._updatedAt) : new Date()
       for (const locale of locales) {
         urls.push({

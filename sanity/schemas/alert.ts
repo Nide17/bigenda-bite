@@ -18,12 +18,26 @@ export const alertType = defineType({
         ],
         layout: 'dropdown',
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'severity',
       type: 'string',
       title: 'Severity',
       options: { list: ['info', 'warning', 'critical'], layout: 'radio' },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'sourceName',
+      type: 'string',
+      title: 'Source Name',
+      description: 'Name of the institution or organization issuing this alert (e.g. "RDB", "RRA")',
+    }),
+    defineField({
+      name: 'sourceUrl',
+      type: 'url',
+      title: 'Source URL',
+      description: 'Link to the official announcement',
     }),
     defineField({
       name: 'city',
@@ -42,22 +56,32 @@ export const alertType = defineType({
       title: 'Translations',
       validation: (Rule) => Rule.required(),
       fields: [
-        { name: 'en', type: 'text', title: 'English', validation: (Rule) => Rule.required() },
-        { name: 'fr', type: 'text', title: 'French' },
-        { name: 'rw', type: 'text', title: 'Kinyarwanda' },
+        { name: 'en', type: 'localizedTitle', title: 'English', validation: (Rule) => Rule.required() },
+        { name: 'fr', type: 'localizedTitle', title: 'French' },
+        { name: 'rw', type: 'localizedTitle', title: 'Kinyarwanda' },
       ],
     }),
     defineField({
       name: 'expiresAt',
       type: 'datetime',
       title: 'Expires At',
+      description: 'When this alert is no longer relevant',
     }),
     defineField({
       name: 'status',
       type: 'string',
       title: 'Status',
-      options: { list: ['draft', 'published'], layout: 'radio' },
+      options: {
+        list: [
+          { title: 'Draft', value: 'draft' },
+          { title: 'Published', value: 'published' },
+          { title: 'Expired', value: 'expired' },
+        ],
+        layout: 'radio',
+      },
       initialValue: 'draft',
+      validation: (Rule) => Rule.required(),
     }),
   ],
+  validation: (Rule) => Rule.required(),
 })

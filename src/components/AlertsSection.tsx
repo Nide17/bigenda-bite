@@ -24,7 +24,7 @@ export function deduplicateAlerts(alerts: Alert[]): Alert[] {
     const title =
       typeof alert.translations?.en === 'string'
         ? alert.translations.en
-        : alert.translations?.[Object.keys(alert.translations || {})[0]] || ''
+        : alert.translations?.en?.title || alert.translations?.[Object.keys(alert.translations || {})[0]]?.title || ''
     const key = `${alert._id}-${title}`
     if (seen.has(key)) return false
     seen.add(key)
@@ -59,7 +59,7 @@ export default function AlertsSection({
           const title =
             typeof alert.translations?.en === 'string'
               ? alert.translations.en
-              : alert.translations?.[lang] || alert.translations?.en || ''
+              : alert.translations?.[lang]?.title || alert.translations?.en?.title || ''
 
           return (
             <div

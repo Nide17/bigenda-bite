@@ -35,6 +35,7 @@ export const guideType = defineType({
         ],
         layout: 'dropdown',
       },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'city',
@@ -52,6 +53,13 @@ export const guideType = defineType({
         { name: 'fr', type: 'localizedTitle', title: 'French' },
         { name: 'rw', type: 'localizedTitle', title: 'Kinyarwanda' },
       ],
+    }),
+    defineField({
+      name: 'summary',
+      type: 'text',
+      title: 'Summary',
+      description: 'Brief description shown in search results and cards',
+      validation: (Rule) => Rule.required().max(300),
     }),
     defineField({
       name: 'steps',
@@ -73,28 +81,30 @@ export const guideType = defineType({
       of: [{ type: 'text' }],
     }),
     defineField({
-      name: 'aiDraftStatus',
-      type: 'string',
-      title: 'AI Draft Status',
-      options: { list: ['ai_draft', 'editor_reviewed', 'published'], layout: 'radio' },
-      initialValue: 'editor_reviewed',
-    }),
-    defineField({
       name: 'researchSources',
       type: 'array',
       title: 'Research Sources',
+      description: 'Sources used to create this guide (e.g. "editorial", "community", "official_rra")',
       of: [{ type: 'string' }],
+      validation: (Rule) => Rule.required().min(1),
     }),
     defineField({
       name: 'lastReviewedDate',
       type: 'datetime',
       title: 'Last Reviewed Date',
+      description: 'When this guide was last reviewed by an editor',
     }),
     defineField({
       name: 'lastVerifiedDate',
       type: 'datetime',
       title: 'Last Verified Date',
-      description: 'When this guide was last verified by the community',
+      description: 'When this guide was last verified by the community or an editor',
+    }),
+    defineField({
+      name: 'nextReviewDate',
+      type: 'datetime',
+      title: 'Next Review Date',
+      description: 'When this guide should be reviewed again for accuracy',
     }),
     defineField({
       name: 'outdatedReportsCount',
@@ -107,8 +117,17 @@ export const guideType = defineType({
       name: 'status',
       type: 'string',
       title: 'Status',
-      options: { list: ['draft', 'published'], layout: 'radio' },
+      options: {
+        list: [
+          { title: 'Draft', value: 'draft' },
+          { title: 'Published', value: 'published' },
+          { title: 'Needs Review', value: 'needs_review' },
+          { title: 'Expired', value: 'expired' },
+        ],
+        layout: 'radio',
+      },
       initialValue: 'draft',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'tags',
@@ -214,6 +233,7 @@ export const guideType = defineType({
       ],
     }),
   ],
+  validation: (Rule) => Rule.required(),
 })
 
 export const costType = defineType({

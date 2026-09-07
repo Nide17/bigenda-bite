@@ -124,7 +124,7 @@ export async function GET(request: Request) {
 
     if (typesToSearch.includes('alert')) {
       for (const alert of alerts) {
-        const title = typeof alert.translations?.en === 'string' ? alert.translations.en : ''
+        const title = typeof alert.translations?.en === 'string' ? alert.translations.en : alert.translations?.en?.title || ''
         if (!title) continue
         const score = relevanceScore(queryTokens, title)
         if (score > 0) {

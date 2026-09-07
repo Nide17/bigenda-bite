@@ -1,8 +1,3 @@
-export interface Translation {
-  title?: string
-  summary?: string
-}
-
 export interface LocalizedTranslation {
   [lang: string]: Translation | undefined
   en?: Translation
@@ -10,11 +5,16 @@ export interface LocalizedTranslation {
   rw?: Translation
 }
 
+export interface Translation {
+  title?: string
+  summary?: string
+}
+
 export interface AlertTranslation {
-  [lang: string]: string | undefined
-  en?: string
-  fr?: string
-  rw?: string
+  [lang: string]: Translation | undefined
+  en?: Translation
+  fr?: Translation
+  rw?: Translation
 }
 
 export interface ProcessStep {
@@ -80,19 +80,35 @@ export interface Process {
     current?: string
   }
   sourceType?: string
+  officialSource?: string
   category?: string
   city?: string
   translations?: LocalizedTranslation
+  summary?: string
+  eligibility?: string[]
+  requirements?: string[]
   steps?: ProcessStep[]
+  processingTime?: string
   fees?: Fee[]
   requiredDocuments?: string[]
-  taskBlueprint?: TaskBlueprint
+  whereToApply?: {
+    description?: string
+    mapsLink?: string
+  }
+  onlineApplicationUrl?: string
+  contactInfo?: {
+    phone?: string
+    email?: string
+    website?: string
+  }
   officialPortal?: string
   sourceUrl?: string[]
   lastVerifiedDate?: string
+  nextReviewDate?: string
   confidenceScore?: number
   status?: string
   tags?: string[]
+  taskBlueprint?: TaskBlueprint
   beforeYouGo?: string[]
   foreignerNotes?: string[]
 }
@@ -109,16 +125,17 @@ export interface Guide {
   category?: string
   city?: string
   translations?: LocalizedTranslation
+  summary?: string
   steps?: ProcessStep[]
   typicalCosts?: {
     label?: string
     rangeRWF?: number[]
   }[]
   commonPitfalls?: string[]
-  aiDraftStatus?: string
   researchSources?: string[]
   lastReviewedDate?: string
   lastVerifiedDate?: string
+  nextReviewDate?: string
   outdatedReportsCount?: number
   status?: string
   tags?: string[]
@@ -132,6 +149,8 @@ export interface Alert {
   _updatedAt?: string
   type?: string
   severity?: string
+  sourceName?: string
+  sourceUrl?: string
   city?: string
   relatedProcessId?: string
   translations?: AlertTranslation
