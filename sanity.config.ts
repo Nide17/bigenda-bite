@@ -1,7 +1,11 @@
 ﻿import { defineConfig } from 'sanity'
-import { schemaTypes } from './sanity/schemas/index'
-import StudioListTool from './sanity/StudioListTool'
-import { DocumentsIcon } from '@sanity/icons'
+import { schemaTypes } from './schemas/index'
+import StudioListTool from './StudioListTool'
+import StudioDashboard from './StudioDashboard'
+import {
+  DocumentsIcon,
+  HomeIcon,
+} from '@sanity/icons'
 import { route } from 'sanity/router'
 
 export default defineConfig({
@@ -11,13 +15,23 @@ export default defineConfig({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   basePath: '/studio',
-  tools: (prev) => [{
-    name: 'content',
-    title: 'Content',
-    icon: DocumentsIcon,
-    component: StudioListTool,
-    router: route.create('/', [route.create('/')]),
-  }, ...prev],
+  tools: (prev) => [
+    {
+      name: 'dashboard',
+      title: 'Dashboard',
+      icon: HomeIcon,
+      component: StudioDashboard,
+      router: route.create('/', [route.create('/')]),
+    },
+    {
+      name: 'content',
+      title: 'Content',
+      icon: DocumentsIcon,
+      component: StudioListTool,
+      router: route.create('/content', [route.create('/')]),
+    },
+    ...prev,
+  ],
   schema: {
     types: schemaTypes,
   },
