@@ -1,18 +1,18 @@
 # Product Overview
 
-Bigenda Bite is a content platform that helps Rwandans find official processes, how-to guides, local businesses, and alerts.
+Bigenda Bite helps Rwandans find official processes, how-to guides, local businesses, and alerts.
 
 ## How It Works
 
-Users come to get things done, not browse. The product is organized around tasks:
+Users come to get things done. The homepage is organized around tasks:
 
-1. **Search** — Main entry point for finding anything
+1. **Search** — Main entry point
 2. **Popular tasks** — Common government processes
-3. **Alerts** — Time-sensitive announcements
-4. **Categories** — Browse content by topic
-5. **Latest guides** — Recently updated how-to content
-6. **Businesses near you** — Location-aware directory
-7. **Latest updates** — Recently changed official processes
+3. **Important alerts** — Time-sensitive announcements
+4. **Guides** — How-to content
+5. **Businesses near you** — Location-aware directory
+6. **Categories** — Browse by topic
+7. **Organizations** — Sponsored placements
 
 ## Languages
 
@@ -27,11 +27,9 @@ Users come to get things done, not browse. The product is organized around tasks
 - Rubavu
 - Huye
 
-## Feature Status
+## Features
 
-### Live
-
-| Feature | What it does |
+| Feature | Description |
 |---------|-------------|
 | Official Processes | Government process guides with steps, fees, documents |
 | How-To Guides | Life guides with steps, costs, community tips |
@@ -39,32 +37,20 @@ Users come to get things done, not browse. The product is organized around tasks
 | Alerts | Severity-based announcements with expiry |
 | Search | Universal search across all content |
 | City Routing | Content and ads personalized by city |
-| i18n | Full EN/FR/RW translations |
-| Auth | Email/password and Google OAuth; email verification optional |
+| Auth | Email/password and Google OAuth |
 | Membership | Subscriptions with MTN MoMo payments |
 | Ads | Impression and click tracking |
 | Admin Dashboard | Users, ads, analytics, content, pending updates, submissions |
 | Analytics | Page views, events, summary stats |
-| Notifications | In-app bell with unread counts + Discord webhooks |
+| Notifications | In-app bell + Discord webhooks |
 | Scraper Worker | Automated scraping with approval workflow |
-| Discord Integration | Editor notifications |
-| Error Pages | Localized 404/error with search and recovery |
 | CI/CD | GitHub Actions for typecheck, lint, build, tests |
-| Toast Notifications | Real-time feedback for forms and admin actions |
 
-### In Progress
-
-| Feature | Status |
-|---------|--------|
-| Scraper Quality | Approval flow exists, data quality being refined |
-| Payment Flow | MoMo integrated, sandbox validation incomplete |
-| Search Relevance | Basic scoring, fuzzy matching planned |
-
-### Planned
+## Planned
 
 - Advanced search (fuzzy matching, typo tolerance)
 - User profiles and preferences
-- Content scheduling (future publish, auto-expiry)
+- Content scheduling
 - API rate limiting
-- Offline support (service worker, caching)
+- Offline support
 - Mobile app / PWA

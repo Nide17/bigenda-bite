@@ -1,25 +1,9 @@
 # Scraper Guide
 
-The scraper worker monitors sources for content updates.
-
 ## How It Works
 
 ```
-scripts/worker.ts
-    ↓
-Playwright browser
-    ↓
-Scrape sources (Irembo, RRA, RDB)
-    ↓
-Diff against Sanity
-    ↓
-Insert into MongoDB pendingUpdates
-    ↓
-Discord → editors
-    ↓
-Editor approves in /admin
-    ↓
-Sanity document created/updated
+scripts/worker.ts → Playwright → Scrape sources → Diff against Sanity → MongoDB pendingUpdates → Discord → Editors approve → Sanity updated
 ```
 
 ## Running
@@ -30,11 +14,7 @@ npm run scrape
 npx tsx scripts/worker.ts
 ```
 
-## Config
-
-Source URLs and scraping logic live in `scripts/worker.ts`.
-
-Currently tracked:
+## Sources
 
 - Irembo government services
 - RRA tax info
@@ -54,9 +34,8 @@ Currently tracked:
 ## Quality Filters
 
 The worker skips:
-
 - Titles shorter than 3 characters
-- Suspicious titles (test, placeholder, hhh, undefined)
+- Suspicious titles (`test`, `placeholder`, `hhh`, `undefined`)
 - Documents with no detected changes
 - Updates below confidence threshold
 

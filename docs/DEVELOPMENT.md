@@ -22,9 +22,9 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Environment Variables
 
-See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md) for the full list.
+See [ENVIRONMENT_VARIABLES.md](ENVIRONMENT_VARIABLES.md).
 
-Minimum needed to get started:
+Minimum to start:
 
 ```env
 MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/bigendabite
@@ -40,15 +40,13 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 | Script | Description |
 |--------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Build for production |
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
 | `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | TypeScript type checking |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript check |
 | `npm run scrape` | Run scraper worker |
-| `npm run test:e2e` | Run Playwright E2E tests |
-| `npm run test:e2e:ui` | Run tests with UI |
-| `npm run test:e2e:debug` | Run tests in debug mode |
+| `npm run test:e2e` | Playwright tests |
 
 ## Project Structure
 
@@ -76,29 +74,24 @@ src/
 │   ├── api/               # API routes
 │   └── layout.tsx         # Root layout
 ├── components/            # React components
-│   ├── ui/                # Design system (Card, Button, Input, Badge)
-│   ├── Navigation.tsx     # Header navigation
-│   ├── SessionProviderWrapper.tsx
-│   ├── AlertsSection.tsx
-│   ├── NotificationBell.tsx
+│   ├── ui/                # Design system
+│   ├── Navigation.tsx
 │   ├── Search.tsx
-│   ├── TaskBlueprint.tsx
-│   ├── SubmissionForm.tsx
 │   └── ...
 ├── lib/                   # Core utilities
-│   ├── analytics.ts       # Event tracking
-│   ├── auth/              # Authentication (session, authorize)
+│   ├── analytics.ts
+│   ├── auth/              # Authentication
 │   ├── cms/               # Sanity client
 │   ├── db/                # MongoDB connection
 │   ├── discord/           # Discord webhooks
-│   ├── email.ts           # Nodemailer
+│   ├── email.ts
 │   ├── momo/              # MTN MoMo client
-│   ├── notifications.ts   # In-app notifications
+│   ├── notifications.ts
 │   ├── scrapers/          # Scraper logic
 │   └── ...
 ├── i18n/                  # Translations
 │   ├── messages/          # en.json, fr.json, rw.json
-│   └── routing.ts         # Locale config
+│   └── routing.ts
 └── types/                 # TypeScript types
 ```
 
@@ -107,15 +100,15 @@ src/
 - TypeScript strict mode
 - Server components by default, `'use client'` only when needed
 - camelCase for variables/functions, PascalCase for components
-- Group imports (React, Next.js, third-party, local)
-- Use `useTranslations()` hook for all user-facing strings
-- Use `toast.success()` / `toast.error()` from `sonner` for action feedback
+- Group imports: React, Next.js, third-party, local
+- Use `useTranslations()` for all user-facing strings
+- Use `toast.success()` / `toast.error()` from `sonner` for feedback
 
 ## Commits
 
 ```
 feat: add user profile page
-fix: correct slug fallback for guides
+fix: correct slug fallback
 docs: update API reference
 refactor: extract city selector to component
 ```
@@ -124,10 +117,3 @@ refactor: extract city selector to component
 
 - `main` — Production
 - Feature branches — Open PRs against `main`
-
-## Related Docs
-
-- [Architecture](ARCHITECTURE.md) — System design
-- [API Reference](API.md) — API endpoints
-- [Deployment](DEPLOYMENT.md) — Production setup
-- [Testing](TESTING.md) — Test guide

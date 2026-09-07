@@ -1,22 +1,17 @@
 # CI/CD
 
-Bigenda Bite uses GitHub Actions for CI. Production deployment is handled by Vercel's GitHub integration.
+GitHub Actions runs on every PR and push to `main`:
 
-## Workflow
+| Job | Command |
+|-----|---------|
+| typecheck | `tsc --noEmit` |
+| lint | `eslint .` |
+| build | `next build` |
+| e2e | `playwright test` |
 
-Runs on every PR and push to `main`:
-
-| Job | What it does |
-|-----|--------------|
-| `typecheck` | `tsc --noEmit` |
-| `lint` | ESLint |
-| `build` | Production build |
-| `e2e` | Playwright smoke tests |
-
-## Configuration
-
-See `.github/workflows/ci.yml` for the full config.
-
+Config: `.github/workflows/ci.yml`
 - OS: `ubuntu-latest`
 - Node: 22
 - Browser: Chromium (headless)
+
+Production deployment is handled by Vercel's GitHub integration.

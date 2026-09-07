@@ -1,12 +1,10 @@
 # Environment Variables
 
-For development setup, see [DEVELOPMENT.md](DEVELOPMENT.md).
-
 ## Setup
 
 1. Copy `.env.example` to `.env.local`
-2. Fill in the values
-3. For Vercel, set them in Dashboard → Settings → Environment Variables
+2. Fill in values
+3. For Vercel, set in Dashboard → Settings → Environment Variables
 
 ## Required
 
@@ -20,7 +18,7 @@ For development setup, see [DEVELOPMENT.md](DEVELOPMENT.md).
 | `SANITY_API_TOKEN` | Sanity write token |
 | `NEXT_PUBLIC_BASE_URL` | App base URL for emails and links |
 
-> **Production:** Set `NEXTAUTH_URL` explicitly in Vercel for custom domains.
+> **Production:** `NEXTAUTH_URL` must match your domain exactly.
 
 ## Optional
 
@@ -40,7 +38,7 @@ For development setup, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 Used for password reset and lead notification emails.
 
-### MTN MoMo Payments
+### MTN MoMo
 
 | Variable | Description |
 |----------|-------------|
@@ -67,7 +65,7 @@ Used for password reset and lead notification emails.
 
 - Never commit `.env.local`
 - `NEXT_PUBLIC_*` vars are exposed to the browser
-- Keep server-only vars (`MONGODB_URI`, `SANITY_API_TOKEN`) private
+- Keep server-only vars private
 - Rotate secrets regularly
 
 See [SECURITY.md](SECURITY.md) for more.

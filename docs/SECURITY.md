@@ -3,30 +3,28 @@
 ## Environment Variables
 
 - Never commit `.env.local`
-- Use different values for dev and production
 - `NEXT_PUBLIC_*` vars are visible in the browser
-- Server-only vars should not have the `NEXT_PUBLIC_` prefix
+- Server-only vars should not have `NEXT_PUBLIC_` prefix
 - Rotate secrets regularly
 
 ## Public vs Private
 
 | Prefix | Visibility | Use |
-|--------|-----------|-----|
+|--------|-----------|------|
 | `NEXT_PUBLIC_*` | Browser | Client-side config |
 | Everything else | Server only | Secrets, DB, APIs |
 
 ## Sanity API Token
 
-- `SANITY_API_TOKEN` is server-only (no `NEXT_PUBLIC_` prefix)
-- If exposed, rotate it immediately at [sanity.io/manage](https://sanity.io/manage)
+- `SANITY_API_TOKEN` is server-only
+- If exposed, rotate immediately at [sanity.io/manage](https://sanity.io/manage)
 
 ## Auth
 
-- Sessions stored in MongoDB
-- Session tokens are HTTP-only cookies
+- Sessions stored as JWTs in HTTP-only cookies
 - CSRF protection on auth endpoints
 - Passwords hashed with bcrypt
-- Google OAuth users are matched by email and created automatically if not present
+- Google OAuth users matched by email, auto-created if missing
 
 ## Database
 
@@ -50,7 +48,6 @@
 
 - Keep packages updated
 - Run `npm audit` periodically
-- Watch for advisories on `next`, `next-auth`, `mongodb`, `@sanity/client`
 
 ## Generating Secrets
 

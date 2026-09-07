@@ -1,49 +1,48 @@
 # Contributing
 
-Thanks for wanting to contribute to Bigenda Bite.
+## Setup
 
-## Reporting Bugs
+```bash
+git clone https://github.com/Nide17/bigenda-bite.git
+cd bigenda-bite
+npm install
+cp .env.example .env.local
+npm run dev
+```
 
-- Use GitHub issues
-- Include steps to reproduce
-- Add screenshots if helpful
-- Mention your browser, OS, and Node version
+Open [http://localhost:3000](http://localhost:3000).
 
-## Requesting Features
+## Scripts
 
-- Open an issue describing the feature
-- Explain the use case
-- Be specific about expected behavior
-
-## Development
-
-1. Fork and clone the repo
-2. `npm install`
-3. `cp .env.example .env.local` and fill in values
-4. `npm run dev`
-
-## Code Style
-
-See [DEVELOPMENT.md](DEVELOPMENT.md#code-style) for conventions.
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript check |
+| `npm run test:e2e` | Playwright tests |
+| `npm run scrape` | Run scraper worker |
 
 ## Commits
 
 ```
-feat: add user profile page
-fix: correct slug fallback
-docs: update API reference
-refactor: extract component
+feat: add feature
+fix: correct bug
+docs: update docs
+refactor: restructure code
 ```
 
 ## Pull Requests
 
-1. Create a feature branch
+1. Create feature branch
 2. Make changes and test
 3. Run `npm run build`
-4. Commit and push
-5. Open a PR against `main`
-6. Address review feedback
+4. Open PR against `main`
 
-## Questions?
+## Code Style
 
-Open an issue for help.
+- TypeScript strict mode
+- Server components by default, `'use client'` only when needed
+- camelCase for functions, PascalCase for components
+- Use `useTranslations()` for user-facing strings
+- Use `toast.success()` / `toast.error()` from `sonner` for feedback
