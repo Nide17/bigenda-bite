@@ -3,8 +3,21 @@ import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { createPayment, MoMoConfig } from '@/lib/momo'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 5,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `momo-collect:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const auth = await requireAuth()
     if (auth.error) {
@@ -57,6 +70,10 @@ export async function POST(request: NextRequest) {
     console.error('MoMo collect error:', error)
     return NextResponse.json({ error: 'Payment initiation failed' }, { status: 500 })
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
 }
 
 

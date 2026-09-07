@@ -3,6 +3,7 @@ import { getProcesses, getGuides, getAlerts } from '@/lib/cms/sanity'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { deduplicateAlerts } from '@/components/AlertsSection'
 import type { SearchResponse, SearchResult } from '@/types/search'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const SUPPORTED_LANGUAGES = ['en', 'fr', 'rw'] as const
 const SEARCHABLE_TYPES = ['process', 'guide', 'alert', 'business'] as const
@@ -31,6 +32,18 @@ function relevanceScore(queryTokens: string[], text: string): number {
 }
 
 export async function GET(request: Request) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 30,
+    windowMs: 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `search:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const { searchParams } = new URL(request.url)
     const rawQuery = searchParams.get('q') || ''

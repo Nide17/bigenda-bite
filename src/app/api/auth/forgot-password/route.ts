@@ -3,10 +3,23 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { randomBytes } from 'crypto'
 import { parseJson, requireFields } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const RESET_TOKEN_EXPIRY_HOURS = 1
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 3,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `forgot-password:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const parsed = await parseJson<{ email: string; lang?: string }>(request)
     if (!parsed.ok) return parsed.response
@@ -68,4 +81,8 @@ export async function POST(request: NextRequest) {
     console.error('Forgot password error:', error)
     return NextResponse.json({ error: 'Failed to process request' }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }

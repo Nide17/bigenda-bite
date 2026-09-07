@@ -77,4 +77,8 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
+}
+
 

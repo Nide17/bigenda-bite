@@ -3,8 +3,21 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { parseJson, requireFields } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
 import { ObjectId } from 'mongodb'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(request: Request) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 5,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `leads:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const parsed = await parseJson<{ businessId: string; contactName: string; contactPhone: string; message?: string; source?: string }>(request)
     if (!parsed.ok) return parsed.response
@@ -63,4 +76,8 @@ Bigenda Bite Team`,
     console.error('Error creating lead:', error)
     return NextResponse.json({ error: 'Failed to create lead' }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }

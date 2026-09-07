@@ -44,3 +44,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to verify email' }, { status: 500 })
   }
 }
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
+}

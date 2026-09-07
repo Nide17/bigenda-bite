@@ -3,6 +3,7 @@ import { connectToDatabase } from '@/lib/db/mongodb'
 import { requireAuth } from '@/lib/auth/authorize'
 import { parseJson, requireFields, fail, ok } from '@/lib/api/validate'
 import type { UserSubmission, SubmissionType, ContentType } from '@/types'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,6 +39,18 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 10,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `submissions:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const auth = await requireAuth()
     if (auth.error) {
@@ -107,4 +120,8 @@ export async function POST(request: NextRequest) {
     console.error('Error creating submission:', error)
     return NextResponse.json({ error: 'Failed to create submission' }, { status: 500 })
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
 }

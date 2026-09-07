@@ -89,3 +89,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to update submission' }, { status: 500 })
   }
 }
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
+}

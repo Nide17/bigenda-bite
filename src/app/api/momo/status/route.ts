@@ -2,8 +2,21 @@ import { NextResponse, NextRequest } from 'next/server'
 import { requireAuth } from '@/lib/auth/authorize'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { checkPaymentStatus, MoMoConfig } from '@/lib/momo'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function GET(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 10,
+    windowMs: 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `momo-status:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const auth = await requireAuth()
     if (auth.error) {
@@ -37,6 +50,10 @@ export async function GET(request: NextRequest) {
     console.error('MoMo status error:', error)
     return NextResponse.json({ error: 'Failed to check payment status' }, { status: 500 })
   }
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
 }
 
 

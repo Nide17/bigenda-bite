@@ -101,3 +101,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to update account' }, { status: 500 })
   }
 }
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
+}

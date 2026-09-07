@@ -3,8 +3,21 @@ import bcrypt from 'bcryptjs'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { ObjectId } from 'mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 5,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `reset-password:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const parsed = await parseJson<{ token: string; password: string }>(request)
     if (!parsed.ok) return parsed.response
@@ -59,4 +72,8 @@ export async function POST(request: NextRequest) {
     console.error('Reset password error:', error)
     return NextResponse.json({ error: 'Failed to reset password' }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }

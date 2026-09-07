@@ -2,7 +2,10 @@ import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { SessionProviderWrapper } from '@/components/SessionProviderWrapper'
+import { validateProductionConfig } from '@/lib/config'
 import './globals.css'
+
+validateProductionConfig()
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 

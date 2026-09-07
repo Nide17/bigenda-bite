@@ -4,10 +4,24 @@ import { randomBytes } from 'crypto'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const VERIFICATION_TOKEN_EXPIRY_HOURS = 24
 
 export async function POST(request: Request) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 3,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `register:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
+
   try {
     const parsed = await parseJson<{ name: string; email: string; password: string }>(request)
     if (!parsed.ok) return parsed.response
@@ -60,9 +74,7 @@ export async function POST(request: Request) {
       createdAt: new Date(),
     })
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-      || 'https://bigenda-bite.vercel.app'
-
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://bigenda-bite.vercel.app'
     const verifyUrl = `${baseUrl}/en/verify-email?token=${token}`
 
     await sendMail({
@@ -89,5 +101,9 @@ export async function POST(request: Request) {
     console.error('Error registering user:', error)
     return NextResponse.json({ error: 'Failed to register' }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }
 

@@ -3,10 +3,23 @@ import { randomBytes } from 'crypto'
 import { connectToDatabase } from '@/lib/db/mongodb'
 import { parseJson, requireFields, fail } from '@/lib/api/validate'
 import { sendMail } from '@/lib/email'
+import { checkRateLimit, rateLimitResponse } from '@/lib/rate-limit'
 
 const VERIFICATION_TOKEN_EXPIRY_HOURS = 24
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(request, {
+    maxRequests: 3,
+    windowMs: 60 * 60 * 1000,
+    keyGenerator: (req) => {
+      const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
+      return `verify-email-resend:${ip}`
+    },
+  })
+
+  if (!rateLimit.allowed) {
+    return rateLimitResponse(rateLimit.resetAt)
+  }
   try {
     const parsed = await parseJson<{ email: string }>(request)
     if (!parsed.ok) return parsed.response
@@ -69,4 +82,8 @@ export async function POST(request: NextRequest) {
     console.error('Resend verification error:', error)
     return NextResponse.json({ error: 'Failed to send verification email' }, { status: 500 })
   }
+}
+
+export async function GET() {
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 })
 }

@@ -124,6 +124,10 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204 })
+}
+
 export async function DELETE(request: NextRequest) {
   try {
     const auth = await requireEditor()
