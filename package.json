@@ -11,7 +11,8 @@
     "scrape": "tsx scripts/worker.ts",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:debug": "playwright test --debug"
+    "test:e2e:debug": "playwright test --debug",
+    "seed:generated": "node scripts/seed-generated-content.js"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.3",

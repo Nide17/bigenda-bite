@@ -581,5 +581,512 @@
       "culturalContext": "MTN and Airtel have the widest coverage. Liquid Telecom is stronger in office/business fiber.",
       "introvertTip": "Order online for home installation without visiting a store."
     }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Irembo / Ministry of Justice",
+    "category": "identity",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["birth-certificate", "identity", "irembo"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Birth Certificate",
+        "summary": "Get a Rwandan birth certificate from your local sector office or via Irembo."
+      },
+      "fr": {
+        "title": "Demander un acte de naissance",
+        "summary": "Obtenez un acte de naissance rwandais aupres de votre bureau de secteur local ou via Irembo."
+      },
+      "rw": {
+        "title": "Gusaba inyandiko y'ivuka",
+        "summary": "Kubona inyandiko y'ivuka y'u Rwanda ku biro by'umurenge cyangwa kuri Irembo."
+      }
+    },
+    "summary": "Get a Rwandan birth certificate from your local sector office or via Irembo.",
+    "eligibility": ["Rwandan citizens", "Parents or legal guardians applying for children"],
+    "requirements": ["Hospital birth record or notification", "Parents' IDs", "Marriage certificate if applicable"],
+    "steps": [
+      { "order": 1, "text": { "en": "Gather required documents and visit your local sector office.", "fr": "Rassemblez les documents requis et visitez votre bureau de secteur local.", "rw": "Tegura inyandiko zisabwa musure ku biro by'umurenge." }, "estimatedTime": "30 minutes" },
+      { "order": 2, "text": { "en": "Fill the application form and pay the fee.", "fr": "Remplissez le formulaire et payez les frais.", "rw": "Uzuza ifomero ushure igiciro." }, "estimatedTime": "1 day" },
+      { "order": 3, "text": { "en": "Collect your birth certificate.", "fr": "Retirez votre acte de naissance.", "rw": "Gura inyandiko y'ivuka." }, "estimatedTime": "3-7 business days" }
+    ],
+    "processingTime": "3-7 business days",
+    "fees": [
+      { "label": "Application fee", "amountRWF": 2000, "conditions": "May vary by sector" }
+    ],
+    "requiredDocuments": ["Hospital birth record", "Parents' IDs", "Marriage certificate if applicable"],
+    "whereToApply": {
+      "description": "Local sector office or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://irembo.gov.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "20 minutes", "inPerson": "45 minutes" },
+      "costBreakdown": [
+        { "item": "Application fee", "amountRWF": 2000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "Hospital birth record", "isRequired": true, "fallbackOption": "Get from the hospital where birth occurred" },
+        { "documentName": "Parents' IDs", "isRequired": true, "fallbackOption": "National ID or passport" }
+      ],
+      "physicalLocation": {
+        "description": "Local sector office"
+      },
+      "culturalContext": "Bring extra copies. Some offices require both parents to be present.",
+      "introvertTip": "Apply online via Irembo where available."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Ministry of Health",
+    "category": "health",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["passport", "travel", "immigration"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Rwandan Passport",
+        "summary": "Apply for a new or renewed Rwandan passport at immigration offices or via Irembo."
+      },
+      "fr": {
+        "title": "Demander un passeport rwandais",
+        "summary": "Demandez un nouveau passeport rwandais ou renouvelez-le aux bureaux d'immigration ou via Irembo."
+      },
+      "rw": {
+        "title": "Gusaba pasiporo y'u Rwanda",
+        "summary": "Gusaba pasiporo nshya cyangwa kuyivugurura ku biro by'ubwivumbugashi cyangwa kuri Irembo."
+      }
+    },
+    "summary": "Apply for a new or renewed Rwandan passport at immigration offices or via Irembo.",
+    "eligibility": ["Rwandan citizens", "Age 16 and above", "Holders of expired passports applying for renewal"],
+    "requirements": ["National ID", "Birth certificate", "Passport photos", "Previous passport if renewing"],
+    "steps": [
+      { "order": 1, "text": { "en": "Visit Irembo or the Directorate General of Immigration.", "fr": "Visitez Irembo ou la Direction Generale de l'Immigration.", "rw": "Musura Irembo cyangwa ku biro by'ubwivumbugashi." }, "estimatedTime": "20 minutes" },
+      { "order": 2, "text": { "en": "Fill the application form and pay the fee.", "fr": "Remplissez le formulaire et payez les frais.", "rw": "Uzuza ifomero ushure igiciro." }, "estimatedTime": "5-10 business days" },
+      { "order": 3, "text": { "en": "Collect your passport at the appointed office.", "fr": "Retirez votre passeport au bureau indique.", "rw": "Gura pasiporo yawe ku biro." }, "estimatedTime": "30 minutes" }
+    ],
+    "processingTime": "5-10 business days",
+    "fees": [
+      { "label": "Ordinary passport", "amountRWF": 50000, "conditions": "5 years" },
+      { "label": "Renewal", "amountRWF": 50000, "conditions": "5 years" }
+    ],
+    "requiredDocuments": ["National ID", "Birth certificate", "Passport photos", "Previous passport if renewing"],
+    "whereToApply": {
+      "description": "Directorate General of Immigration offices or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://www.migration.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://www.migration.gov.rw/"
+    },
+    "officialPortal": "https://www.migration.gov.rw/",
+    "sourceUrl": ["https://www.migration.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "30 minutes", "inPerson": "1 hour" },
+      "costBreakdown": [
+        { "item": "Ordinary passport", "amountRWF": 50000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "National ID", "isRequired": true, "fallbackOption": "Required for identity verification" },
+        { "documentName": "Birth certificate", "isRequired": true, "fallbackOption": "Required for first-time applicants" }
+      ],
+      "physicalLocation": {
+        "description": "Immigration offices in Kigali"
+      },
+      "culturalContext": "Wear formal attire for passport photos. Arrive early to avoid long queues.",
+      "introvertTip": "Apply online via Irembo and track status digitally."
+    }
+  },
+  {
+    "_type": "process",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Development Board",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["driving-permit", "transport", "RDB"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Apply for a Driving Permit",
+        "summary": "Get a Rwandan driving permit through RDB after passing the driving test."
+      },
+      "fr": {
+        "title": "Demander un permis de conduire",
+        "summary": "Obtenez un permis de conduire rwandais via la RDB apres avoir reussi l'examen de conduite."
+      },
+      "rw": {
+        "title": "Gusaba uruhushya rwo gutwara",
+        "summary": "Kubona uruhushya rwo gutwara mu Rwanda binyuze muri RDB nyuma y'ikizami cy'uburyo bwo gutwara."
+      }
+    },
+    "summary": "Get a Rwandan driving permit through RDB after passing the driving test.",
+    "eligibility": ["Rwandan citizens", "Foreign residents with valid permits", "Age 18 and above"],
+    "requirements": ["ID", "Driving test certificate", "Medical certificate"],
+    "steps": [
+      { "order": 1, "text": { "en": "Attend a recognized driving school and pass the theory and practical tests.", "fr": "Inscrivez-vous dans une auto-ecole reconnue et reussissez les tests theorique et pratique.", "rw": "Jya mu ishuri ry'uburyo bwo gutwara ryemewe kandi umare ikizami cy'ibitekerezo n'icy'uburyo." }, "estimatedTime": "1-2 months" },
+      { "order": 2, "text": { "en": "Apply for the permit at RDB with your test certificate.", "fr": "Demandez le permis a la RDB avec votre certificat d'examen.", "rw": "Saba uruhushya kuri RDB ufite icyemezo cy'ikizami." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Pay the fee and collect your driving permit.", "fr": "Payez les frais et retirez votre permis de conduire.", "rw": "Wishyure uhabwe uruhushya." }, "estimatedTime": "3-5 business days" }
+    ],
+    "processingTime": "3-5 business days after test",
+    "fees": [
+      { "label": "Driving permit", "amountRWF": 15000, "conditions": "Varies by category" }
+    ],
+    "requiredDocuments": ["ID", "Driving test certificate", "Medical certificate"],
+    "whereToApply": {
+      "description": "RDB offices or online via Irembo"
+    },
+    "onlineApplicationUrl": "https://irembo.gov.rw/",
+    "contactInfo": {
+      "phone": "+250 788 000 000",
+      "website": "https://rdb.rw/"
+    },
+    "officialPortal": "https://irembo.gov.rw/",
+    "sourceUrl": ["https://rdb.rw/", "https://irembo.gov.rw/"],
+    "taskBlueprint": {
+      "estimatedTime": { "online": "30 minutes", "inPerson": "1 hour" },
+      "costBreakdown": [
+        { "item": "Driving permit", "amountRWF": 15000 }
+      ],
+      "documentChecklist": [
+        { "documentName": "ID", "isRequired": true, "fallbackOption": "National ID or passport" },
+        { "documentName": "Driving test certificate", "isRequired": true, "fallbackOption": "From a recognized driving school" },
+        { "documentName": "Medical certificate", "isRequired": true, "fallbackOption": "From a certified clinic" }
+      ],
+      "physicalLocation": {
+        "description": "RDB offices"
+      },
+      "culturalContext": "Many driving schools in Kigali offer packages including the test. Shop around for prices.",
+      "introvertTip": "Complete the theory test online if available, then book the practical test."
+    }
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "transport",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["buses", "tap-cards", "kigali"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "Using Buses and Tap Cards in Kigali",
+        "summary": "How to use Kigali's bus system, buy a Tap Card, and pay fares."
+      },
+      "fr": {
+        "title": "Utiliser les bus et les cartes Tap a Kigali",
+        "summary": "Comment utiliser le systeme de bus de Kigali, acheter une carte Tap et payer les tarifs."
+      },
+      "rw": {
+        "title": "Gukoresha bisi n'ikarita ya Tap i Kigali",
+        "summary": "Uko koresha sisitemu ya bisi i Kigali, kugura ikarita ya Tap, no kwishyura."
+      }
+    },
+    "summary": "How to use Kigali's bus system, buy a Tap Card, and pay fares.",
+    "steps": [
+      { "order": 1, "text": { "en": "Buy a Tap Card at a bus stop, kiosk, or online.", "fr": "Achetez une carte Tap a un arret de bus, kiosque ou en ligne.", "rw": "Gura ikarita ya Tap ku mfasi y'ibisi, kioske, cyangwa kuri interineti." }, "estimatedTime": "5 minutes" },
+      { "order": 2, "text": { "en": "Load money onto your Tap Card.", "fr": "Chargez de l'argent sur votre carte Tap.", "rw": "Shyiramo amafaranga kuri ikarita ya Tap." }, "estimatedTime": "2 minutes" },
+      { "order": 3, "text": { "en": "Board the bus and tap your card on the validator.", "fr": "Montez dans le bus et tapez votre carte sur le valideur.", "rw": "Inyura mu bisi ukore ikarita ya Tap kuri valideur." }, "estimatedTime": "1 minute" }
+    ],
+    "typicalCosts": [
+      { "label": "Bus fare", "rangeRWF": [200, 500] },
+      { "label": "Tap Card", "rangeRWF": [0, 1000] }
+    ],
+    "commonPitfalls": ["Keep your Tap Card topped up", "Validate every time you board", "Tap before the conductor asks"]
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "finance",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["momo", "payments", "mobile-money"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "How to Use MoMo Mobile Money",
+        "summary": "Send money, pay bills, and manage your account with MTN MoMo."
+      },
+      "fr": {
+        "title": "Comment utiliser MoMo Mobile Money",
+        "summary": "Envoyez de l'argent, payez des factures et gerez votre compte avec MTN MoMo."
+      },
+      "rw": {
+        "title": "Uko gukoresha MoMo Mobile Money",
+        "summary": "Kwohereza amafaranga, kwishyura, no kumenya konti yawe kuri MTN MoMo."
+      }
+    },
+    "summary": "Send money, pay bills, and manage your account with MTN MoMo.",
+    "steps": [
+      { "order": 1, "text": { "en": "Register for MoMo at an MTN center or via *150#.", "fr": "Inscrivez-vous a MoMo dans un centre MTN ou via *150#.", "rw": "Wiyandikisha kuri MoMo ku kigo cya MTN cyangwa kuri *150#." }, "estimatedTime": "10 minutes" },
+      { "order": 2, "text": { "en": "Deposit cash at an agent or bank.", "fr": "Deposez de l'argent chez un agent ou a la banque.", "rw": "Tanga amafaranga ku muhanzikazi cyangwa ku banki." }, "estimatedTime": "5 minutes" },
+      { "order": 3, "text": { "en": "Send money, pay bills, or withdraw cash.", "fr": "Envoyez de l'argent, payez des factures ou retirez de l'argent.", "rw": "Wohereza amafaranga, kwishyura, cyangwa kuzana." }, "estimatedTime": "1 minute" }
+    ],
+    "typicalCosts": [
+      { "label": "Registration", "rangeRWF": [0, 0] },
+      { "label": "Send money fee", "rangeRWF": [0, 500] },
+      { "label": "Withdrawal fee", "rangeRWF": [0, 1000] }
+    ],
+    "commonPitfalls": ["Keep your PIN secret", "Check agent rates before withdrawing", "Use *150# to avoid agent fees for some transactions"]
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "housing",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["renting", "apartments", "kigali"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "Renting an Apartment in Kigali",
+        "summary": "What to know before renting in Kigali: contracts, deposits, neighborhoods, and tips."
+      },
+      "fr": {
+        "title": "Louer un appartement a Kigali",
+        "summary": "Ce qu'il faut savoir avant de louer a Kigali: contrats, depots, quartiers et conseils."
+      },
+      "rw": {
+        "title": "Gukodesha Izu mu Kigali",
+        "summary": "Ibyo ukwiye kumenya mbere yo gukodesha mu Kigali: amasezerano, depots, uturere n'inama."
+      }
+    },
+    "summary": "What to know before renting in Kigali: contracts, deposits, neighborhoods, and tips.",
+    "steps": [
+      { "order": 1, "text": { "en": "Decide on a neighborhood: Nyarutarama, Kacyiru, Kimihurura, Gisozi, or Remera are popular.", "fr": "Choisissez un quartier: Nyarutarama, Kacyiru, Kimihurura, Gisozi ou Remera sont populaires.", "rw": "Hitamo uturere: Nyarutarama, Kacyiru, Kimihurura, Gisozi, cyangwa Remera ni bizwi." }, "estimatedTime": "1-2 days" },
+      { "order": 2, "text": { "en": "Visit apartments and compare prices.", "fr": "Visitez des appartements et comparez les prix.", "rw": "Sura amazu ukagereranya ibiciro." }, "estimatedTime": "3-5 days" },
+      { "order": 3, "text": { "en": "Sign a written contract and pay the deposit.", "fr": "Signez un contrat ecrit et payez le depot.", "rw": "Andika amasezerano wishyure depo." }, "estimatedTime": "1 day" }
+    ],
+    "typicalCosts": [
+      { "label": "Monthly rent (1 bed)", "rangeRWF": [80000, 250000] },
+      { "label": "Security deposit", "rangeRWF": [50000, 200000] }
+    ],
+    "commonPitfalls": ["Always get a written contract", "Inspect for water/electricity before paying", "Ask about water bills and trash collection"]
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "health",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["clinics", "hospitals", "health"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "Finding a Clinic or Hospital in Kigali",
+        "summary": "How to find public and private health facilities near you in Kigali."
+      },
+      "fr": {
+        "title": "Trouver une clinique ou un hopital a Kigali",
+        "summary": "Comment trouver des etablissements de sante publics et prives pres de vous a Kigali."
+      },
+      "rw": {
+        "title": "Gushaka Ikigo cy'Ubuzima i Kigali",
+        "summary": "Uko gushaka ibigo by'ubuzima by'abaturage cyangwa by'abagenewe biri hafi i Kigali."
+      }
+    },
+    "summary": "How to find public and private health facilities near you in Kigali.",
+    "steps": [
+      { "order": 1, "text": { "en": "Use Google Maps or ask locals for the nearest clinic.", "fr": "Utilisez Google Maps ou demandez aux habitants la clinique la plus proche.", "rw": "Koresha Google Maps cyangwa usabe abaturage ikigo cy'ubuzima kiri hafi." }, "estimatedTime": "10 minutes" },
+      { "order": 2, "text": { "en": "Bring your ID and insurance card if you have Mutuelle.", "fr": "Apportez votre piece d'identite et carte d'assurance si vous avez Mutuelle.", "rw": "Tanga indangamuntu n'ikarita y'umwanya niba ufite." }, "estimatedTime": "5 minutes" },
+      { "order": 3, "text": { "en": "Register at the reception and wait to be called.", "fr": "Inscrivez-vous a l'accueil et attendez d'etre appele.", "rw": "Wiyandikisha ku rukuta utegereje kwitwa." }, "estimatedTime": "15 minutes" }
+    ],
+    "typicalCosts": [
+      { "label": "Public clinic consultation", "rangeRWF": [0, 2000] },
+      { "label": "Private clinic consultation", "rangeRWF": [10000, 50000] }
+    ],
+    "commonPitfalls": ["Carry your national ID", "Bring cash as not all clinics accept cards", "Ask about payment plans if needed"]
+  },
+  {
+    "_type": "alert",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Development Board",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["fee-change", "rdb", "business"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "RDB business registration fee updated",
+        "summary": "RDB business registration fee updated from free to 5,000 RWF."
+      },
+      "fr": {
+        "title": "Frais d'enregistrement RDB mis a jour",
+        "summary": "Frais d'enregistrement RDB mis a jour de gratuit a 5 000 RWF."
+      },
+      "rw": {
+        "title": "Igiciro cy'kwiyandikisha ubucuruzi kuri RDB cyahinduwe",
+        "summary": "Igiciro cy'kwiyandikisha ubucuruzi kuri RDB cyahinduwe kuva 0 kugera 5,000 RWF."
+      }
+    },
+    "summary": "RDB business registration fee updated from free to 5,000 RWF.",
+    "type": "fee_change",
+    "severity": "warning",
+    "sourceName": "Rwanda Development Board",
+    "sourceUrl": "https://rdb.rw/",
+    "expiresAt": "2026-09-15T00:00:00.000Z"
+  },
+  {
+    "_type": "alert",
+    "sourceType": "official_verified",
+    "officialSource": "Rwanda Development Board",
+    "category": "business",
+    "status": "published",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "tags": ["office-closure", "rdb", "kigali"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "RDB Kigali branch closure",
+        "summary": "RDB Kigali branch will be closed for maintenance on August 20, 2026."
+      },
+      "fr": {
+        "title": "Fermeture de l'agence RDB de Kigali",
+        "summary": "L'agence RDB de Kigali sera fermee pour maintenance le 20 aout 2026."
+      },
+      "rw": {
+        "title": "Ibiro bya RDB bya Kigali bizahagarikwa",
+        "summary": "Ibiro bya RDB bya Kigali bizahagarikwa ku buryo bwo gusukura ku itariki ya 20 Kanama 2026."
+      }
+    },
+    "summary": "RDB Kigali branch will be closed for maintenance on August 20, 2026.",
+    "type": "office_closure",
+    "severity": "info",
+    "sourceName": "Rwanda Development Board",
+    "sourceUrl": "https://rdb.rw/",
+    "expiresAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "finance",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["banking", "accounts", "kigali"],
+    "city": "Kigali",
+    "translations": {
+      "en": {
+        "title": "Opening a Bank Account in Kigali",
+        "summary": "What you need and which banks to consider when opening an account in Kigali."
+      },
+      "fr": {
+        "title": "Ouvrir un compte bancaire a Kigali",
+        "summary": "Ce qu'il faut et quelles banques considerer pour ouvrir un compte a Kigali."
+      },
+      "rw": {
+        "title": "Gufungura Konti ya Banki i Kigali",
+        "summary": "Ibyo ukwiye n'ibindi biri mu myanya yo gutanga amafaranga i Kigali."
+      }
+    },
+    "summary": "What you need and which banks to consider when opening an account in Kigali.",
+    "steps": [
+      { "order": 1, "text": { "en": "Choose a bank: Bank of Kigali, Equity, I&M, or Ecobank are common.", "fr": "Choisissez une banque: Bank of Kigali, Equity, I&M ou Ecobank sont courantes.", "rw": "Hitamo banki: Bank of Kigali, Equity, I&M, cyangwa Ecobank ni bizwi." }, "estimatedTime": "1 day" },
+      { "order": 2, "text": { "en": "Bring your ID and proof of residence.", "fr": "Apportez votre piece d'identite et preuve de domicile.", "rw": "Tanga indangamuntu n'igitabo cy'iwe." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Fill the account opening form and make your first deposit.", "fr": "Remplissez le formulaire d'ouverture et effectuez votre premier depot.", "rw": "Uzuza ifomero yo gufungura konti maze utange amafaranga ya mbere." }, "estimatedTime": "1 hour" }
+    ],
+    "typicalCosts": [
+      { "label": "Account opening fee", "rangeRWF": [0, 5000] },
+      { "label": "Minimum deposit", "rangeRWF": [5000, 50000] }
+    ],
+    "commonPitfalls": ["Ask about mobile banking apps", "Compare account maintenance fees", "Confirm ATM availability near you"]
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "culture",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["language", "kinyarwanda", "phrases"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Basic Kinyarwanda Phrases for Newcomers",
+        "summary": "Useful everyday phrases to help you settle in Rwanda."
+      },
+      "fr": {
+        "title": "Phrases de base en Kinyarwanda",
+        "summary": "Phrases utiles pour les nouveaux arrivants au Rwanda."
+      },
+      "rw": {
+        "title": "Amagambo ya Kinyarwanda Y'Abakeneye",
+        "summary": "Amagambo y'iminsi yose ariko gutanga ubufasha."
+      }
+    },
+    "summary": "Useful everyday phrases to help you settle in Rwanda.",
+    "steps": [
+      { "order": 1, "text": { "en": "Learn greetings: Muraho (hello), Waramutse (good morning), Wiwe (good afternoon).", "fr": "Apprenez les salutations: Muraho (bonjour), Waramutse (bon matin), Wiwe (bon apres-midi).", "rw": "Iga kumwe: Muraho, Waramutse, Wiwe." }, "estimatedTime": "30 minutes" },
+      { "order": 2, "text": { "en": "Learn polite phrases: Murakoze (thank you), Mbabarira (sorry), Ndakubabarira (excuse me).", "fr": "Apprenez les phrases polies: Murakoze (merci), Mbabarira (desole), Ndakubabarira (excusez-moi).", "rw": "Iga amagambo y'ubwuzu: Murakoze, Mbabarira, Ndakubabarira." }, "estimatedTime": "30 minutes" },
+      { "order": 3, "text": { "en": "Practice with locals and don't be afraid to make mistakes.", "fr": "Pratiquez avec les habitants et n'ayez pas peur de faire des erreurs.", "rw": "Zigeranya n'abaturage kandi utinye gukora amakosa." }, "estimatedTime": "Ongoing" }
+    ],
+    "typicalCosts": [],
+    "commonPitfalls": ["Tone matters in Kinyarwanda", "Practice with locals", "Start with greetings before asking questions"]
+  },
+  {
+    "_type": "guide",
+    "sourceType": "editorial",
+    "category": "emergency",
+    "status": "published",
+    "lastReviewedDate": "2026-09-07",
+    "lastVerifiedDate": "2026-09-07",
+    "nextReviewDate": "2026-12-07",
+    "researchSources": ["editor_local_knowledge"],
+    "tags": ["emergency", "safety", "police", "ambulance"],
+    "city": "",
+    "translations": {
+      "en": {
+        "title": "Emergency Numbers and Safety Tips in Rwanda",
+        "summary": "Key emergency contacts and basic safety advice for Rwanda."
+      },
+      "fr": {
+        "title": "Numeros d'urgence et conseils de securite au Rwanda",
+        "summary": "Contacts d'urgence essentiels et conseils de securite de base au Rwanda."
+      },
+      "rw": {
+        "title": "Nimero z'Ikoranabuhanga n'Inama z'Umutekano mu Rwanda",
+        "summary": "Nimero ngenderwaho n'inama z'umutekano mu Rwanda."
+      }
+    },
+    "summary": "Key emergency contacts and basic safety advice for Rwanda.",
+    "steps": [
+      { "order": 1, "text": { "en": "Save emergency numbers: Police 112, Ambulance 912, Fire 111.", "fr": "Enregistrez les numeros d'urgence: Police 112, Ambulance 912, Pompiers 111.", "rw": "Bika nimero z'ikoranabuhanga: Polisi 112, Ambulance 912, Umuriro 111." }, "estimatedTime": "2 minutes" },
+      { "order": 2, "text": { "en": "Know the nearest hospital or police station to your home and workplace.", "fr": "Sachez l'hopital ou le commissariat le plus proche de votre domicile et lieu de travail.", "rw": "Menya ibitaro cyangwa ibiro bya polisi biri hafi y'inzu yawe n'aho ukora." }, "estimatedTime": "10 minutes" },
+      { "order": 3, "text": { "en": "Keep copies of important documents in a safe place.", "fr": "Gardez des copies des documents importants dans un endroit sur.", "rw": "Bika amakopi y'inyandiko z'ingenzi ahantu hahirwe." }, "estimatedTime": "15 minutes" }
+    ],
+    "typicalCosts": [],
+    "commonPitfalls": ["Keep copies of important documents", "Know your address in Kinyarwanda", "Emergency services may require payment upfront"]
   }
 ]
