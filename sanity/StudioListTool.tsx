@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { createClient } from '@sanity/client'
 import {
   DocumentIcon,
@@ -27,15 +27,13 @@ export default function StudioListTool() {
   const [documents, setDocuments] = useState<Array<{_id: string; translations?: Record<string, { title?: string }>; status?: string}>>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const selectedTypeRef = useRef(selectedType)
-  selectedTypeRef.current = selectedType
 
-  const loadDocuments = useCallback(async () => {
+  const loadDocuments = useCallback(async (type = selectedType) => {
     setLoading(true)
     try {
       const docs = await readClient.fetch(
         '*[_type == $type] | order(_createdAt desc)[0...100]',
-        { type: selectedTypeRef.current }
+        { type }
       )
       setDocuments(docs)
     } catch (e) {
@@ -46,10 +44,8 @@ export default function StudioListTool() {
   }, [])
 
   useEffect(() => {
-    // Initial data load on mount
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadDocuments()
-  }, [loadDocuments])
+    loadDocuments(selectedType)
+  }, [loadDocuments, selectedType])
 
   const filtered = documents.filter((doc) => {
     const title = doc.translations?.en?.title || ''
@@ -80,7 +76,6 @@ export default function StudioListTool() {
                 onClick={() => {
                   setSelectedType(t.name)
                   setSearch('')
-                  loadDocuments()
                 }}
               >
                 <Icon className="h-4 w-4" />
@@ -137,7 +132,7 @@ export default function StudioListTool() {
   )
 }
 
-function CreateButton({ selectedType, onCreated }: { selectedType: string; onCreated: () => void }) {
+function CreateButton({ selectedType, onCreated }: { selectedType: string; onCreated: (type?: string) => void }) {
   const [creating, setCreating] = useState(false)
 
   async function createDocument() {
@@ -163,7 +158,7 @@ function CreateButton({ selectedType, onCreated }: { selectedType: string; onCre
       })
       if (res.ok) {
         alert('Created successfully')
-        onCreated()
+        onCreated(selectedType)
       } else {
         alert('Failed to create document')
       }
