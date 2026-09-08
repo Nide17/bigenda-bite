@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { createClient } from '@sanity/client'
 import {
   DocumentIcon,
@@ -27,13 +27,15 @@ export default function StudioListTool() {
   const [documents, setDocuments] = useState<Array<{_id: string; translations?: Record<string, { title?: string }>; status?: string}>>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const selectedTypeRef = useRef(selectedType)
+  selectedTypeRef.current = selectedType
 
   const loadDocuments = useCallback(async () => {
     setLoading(true)
     try {
       const docs = await readClient.fetch(
         '*[_type == $type] | order(_createdAt desc)[0...100]',
-        { type: selectedType }
+        { type: selectedTypeRef.current }
       )
       setDocuments(docs)
     } catch (e) {
@@ -41,9 +43,11 @@ export default function StudioListTool() {
     } finally {
       setLoading(false)
     }
-  }, [selectedType])
+  }, [])
 
   useEffect(() => {
+    // Initial data load on mount
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadDocuments()
   }, [loadDocuments])
 
@@ -51,8 +55,6 @@ export default function StudioListTool() {
     const title = doc.translations?.en?.title || ''
     return title.toLowerCase().includes(search.toLowerCase())
   })
-
-  const currentType = DOCUMENT_TYPES.find((t) => t.name === selectedType)
 
   return (
     <div className="p-4 h-full">
@@ -78,6 +80,7 @@ export default function StudioListTool() {
                 onClick={() => {
                   setSelectedType(t.name)
                   setSearch('')
+                  loadDocuments()
                 }}
               >
                 <Icon className="h-4 w-4" />

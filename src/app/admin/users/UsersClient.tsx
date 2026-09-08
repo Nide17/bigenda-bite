@@ -5,7 +5,6 @@ import { toast } from 'sonner'
 import { SearchIcon, ShieldIcon, CheckCircle2Icon, XCircleIcon } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
-import Badge from '@/components/ui/Badge'
 
 export interface UserRecord {
   _id: string

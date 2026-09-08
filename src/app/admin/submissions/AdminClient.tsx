@@ -42,7 +42,7 @@ export default function AdminClient({ submissions: initialSubmissions }: AdminCl
       } else {
         toast.error(`Failed to ${action} submission`)
       }
-    } catch (error) {
+    } catch {
       toast.error('Action failed. Please try again.')
     } finally {
       setActionLoading(null)

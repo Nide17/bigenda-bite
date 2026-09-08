@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import type { PendingUpdate } from '@/types'
 import { toast } from 'sonner'
-import { ChevronDownIcon, ChevronRightIcon, ExternalLinkIcon } from 'lucide-react'
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
