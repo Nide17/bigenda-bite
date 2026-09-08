@@ -28,7 +28,7 @@ export default function StudioListTool() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
-  const loadDocuments = useCallback(async (type = selectedType) => {
+  const loadDocuments = useCallback(async (type: string) => {
     setLoading(true)
     try {
       const docs = await readClient.fetch(
@@ -42,6 +42,12 @@ export default function StudioListTool() {
       setLoading(false)
     }
   }, [])
+
+  const onTypeChange = useCallback((type: string) => {
+    setSelectedType(type)
+    setSearch('')
+    loadDocuments(type)
+  }, [loadDocuments])
 
   useEffect(() => {
     loadDocuments(selectedType)
@@ -73,10 +79,7 @@ export default function StudioListTool() {
                   'inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ' +
                   (selectedType === t.name ? t.color : 'bg-white text-neutral-700 border-neutral-200 hover:border-neutral-300')
                 }
-                onClick={() => {
-                  setSelectedType(t.name)
-                  setSearch('')
-                }}
+                onClick={() => onTypeChange(t.name)}
               >
                 <Icon className="h-4 w-4" />
                 {t.title}
