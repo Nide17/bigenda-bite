@@ -28,7 +28,8 @@ export default function StudioListTool() {
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
-  const loadDocuments = useCallback(async (type: string) => {
+  const loadDocuments = useCallback(async (type?: string) => {
+    if (!type) return
     setLoading(true)
     try {
       const docs = await readClient.fetch(
@@ -51,6 +52,8 @@ export default function StudioListTool() {
 
   useEffect(() => {
     loadDocuments(selectedType)
+    // Data load on mount and when selectedType changes
+    // eslint-disable-next-line react-hooks/set-state-in-effect
   }, [loadDocuments, selectedType])
 
   const filtered = documents.filter((doc) => {
