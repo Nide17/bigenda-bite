@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { createClient } from '@sanity/client'
 import {
   DocumentIcon,
@@ -27,7 +27,6 @@ export default function StudioListTool() {
   const [documents, setDocuments] = useState<Array<{_id: string; translations?: Record<string, { title?: string }>; status?: string}>>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
-  const initialized = useRef(false)
 
   const loadDocuments = useCallback(async () => {
     setLoading(true)
@@ -45,10 +44,7 @@ export default function StudioListTool() {
   }, [selectedType])
 
   useEffect(() => {
-    if (!initialized.current) {
-      initialized.current = true
-      loadDocuments()
-    }
+    loadDocuments()
   }, [loadDocuments])
 
   const filtered = documents.filter((doc) => {

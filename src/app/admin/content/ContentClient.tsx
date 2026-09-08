@@ -3,9 +3,14 @@
 import { useState } from 'react'
 import type { PendingUpdate } from '@/types'
 import { toast } from 'sonner'
+import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
 
 export default function ContentClient({ items }: { items: PendingUpdate[] }) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
 
   async function handleAction(updateId: string, action: 'approve' | 'reject') {
     setLoadingId(updateId)
@@ -23,7 +28,7 @@ export default function ContentClient({ items }: { items: PendingUpdate[] }) {
       }
 
       toast.success(`Successfully ${action === 'approve' ? 'approved' : 'rejected'} content.`)
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 800)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : `Failed to ${action}`)
     } finally {
@@ -31,82 +36,117 @@ export default function ContentClient({ items }: { items: PendingUpdate[] }) {
     }
   }
 
+  function toggleExpand(id: string) {
+    setExpandedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'pending':
-        return 'bg-yellow-100 text-yellow-800'
+        return { variant: 'warning' as const, label: 'Pending' }
       case 'approved':
-        return 'bg-green-100 text-green-800'
+        return { variant: 'success' as const, label: 'Approved' }
       case 'rejected':
-        return 'bg-red-100 text-red-800'
+        return { variant: 'error' as const, label: 'Rejected' }
       default:
-        return 'bg-gray-100 text-gray-800'
+        return { variant: 'neutral' as const, label: status }
     }
   }
 
+  if (items.length === 0) {
+    return (
+      <Card className="p-8 text-center">
+        <p className="text-neutral-600">No content items found.</p>
+      </Card>
+    )
+  }
+
   return (
-    <div className="space-y-6">
-      {items.length === 0 ? (
-        <p className="text-gray-600">No content items found.</p>
-      ) : (
-        <div className="overflow-x-auto border rounded">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="text-left p-3">Document ID</th>
-                <th className="text-left p-3">Collection</th>
-                <th className="text-left p-3">Status</th>
-                <th className="text-left p-3">Confidence</th>
-                <th className="text-left p-3">Detected</th>
-                <th className="text-left p-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items.map((item) => (
-                <tr key={item._id} className="border-t">
-                  <td className="p-3 font-mono text-xs">{item.documentId}</td>
-                  <td className="p-3">{item.collection}</td>
-                   <td className="p-3">
-                     <span className={`px-2 py-1 rounded text-xs ${getStatusColor(item.status || 'pending')}`}>
-                       {item.status}
-                     </span>
-                   </td>
-                   <td className="p-3">{Math.round((item.confidenceScore ?? 0) * 100)}%</td>
-                   <td className="p-3">{new Date(item.detectedAt ?? new Date().toISOString()).toLocaleString()}</td>
-                  <td className="p-3">
-                    {item.status === 'pending' && (
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => handleAction(item._id, 'approve')}
-                          disabled={loadingId === item._id}
-                          className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50 text-xs"
-                        >
-                          {loadingId === item._id ? 'Processing...' : 'Approve'}
-                        </button>
-                        <button
-                          onClick={() => handleAction(item._id, 'reject')}
-                          disabled={loadingId === item._id}
-                          className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 text-xs"
-                        >
-                          {loadingId === item._id ? 'Processing...' : 'Reject'}
-                        </button>
-                      </div>
-                    )}
-                    {item.status === 'approved' && (
-                      <span className="text-xs text-green-600">Published to Sanity</span>
-                    )}
-                    {item.status === 'rejected' && (
-                      <span className="text-xs text-red-600">Rejected</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+    <div className="space-y-4">
+      {items.map((item) => {
+        const isExpanded = expandedIds.has(item._id)
+        const status = getStatusColor(item.status || 'pending')
+        const confidence = Math.round((item.confidenceScore ?? 0) * 100)
+
+        return (
+          <Card key={item._id} className="p-0 overflow-hidden">
+            <div className="p-5 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-base font-semibold text-[#1e1b4b] font-mono text-xs sm:text-sm">{item.documentId}</h3>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
+                    <span className="capitalize">{item.collection}</span>
+                    <span>{new Date(item.detectedAt ?? new Date().toISOString()).toLocaleString()}</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={confidence >= 80 ? 'success' : confidence >= 50 ? 'warning' : 'error'}>
+                    {confidence}% match
+                  </Badge>
+                  <Badge variant={status.variant}>{status.label}</Badge>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-xs font-medium text-neutral-500 mb-1">Diff Summary</p>
+                <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-3 text-sm text-neutral-700">
+                  {item.diffSummary}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => toggleExpand(item._id)}
+                  className="inline-flex items-center gap-1 text-sm text-[#1e1b4b] hover:text-[#312e6b] font-medium"
+                >
+                  {isExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
+                  {isExpanded ? 'Hide details' : 'View details'}
+                </button>
+
+                {item.status === 'pending' && (
+                  <div className="flex gap-2">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      loading={loadingId === item._id}
+                      onClick={() => handleAction(item._id, 'approve')}
+                    >
+                      Approve
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      loading={loadingId === item._id}
+                      onClick={() => handleAction(item._id, 'reject')}
+                    >
+                      Reject
+                    </Button>
+                  </div>
+                )}
+              </div>
+
+              {isExpanded && (
+                <div className="mt-4">
+                  <pre className="rounded-lg border border-neutral-200 bg-white p-4 overflow-auto text-xs text-neutral-700">
+                    {JSON.stringify(item, null, 2)}
+                  </pre>
+                </div>
+              )}
+            </div>
+          </Card>
+        )
+      })}
     </div>
   )
 }
-
-

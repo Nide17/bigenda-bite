@@ -27,8 +27,11 @@ export default async function AdminSubmissionsPage() {
   const submissions = await getSubmissions()
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">User Submissions</h1>
+    <div className="max-w-7xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#1e1b4b]">User Submissions</h1>
+        <p className="text-sm text-neutral-500 mt-1">Review community contributions and suggested edits.</p>
+      </div>
       <AdminClient submissions={JSON.parse(JSON.stringify(submissions))} />
     </div>
   )

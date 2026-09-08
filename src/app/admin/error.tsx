@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import Button from '@/components/ui/Button'
 import Link from 'next/link'
+import { LayoutDashboardIcon } from 'lucide-react'
 
 export default function AdminError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
@@ -10,12 +11,14 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
   }, [error])
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center p-4">
+    <div className="flex items-center justify-center p-4 sm:p-6">
       <div className="max-w-md w-full text-center">
-        <div className="text-6xl mb-4">⚠️</div>
-        <h1 className="text-2xl md:text-3xl font-bold text-primary mb-3">Admin Panel Error</h1>
+        <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center text-red-500 mx-auto mb-4">
+          <LayoutDashboardIcon className="h-8 w-8" />
+        </div>
+        <h1 className="text-2xl font-bold text-[#1e1b4b] mb-2">Something went wrong</h1>
         <p className="text-neutral-600 mb-6">
-          We couldn&apos;t load this section of the admin panel. The data may be temporarily unavailable.
+          This admin section is temporarily unavailable. Please try again or return to the dashboard.
         </p>
 
         {error.digest && (
@@ -26,11 +29,11 @@ export default function AdminError({ error, reset }: { error: Error & { digest?:
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button onClick={reset} variant="primary">
-            Try Again
+            Try again
           </Button>
           <Link
             href="/admin"
-            className="inline-flex items-center justify-center px-6 py-2.5 bg-white border border-neutral-300 text-primary font-semibold rounded-lg hover:bg-neutral-50 transition-all"
+            className="inline-flex items-center justify-center px-5 py-2.5 bg-white border border-neutral-300 text-[#1e1b4b] font-semibold rounded-lg hover:bg-neutral-50 transition-colors"
           >
             Admin Dashboard
           </Link>

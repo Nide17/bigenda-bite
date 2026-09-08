@@ -63,8 +63,11 @@ export default async function AdminPendingUpdatesPage() {
   const updatesWithCurrent = await getPendingUpdates()
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Pending Content Updates</h1>
+    <div className="max-w-7xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#1e1b4b]">Pending Content Updates</h1>
+        <p className="text-sm text-neutral-500 mt-1">Review and approve content changes detected from external sources.</p>
+      </div>
       <AdminClient updates={JSON.parse(JSON.stringify(updatesWithCurrent))} />
     </div>
   )

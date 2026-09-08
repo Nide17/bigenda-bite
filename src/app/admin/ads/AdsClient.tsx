@@ -2,6 +2,10 @@
 
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { PlusIcon, PencilIcon, Trash2Icon, ExternalLinkIcon } from 'lucide-react'
+import Button from '@/components/ui/Button'
+import Card from '@/components/ui/Card'
+import Badge from '@/components/ui/Badge'
 
 export interface AdRecord {
   _id: string
@@ -88,7 +92,7 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
 
       toast.success(`Ad ${editingAd ? 'updated' : 'created'} successfully`)
       setShowForm(false)
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 800)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : `Failed to ${editingAd ? 'update' : 'create'} ad`)
     } finally {
@@ -112,7 +116,7 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
       }
 
       toast.success('Ad deleted successfully')
-      window.location.reload()
+      setTimeout(() => window.location.reload(), 800)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'Failed to delete ad')
     } finally {
@@ -123,25 +127,34 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
   return (
     <div className="space-y-6">
       {showForm && (
-        <div className="border rounded p-6 bg-white">
-          <h2 className="text-xl font-semibold mb-4">{editingAd ? 'Edit Ad' : 'Create New Ad'}</h2>
+        <Card className="p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-[#1e1b4b]">{editingAd ? 'Edit Ad' : 'Create New Ad'}</h2>
+            <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="text-sm text-neutral-500 hover:text-neutral-900"
+            >
+              Cancel
+            </button>
+          </div>
           <form onSubmit={submitForm} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Title</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">Title</label>
               <input
                 type="text"
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 required
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Placement</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">Placement</label>
               <select
                 value={form.placement}
                 onChange={(e) => setForm({ ...form, placement: e.target.value })}
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               >
                 <option value="sidebar">Sidebar</option>
                 <option value="top">Top</option>
@@ -150,50 +163,50 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">City</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">City</label>
               <input
                 type="text"
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Link URL</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">Link URL</label>
               <input
                 type="url"
                 value={form.linkUrl}
                 onChange={(e) => setForm({ ...form, linkUrl: e.target.value })}
                 required
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-1">Image URL</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">Image URL</label>
               <input
                 type="url"
                 value={form.imageUrl}
                 onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                 required
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Start Date</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">Start Date</label>
               <input
                 type="date"
                 value={form.startDate}
                 onChange={(e) => setForm({ ...form, startDate: e.target.value })}
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">End Date</label>
+              <label className="block text-sm font-medium text-neutral-700 mb-1">End Date</label>
               <input
                 type="date"
                 value={form.endDate}
                 onChange={(e) => setForm({ ...form, endDate: e.target.value })}
-                className="w-full border rounded px-3 py-2"
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#1e1b4b]/10 focus:border-[#1e1b4b]"
               />
             </div>
             <div className="md:col-span-2 flex items-center gap-2">
@@ -202,112 +215,109 @@ export default function AdsClient({ ads }: { ads: AdRecord[] }) {
                 id="active"
                 checked={form.active}
                 onChange={(e) => setForm({ ...form, active: e.target.checked })}
+                className="rounded border-neutral-300 text-[#1e1b4b] focus:ring-[#1e1b4b]"
               />
-              <label htmlFor="active" className="text-sm">Active</label>
+              <label htmlFor="active" className="text-sm text-neutral-700">Active</label>
             </div>
             <div className="md:col-span-2 flex gap-3">
-              <button
-                type="submit"
-                disabled={loadingId !== null}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                {loadingId !== null ? 'Saving...' : editingAd ? 'Update' : 'Create'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                className="px-4 py-2 border rounded hover:bg-gray-50"
-              >
+              <Button type="submit" variant="primary" loading={loadingId !== null}>
+                {editingAd ? 'Update' : 'Create'}
+              </Button>
+              <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
                 Cancel
-              </button>
+              </Button>
             </div>
           </form>
-        </div>
+        </Card>
       )}
 
       {!showForm && (
         <div className="flex justify-end">
-          <button
-            onClick={openCreate}
-            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
+          <Button variant="primary" onClick={openCreate}>
+            <PlusIcon className="h-4 w-4" />
             Create Ad
-          </button>
+          </Button>
         </div>
       )}
 
-      <div className="overflow-x-auto border rounded">
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="text-left p-3">Title</th>
-              <th className="text-left p-3">Placement</th>
-              <th className="text-left p-3">City</th>
-              <th className="text-left p-3">Link</th>
-              <th className="text-left p-3">Image</th>
-              <th className="text-left p-3">Active</th>
-              <th className="text-left p-3">Stats</th>
-              <th className="text-left p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ads.length === 0 ? (
+      <Card className="overflow-hidden p-0">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-neutral-50 border-b border-neutral-200">
               <tr>
-                <td colSpan={8} className="p-4 text-gray-500 text-center">No ads found</td>
+                <th className="text-left p-3 font-semibold text-neutral-700">Title</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Placement</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">City</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Link</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Image</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Active</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Stats</th>
+                <th className="text-left p-3 font-semibold text-neutral-700">Actions</th>
               </tr>
-            ) : (
-              ads.map((ad) => (
-                <tr key={ad._id} className="border-t">
-                  <td className="p-3">{ad.title}</td>
-                  <td className="p-3">{ad.placement}</td>
-                  <td className="p-3">{ad.city || '-'}</td>
-                  <td className="p-3">
-                    <a href={ad.linkUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline truncate block max-w-xs">
-                      {ad.linkUrl}
-                    </a>
-                  </td>
-                  <td className="p-3">
-                    <a href={ad.imageUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline truncate block max-w-xs">
-                      {ad.imageUrl}
-                    </a>
-                  </td>
-                  <td className="p-3">
-                    <span className={`px-2 py-1 rounded text-xs ${ad.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
-                      {ad.active ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="p-3">
-                    <div className="text-xs">
-                      <div>{ad.impressions} impressions</div>
-                      <div>{ad.clicks} clicks</div>
-                    </div>
-                  </td>
-                  <td className="p-3">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => openEdit(ad)}
-                        disabled={loadingId === ad._id}
-                        className="px-3 py-1 bg-yellow-600 text-white rounded hover:bg-yellow-700 disabled:opacity-50 text-xs"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => deleteAd(ad._id)}
-                        disabled={loadingId === ad._id}
-                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 text-xs"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+            </thead>
+            <tbody className="divide-y divide-neutral-100">
+              {ads.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="p-8 text-neutral-500 text-center">No ads found</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ) : (
+                ads.map((ad) => (
+                  <tr key={ad._id} className="hover:bg-neutral-50 transition-colors">
+                    <td className="p-3 font-medium text-neutral-900">{ad.title}</td>
+                    <td className="p-3 capitalize">{ad.placement}</td>
+                    <td className="p-3">{ad.city || '-'}</td>
+                    <td className="p-3">
+                      <a href={ad.linkUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[#1e1b4b] hover:text-[#312e6b] text-xs truncate max-w-[10rem]">
+                        <ExternalLinkIcon className="h-3 w-3 shrink-0" />
+                        <span className="truncate">{ad.linkUrl}</span>
+                      </a>
+                    </td>
+                    <td className="p-3">
+                      <a href={ad.imageUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[#1e1b4b] hover:text-[#312e6b] text-xs truncate max-w-[10rem]">
+                        <ExternalLinkIcon className="h-3 w-3 shrink-0" />
+                        <span className="truncate">Image</span>
+                      </a>
+                    </td>
+                    <td className="p-3">
+                      <Badge variant={ad.active ? 'success' : 'neutral'}>
+                        {ad.active ? 'Active' : 'Inactive'}
+                      </Badge>
+                    </td>
+                    <td className="p-3">
+                      <div className="text-xs text-neutral-600">
+                        <div>{ad.impressions.toLocaleString()} impressions</div>
+                        <div>{ad.clicks.toLocaleString()} clicks</div>
+                      </div>
+                    </td>
+                    <td className="p-3">
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          loading={loadingId === ad._id}
+                          onClick={() => openEdit(ad)}
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          loading={loadingId === ad._id}
+                          onClick={() => deleteAd(ad._id)}
+                        >
+                          <Trash2Icon className="h-4 w-4 text-red-600" />
+                          Delete
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </Card>
     </div>
   )
 }
-
-

@@ -30,8 +30,11 @@ export default async function AdminUsersPage() {
   const serializedUsers = await getUsers()
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-3xl font-bold mb-8">Users Management</h1>
+    <div className="max-w-7xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-[#1e1b4b]">Users</h1>
+        <p className="text-sm text-neutral-500 mt-1">Manage user accounts, roles, and access.</p>
+      </div>
       <UsersClient users={serializedUsers} />
     </div>
   )
