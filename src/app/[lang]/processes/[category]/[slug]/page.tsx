@@ -199,7 +199,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('process_share_title')}</h2>
         <ShareButton
           title={data?.title || 'Bigenda Bite Process'}
-          url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${processData.slug?.current ? `/processes/${processData.category}/${processData.slug.current}` : ''}`}
+          url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${processData.slug?.current ? `/processes/${processData.category}/${processData.slug.current}` : `/processes/${processData.category}/${slug}`}`}
         />
       </div>
 
