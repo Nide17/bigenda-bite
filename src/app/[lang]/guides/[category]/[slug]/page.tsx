@@ -230,7 +230,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
       </div>
 
       <div className="mt-8 pt-8 border-t border-neutral-200">
-        <h2 className="text-xl font-semibold text-neutral-700 mb-4">Share this guide</h2>
+        <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('process_share_title')}</h2>
         <ShareButton
           title={data?.title || 'Bigenda Bite Guide'}
           url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : ''}`}

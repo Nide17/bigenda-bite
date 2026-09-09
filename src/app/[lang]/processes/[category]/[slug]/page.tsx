@@ -39,20 +39,20 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
 export default async function ProcessDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
-  const process = await getProcessBySlug(slug)
+  const processData = await getProcessBySlug(slug)
   const session = await getSession()
   const isForeigner = session?.user?.isForeigner ?? false
   const t = getMessages(lang)
 
-  if (!process) {
+  if (!processData) {
     notFound()
   }
 
-  const data = process.translations?.[lang] || process.translations?.en
+  const data = processData.translations?.[lang] || processData.translations?.en
 
   const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
     { name: t('processes'), url: `/${lang}/processes` },
-    { name: data?.title || t('process_details_breadcrumb'), url: `/${lang}/processes/${process.category}/${process.slug?.current || slug}` },
+    { name: data?.title || t('process_details_breadcrumb'), url: `/${lang}/processes/${processData.category}/${processData.slug?.current || slug}` },
   ])
 
   return (
@@ -70,7 +70,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
       <div className="mb-8">
         <div className="flex items-start justify-between gap-4 mb-4">
           <h1 className="text-3xl md:text-4xl font-bold text-primary">{data?.title}</h1>
-          {process.sourceType === 'official_verified' && (
+          {processData.sourceType === 'official_verified' && (
             <Badge variant="success" className="flex-shrink-0">
               <svg className="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -81,35 +81,35 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         </div>
         <p className="text-lg text-neutral-600 leading-relaxed mb-6">{data?.summary}</p>
 
-        {process.lastVerifiedDate && (
+        {processData.lastVerifiedDate && (
           <div className="flex items-center gap-2 text-sm text-neutral-600 mb-6">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            {t('process_last_verified', { date: new Date(process.lastVerifiedDate).toLocaleDateString() })}
+            {t('process_last_verified', { date: new Date(processData.lastVerifiedDate).toLocaleDateString() })}
           </div>
         )}
 
-        {process.category && (
+        {processData.category && (
           <span className="inline-block px-3 py-1 bg-primary-light text-primary text-sm font-medium rounded-full">
-            {process.category}
+{processData.category}
           </span>
         )}
       </div>
 
-      <TaskBlueprint data={process.taskBlueprint} />
+      <TaskBlueprint data={processData.taskBlueprint} />
 
       <BeforeYouGo
-        beforeYouGo={process.beforeYouGo}
-        foreignerNotes={process.foreignerNotes}
+        beforeYouGo={processData.beforeYouGo}
+        foreignerNotes={processData.foreignerNotes}
         showForeignerNotes={isForeigner}
       />
 
-      {process.steps && process.steps.length > 0 && (
+      {processData.steps && processData.steps.length > 0 && (
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('process_steps_title')}</h2>
           <div className="space-y-4">
-            {process.steps.map((step: ProcessStep, index: number) => (
+            {processData.steps.map((step: ProcessStep, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
                 <div className="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {step.order || index + 1}
@@ -133,7 +133,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      {process.fees && process.fees.length > 0 && (
+      {processData.fees && processData.fees.length > 0 && (
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('process_fees_title')}</h2>
           <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden">
@@ -146,7 +146,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-200">
-                {process.fees.map((fee: Fee, index: number) => (
+                {processData.fees.map((fee: Fee, index: number) => (
                   <tr key={index} className="hover:bg-neutral-50 transition-colors">
                     <td className="p-4 font-medium text-neutral-900">{fee.label}</td>
                     <td className="p-4">
@@ -163,11 +163,11 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      {process.requiredDocuments && process.requiredDocuments.length > 0 && (
+      {processData.requiredDocuments && processData.requiredDocuments.length > 0 && (
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-primary mb-6">{t('process_documents_title')}</h2>
           <ul className="space-y-3">
-            {process.requiredDocuments.map((doc: string, index: number) => (
+            {processData.requiredDocuments.map((doc: string, index: number) => (
               <li key={index} className="flex items-start gap-3">
                 <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -179,10 +179,10 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      {process.officialPortal && (
+      {processData.officialPortal && (
         <section className="mb-10">
           <a
-            href={process.officialPortal}
+            href={processData.officialPortal}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:shadow-lg"
@@ -199,11 +199,11 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('process_share_title')}</h2>
         <ShareButton
           title={data?.title || 'Bigenda Bite Process'}
-          url={`${globalThis.process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${process.slug?.current ? `/processes/${process.category}/${process.slug.current}` : ''}`}
+          url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${processData.slug?.current ? `/processes/${processData.category}/${processData.slug.current}` : ''}`}
         />
       </div>
 
-      <SubmissionsSection contentType="process" contentId={process._id} contentSlug={process.slug?.current} />
+      <SubmissionsSection contentType="process" contentId={processData._id} contentSlug={processData.slug?.current} />
     </PageContainer>
   )
 }

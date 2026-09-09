@@ -198,7 +198,7 @@ export default function Navigation({ lang }: NavigationProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="relative" ref={accountRef}>
+            <div className="hidden md:relative" ref={accountRef}>
               <button
                 onClick={() => setAccountOpen(!accountOpen)}
                 className={`
@@ -218,7 +218,7 @@ export default function Navigation({ lang }: NavigationProps) {
                 </svg>
               </button>
               {accountOpen && (
-                <div className="absolute right-0 mt-1 w-40 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
+                <div className="absolute right-0 mt-1 w-48 md:w-56 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
                   {user ? (
                     <>
                       <div className="px-3 py-2 text-sm font-medium text-neutral-900 border-b border-neutral-100">
