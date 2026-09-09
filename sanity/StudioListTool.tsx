@@ -51,9 +51,9 @@ export default function StudioListTool() {
   }, [loadDocuments])
 
   useEffect(() => {
-    loadDocuments(selectedType)
     // Data load on mount and when selectedType changes
     // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadDocuments(selectedType)
   }, [loadDocuments, selectedType])
 
   const filtered = documents.filter((doc) => {
