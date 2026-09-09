@@ -28,13 +28,13 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
     <PageContainer>
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('alerts')}</h1>
-        <p className="text-neutral-600">Important updates and announcements from official sources.</p>
+        <p className="text-neutral-600">{t('alerts_page_subtitle')}</p>
       </div>
       {alerts.length === 0 ? (
         <EmptyState
           icon="🔔"
-          title="No active alerts"
-          description="All clear! Check back later for updates."
+          title={t('alerts_no_active')}
+          description={t('alerts_all_clear')}
         />
       ) : (
         <AlertsSection alerts={alerts} lang={lang} variant="list" />

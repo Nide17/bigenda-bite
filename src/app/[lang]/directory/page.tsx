@@ -77,7 +77,7 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
       <JsonLd data={breadcrumbLd} />
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('directory')}</h1>
-        <p className="text-neutral-600">Discover businesses and services across Rwanda.</p>
+        <p className="text-neutral-600">{t('directory_subtitle')}</p>
       </div>
 
       <form method="get" className="mb-8">

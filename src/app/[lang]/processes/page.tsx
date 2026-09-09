@@ -29,15 +29,15 @@ export default async function ProcessesPage({ params }: { params: Promise<{ lang
     <PageContainer>
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('processes')}</h1>
-        <p className="text-neutral-600">Official government processes and procedures, verified and updated regularly.</p>
+        <p className="text-neutral-600">{t('processes_page_subtitle')}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {processes.length === 0 ? (
           <div className="md:col-span-2">
             <EmptyState
               icon="📋"
-              title="No processes found"
-              description="Check back later for new official processes."
+              title={t('empty_no_processes')}
+              description={t('empty_no_processes_hint')}
             />
           </div>
         ) : (

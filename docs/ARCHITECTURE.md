@@ -7,10 +7,10 @@
 | Framework | Next.js 15 App Router |
 | Language | TypeScript |
 | Styling | Tailwind CSS |
-| i18n | Custom provider (EN/FR/RW) |
+| i18n | Custom JSON-based provider (EN/FR/RW) |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | Custom credentials + Google OAuth |
+| Auth | NextAuth v5 (credentials + Google OAuth) |
 | Payments | MTN MoMo API |
 | Notifications | Discord webhooks + Sonner |
 | Deployment | Vercel |
@@ -22,27 +22,30 @@
 
 ## Key Decisions
 
-- **Dual DB:** MongoDB for transactional data, Sanity for editorial content
-- **Auth:** NextAuth v4 with JWT sessions
-- **i18n:** Custom JSON-based provider, URLs follow `/{lang}/...`
+- **Dual database:** MongoDB for transactional data, Sanity for editorial content
+- **Auth:** Custom credentials auth in `/api/auth/[...nextauth]`, session state in MongoDB sessions collection
+- **i18n:** Custom JSON provider with `useTranslations()` hook; URLs follow `/{lang}/...`
 - **Scraper:** Standalone Playwright worker; diffs against Sanity, stores pending updates in MongoDB
 - **City routing:** `bigenda-city` cookie personalizes content and ads
 
 ## Flows
 
 ### Registration
+
 1. Form at `/register`
 2. `POST /api/register` creates user in MongoDB
 3. Password hashed with bcrypt
 4. Email verification sent
 
 ### Content Publishing
+
 1. Editor works in Sanity Studio
 2. Publish with `status: "published"`
 3. Next.js fetches via Sanity client
 4. Server-rendered pages
 
 ### Scraper Approval
+
 1. Worker scrapes and diffs sources
 2. Pending updates stored in MongoDB
 3. Discord notifies editors
@@ -50,6 +53,7 @@
 5. Sanity document created/updated
 
 ### Payments
+
 1. User submits phone at checkout
 2. `POST /api/momo/collect` initiates payment
 3. Client polls `/api/momo/status`

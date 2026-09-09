@@ -52,7 +52,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
 
   const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
     { name: t('processes'), url: `/${lang}/processes` },
-    { name: data?.title || 'Process Details', url: `/${lang}/processes/${process.category}/${process.slug?.current || slug}` },
+    { name: data?.title || t('process_details_breadcrumb'), url: `/${lang}/processes/${process.category}/${process.slug?.current || slug}` },
   ])
 
   return (
@@ -62,7 +62,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
         <Breadcrumbs
           items={[
             { label: t('processes'), href: `/${lang}/processes` },
-            { label: data?.title || 'Process Details' },
+            { label: data?.title || t('process_details_breadcrumb') },
           ]}
         />
       </div>
@@ -75,7 +75,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
               <svg className="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              Official
+              {t('process_official_badge')}
             </Badge>
           )}
         </div>
@@ -86,7 +86,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Last verified: {new Date(process.lastVerifiedDate).toLocaleDateString()}
+            {t('process_last_verified', { date: new Date(process.lastVerifiedDate).toLocaleDateString() })}
           </div>
         )}
 
@@ -107,7 +107,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
 
       {process.steps && process.steps.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Steps</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('process_steps_title')}</h2>
           <div className="space-y-4">
             {process.steps.map((step: ProcessStep, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
@@ -135,7 +135,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
 
       {process.fees && process.fees.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Fees</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('process_fees_title')}</h2>
           <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-neutral-50">
@@ -165,7 +165,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
 
       {process.requiredDocuments && process.requiredDocuments.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Required Documents</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('process_documents_title')}</h2>
           <ul className="space-y-3">
             {process.requiredDocuments.map((doc: string, index: number) => (
               <li key={index} className="flex items-start gap-3">
@@ -187,7 +187,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:shadow-lg"
           >
-            Visit Official Portal
+            {t('process_official_portal')}
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
@@ -196,7 +196,7 @@ export default async function ProcessDetailPage({ params }: { params: Promise<{ 
       )}
 
       <div className="mt-8 pt-8 border-t border-neutral-200">
-        <h2 className="text-xl font-semibold text-neutral-700 mb-4">Share this process</h2>
+        <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('process_share_title')}</h2>
         <ShareButton
           title={data?.title || 'Bigenda Bite Process'}
           url={`${globalThis.process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${process.slug?.current ? `/processes/${process.category}/${process.slug.current}` : ''}`}

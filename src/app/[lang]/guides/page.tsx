@@ -29,15 +29,15 @@ export default async function GuidesPage({ params }: { params: Promise<{ lang: s
     <PageContainer>
       <div className="mb-8">
         <h1 className="text-3xl md:text-4xl font-bold text-primary mb-2">{t('guides')}</h1>
-        <p className="text-neutral-600">Step-by-step how-to guides for everyday life in Rwanda.</p>
+        <p className="text-neutral-600">{t('guides_page_subtitle')}</p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {guides.length === 0 ? (
           <div className="md:col-span-2">
             <EmptyState
               icon="📖"
-              title="No guides found"
-              description="Check back later for new guides."
+              title={t('empty_no_guides')}
+              description={t('empty_no_guides_hint')}
             />
           </div>
         ) : (

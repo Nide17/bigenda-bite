@@ -1,18 +1,14 @@
 # Product Overview
 
-Bigenda Bite helps Rwandans find official processes, how-to guides, local businesses, and alerts.
+Bigenda Bite helps people find official government processes, how-to guides, local businesses, and official alerts in Rwanda.
 
-## How It Works
+## Main Sections
 
-Users come to get things done. The homepage is organized around tasks:
-
-1. **Search** — Main entry point
-2. **Popular tasks** — Common government processes
-3. **Important alerts** — Time-sensitive announcements
-4. **Guides** — How-to content
-5. **Businesses near you** — Location-aware directory
-6. **Categories** — Browse by topic
-7. **Organizations** — Sponsored placements
+- **Official Processes** — Step-by-step government guides
+- **How-To Guides** — Practical guides for daily life
+- **Business Directory** — Local vendors and services by city
+- **Alerts** — Time-sensitive official announcements
+- **Search** — Universal search across all content
 
 ## Languages
 
@@ -27,30 +23,29 @@ Users come to get things done. The homepage is organized around tasks:
 - Rubavu
 - Huye
 
-## Features
+## Key Features
 
 | Feature | Description |
 |---------|-------------|
-| Official Processes | Government process guides with steps, fees, documents |
-| How-To Guides | Life guides with steps, costs, community tips |
-| Business Directory | City listings with contact forms and lead capture |
-| Alerts | Severity-based announcements with expiry |
-| Search | Universal search across all content |
+| Official Processes | Government steps, fees, and required documents |
+| How-To Guides | Practical guides with costs and community tips |
+| Business Directory | City listings with contact forms |
+| Alerts | Severity-based announcements with expiry dates |
+| Search | Search across all content types |
 | City Routing | Content and ads personalized by city |
 | Auth | Email/password and Google OAuth |
 | Membership | Subscriptions with MTN MoMo payments |
 | Ads | Impression and click tracking |
-| Admin Dashboard | Users, ads, analytics, content, pending updates, submissions |
-| Analytics | Page views, events, summary stats |
-| Notifications | In-app bell + Discord webhooks |
-| Scraper Worker | Automated scraping with approval workflow |
-| CI/CD | GitHub Actions for typecheck, lint, build, tests |
+| Admin Dashboard | Manage users, ads, analytics, content, and submissions |
+| Analytics | Page views, events, and revenue stats |
+| Notifications | In-app notifications and Discord alerts |
+| Scraper Worker | Auto-scrapes government sites with editor approval |
+| CI/CD | Automated checks on every push |
 
-## Planned
+## Coming Soon
 
-- Advanced search (fuzzy matching, typo tolerance)
-- User profiles and preferences
-- Content scheduling
-- API rate limiting
+- Advanced search with typo tolerance
+- User profiles and saved preferences
+- API access
 - Offline support
-- Mobile app / PWA
+- Mobile app

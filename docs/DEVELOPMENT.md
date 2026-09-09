@@ -54,19 +54,18 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 src/
 ├── app/                    # Next.js App Router
 │   ├── [lang]/            # Localized routes
-│   │   ├── (legal)/       # Static legal pages
+│   │   ├── (legal)/       # Terms, privacy
 │   │   ├── account/       # Account settings
 │   │   ├── admin/         # Admin dashboard
 │   │   ├── alerts/        # Alerts page
-│   │   ├── api/           # API routes
 │   │   ├── directory/     # Business directory
 │   │   ├── forgot-password/
 │   │   ├── guides/        # How-to guides
 │   │   ├── login/         # Login form
-│   │   ├── membership/    # Membership plans + checkout
+│   │   ├── membership/    # Plans + checkout
 │   │   ├── offline-saved/ # Saved guides
 │   │   ├── processes/     # Official processes
-│   │   ├── register/      # Registration form
+│   │   ├── register/      # Registration
 │   │   ├── reset-password/
 │   │   ├── search/        # Search results
 │   │   └── verify-email/
@@ -101,7 +100,8 @@ src/
 - Server components by default, `'use client'` only when needed
 - camelCase for variables/functions, PascalCase for components
 - Group imports: React, Next.js, third-party, local
-- Use `useTranslations()` for all user-facing strings
+- Use `useTranslations()` for all user-facing strings in client components
+- Use `getMessages(lang)` for server components
 - Use `toast.success()` / `toast.error()` from `sonner` for feedback
 
 ## Commits

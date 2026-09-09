@@ -34,7 +34,7 @@ refactor: restructure code
 
 ## Pull Requests
 
-1. Create feature branch
+1. Create a feature branch
 2. Make changes and test
 3. Run `npm run build`
 4. Open PR against `main`
@@ -44,5 +44,6 @@ refactor: restructure code
 - TypeScript strict mode
 - Server components by default, `'use client'` only when needed
 - camelCase for functions, PascalCase for components
-- Use `useTranslations()` for user-facing strings
+- Use `useTranslations()` for user-facing strings in client components
+- Use `getMessages(lang)` for server components
 - Use `toast.success()` / `toast.error()` from `sonner` for feedback

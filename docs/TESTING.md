@@ -4,8 +4,8 @@ Bigenda Bite uses Playwright for minimal E2E smoke tests.
 
 ## Current Tests
 
-| File | Tests |
-|------|-------|
+| File | What it checks |
+|------|---------------|
 | `tests/homepage.spec.ts` | Homepage and processes page load |
 
 ## Running

@@ -42,8 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function GuideDetailPage({ params }: { params: Promise<{ lang: string; category: string; slug: string }> }) {
   const { lang, slug } = await params
   const guide = await getGuideBySlug(slug)
-  const messages = (await import('@/i18n/messages/' + lang + '.json')).default
-  const t = (key: string) => messages[key] || key
+  const t = getMessages(lang)
 
   if (!guide) {
     notFound()
@@ -53,7 +52,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
   const breadcrumbLd = breadcrumbJsonLd(baseUrl, [
     { name: t('guides'), url: `/${lang}/guides` },
-    { name: data?.title || 'Guide Details', url: `/${lang}/guides/${guide.category}/${guide.slug?.current || slug}` },
+    { name: data?.title || t('guide_details_breadcrumb'), url: `/${lang}/guides/${guide.category}/${guide.slug?.current || slug}` },
   ])
 
   const howToLd = howToJsonLd(baseUrl, {
@@ -84,7 +83,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         <Breadcrumbs
           items={[
             { label: t('guides'), href: `/${lang}/guides` },
-            { label: data?.title || 'Guide Details' },
+            { label: data?.title || t('guide_details_breadcrumb') },
           ]}
         />
       </div>
@@ -97,7 +96,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
               <svg className="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
-              Reviewed
+              {t('guide_reviewed_badge')}
             </Badge>
           )}
         </div>
@@ -108,7 +107,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Last reviewed: {new Date(guide.lastReviewedDate).toLocaleDateString()}
+            {t('guide_last_reviewed', { date: new Date(guide.lastReviewedDate).toLocaleDateString() })}
           </div>
         )}
 
@@ -128,7 +127,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
       {guide.steps && guide.steps.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Steps</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('guide_steps_title')}</h2>
           <div className="space-y-4">
             {guide.steps.map((step, index: number) => (
               <Card key={index} className="p-5 flex gap-4">
@@ -148,7 +147,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
       {guide.typicalCosts && guide.typicalCosts.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Typical Costs</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('guide_costs_title')}</h2>
           <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-neutral-50">
@@ -180,7 +179,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
       {guide.commonPitfalls && guide.commonPitfalls.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Common Pitfalls</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('guide_pitfalls_title')}</h2>
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
             <ul className="space-y-3">
               {guide.commonPitfalls.map((pitfall: string, index: number) => (
@@ -198,7 +197,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
       {contributions.length > 0 && (
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary mb-6">Community Tips</h2>
+          <h2 className="text-2xl font-bold text-primary mb-6">{t('guide_community_tips')}</h2>
           <div className="space-y-4">
             {contributions.map((contribution: CommunityContribution) => (
               <Card key={contribution._id} className="p-5">
