@@ -64,6 +64,7 @@ export default function Navigation({ lang }: NavigationProps) {
   const toggleRef = useRef<HTMLButtonElement>(null)
   const accountRef = useRef<HTMLDivElement>(null)
   const previousFocusRef = useRef<HTMLElement | null>(null)
+  const previousPathnameRef = useRef(pathname)
   const { data: session } = useSession()
 
   const user = session?.user ? {
@@ -146,11 +147,11 @@ export default function Navigation({ lang }: NavigationProps) {
   }, [mobileOpen, closeMenu])
 
   useEffect(() => {
-    if (mobileOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (previousPathnameRef.current !== pathname) {
+      previousPathnameRef.current = pathname
       closeMenu()
     }
-  }, [pathname, mobileOpen, closeMenu])
+  }, [pathname, closeMenu])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
