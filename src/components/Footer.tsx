@@ -27,11 +27,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t('footer_account')}</h4>
+            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">{t('footer_legal')}</h4>
             <ul className="space-y-2.5 text-sm">
-              <li><Link href={`/${lang}/membership`} className="text-neutral-400 hover:text-white transition-colors">{t('membership')}</Link></li>
-              <li><Link href={`/${lang}/login`} className="text-neutral-400 hover:text-white transition-colors">{t('login')}</Link></li>
-              <li><Link href={`/${lang}/register`} className="text-neutral-400 hover:text-white transition-colors">{t('register')}</Link></li>
+              <li><Link href={`/${lang}/about`} className="text-neutral-400 hover:text-white transition-colors">{t('about_title')}</Link></li>
+              <li><Link href={`/${lang}/contact`} className="text-neutral-400 hover:text-white transition-colors">{t('contact_title')}</Link></li>
+              <li><Link href={`/${lang}/privacy`} className="text-neutral-400 hover:text-white transition-colors">{t('legal_privacy_title')}</Link></li>
+              <li><Link href={`/${lang}/terms`} className="text-neutral-400 hover:text-white transition-colors">{t('legal_terms_title')}</Link></li>
             </ul>
           </div>
         </div>

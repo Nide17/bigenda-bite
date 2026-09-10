@@ -3,7 +3,7 @@
 import { createContext, useContext, ReactNode } from 'react'
 
 type Messages = Record<string, string>
-type TranslationFunction = (key: string) => string
+type TranslationFunction = (key: string, params?: Record<string, string>) => string
 
 const I18nContext = createContext<{
   messages: Messages
@@ -12,8 +12,14 @@ const I18nContext = createContext<{
 } | null>(null)
 
 export function I18nProvider({ children, messages, locale }: { children: ReactNode; messages: Messages; locale: string }) {
-  const t = (key: string) => {
-    return messages[key] || key
+  const t = (key: string, params?: Record<string, string>) => {
+    let str = messages[key] || key
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        str = str.replace(`{${k}}`, v)
+      })
+    }
+    return str
   }
 
   return (
@@ -26,9 +32,9 @@ export function I18nProvider({ children, messages, locale }: { children: ReactNo
 export function useTranslations() {
   const context = useContext(I18nContext)
   if (!context) {
-    return (key: string) => key
+    return (key: string, params?: Record<string, string>) => key
   }
-  return (key: string) => context.messages[key] || key
+  return context.t
 }
 
 export function useLocale() {
