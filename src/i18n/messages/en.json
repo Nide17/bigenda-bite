@@ -408,5 +408,41 @@
   "footer_explore": "Explore",
   "footer_account": "Account",
   "footer_rights": "All rights reserved",
-  "footer_built": "Built in Rwanda"
+  "footer_built": "Built in Rwanda",
+
+  "cat_identity": "Identity",
+  "cat_business": "Business",
+  "cat_health": "Health",
+  "cat_immigration": "Immigration",
+  "cat_emergency": "Emergency",
+  "cat_culture": "Culture",
+  "cat_finance": "Finance",
+  "cat_technology": "Technology",
+  "cat_education": "Education",
+  "cat_housing": "Housing",
+  "cat_transport": "Transport",
+
+  "search_types_process": "Official Processes",
+  "search_types_guide": "How-To Guides",
+  "search_types_business": "Business Directory",
+  "search_types_alert": "Alerts",
+
+  "alert_expires": "Expires: {date}",
+
+  "guide_not_verified": "This guide has not been verified yet",
+  "guide_worked": "This worked for me",
+  "guide_report_outdated": "Report outdated info",
+  "guide_verified_today": "Today",
+  "guide_verified_days_ago": "{days} day{plural} ago",
+  "guide_last_verified_by_community": "Last verified by community: {when}",
+  "guide_outdated_reports": "{count} report{plural} of outdated info",
+  "guide_report_reasons_cost": "Cost changed",
+  "guide_report_reasons_documents": "Documents changed",
+  "guide_report_reasons_location": "Location changed",
+  "guide_report_reasons_other": "Other",
+  "guide_report_what_changed": "What changed?",
+
+  "guide_add_community_tip": "Add a community tip",
+
+  "guide_share_title": "Share this guide"
 }

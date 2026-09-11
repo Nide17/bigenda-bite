@@ -394,5 +394,41 @@
   "footer_explore": "Kureba",
   "footer_account": "Konti",
   "footer_rights": "Uburenganzira bwose bwihariye",
-  "footer_built": "Bwakozwe mu Rwanda"
+  "footer_built": "Bwakozwe mu Rwanda",
+
+  "cat_identity": "Ubwitange",
+  "cat_business": "Ubucuruzi",
+  "cat_health": "Ubuzima",
+  "cat_immigration": "Ubuhinzi",
+  "cat_emergency": "Ikibazo Cy'Ibihe",
+  "cat_culture": "Umuco",
+  "cat_finance": "Imari",
+  "cat_technology": "Ubumenyi",
+  "cat_education": "Uburezi",
+  "cat_housing": "Inzu",
+  "cat_transport": "Ubugendo",
+
+  "search_types_process": "Imirimo ya Leta",
+  "search_types_guide": "Ubusobanuro bw'Uburyo",
+  "search_types_business": "Urutonde rw'Ubucuruzi",
+  "search_types_alert": "Imenyabose",
+
+  "alert_expires": "Rihindwa ku wa: {date}",
+
+  "guide_not_verified": "Ubu busobanuro ntabwo bwakiriye gusuzumwa",
+  "guide_worked": "Byakoranye cyane nanjye",
+  "guide_report_outdated": "Tanga ibyo byagabanutse",
+  "guide_verified_today": "Uyu munsi",
+  "guide_verified_days_ago": "Igihe cy'umunsi {days}",
+  "guide_last_verified_by_community": "Yasuzumwe na kominoti uheruka: {when}",
+  "guide_outdated_reports": "Ibisubizo {count} byababajwe",
+  "guide_report_reasons_cost": "Amafaranga yahinduwe",
+  "guide_report_reasons_documents": "Inyandiko zahinduwe",
+  "guide_report_reasons_location": "Aho waba yahinduwe",
+  "guide_report_reasons_other": "Ibindi",
+  "guide_report_what_changed": "Ki cyahindutse?",
+
+  "guide_add_community_tip": "Ongera inama y'abaturage",
+
+  "guide_share_title": "Sangiza uyu busobanuro"
 }

@@ -222,7 +222,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
           href={'/' + lang + '/guides/' + guide.category + '/' + toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id) + '/contribute'}
           className="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:shadow-lg"
         >
-          Add a community tip
+          {t('guide_add_community_tip')}
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
@@ -230,7 +230,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
       </div>
 
       <div className="mt-8 pt-8 border-t border-neutral-200">
-        <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('process_share_title')}</h2>
+        <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('guide_share_title')}</h2>
         <ShareButton
           title={data?.title || 'Bigenda Bite Guide'}
           url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : `/guides/${guide.category}/${slug}`}`}

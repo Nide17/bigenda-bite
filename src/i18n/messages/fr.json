@@ -394,5 +394,41 @@
   "footer_explore": "Explorer",
   "footer_account": "Compte",
   "footer_rights": "Tous droits réservés",
-  "footer_built": "Développé au Rwanda"
+  "footer_built": "Développé au Rwanda",
+
+  "cat_identity": "Identité",
+  "cat_business": "Entreprise",
+  "cat_health": "Santé",
+  "cat_immigration": "Immigration",
+  "cat_emergency": "Urgence",
+  "cat_culture": "Culture",
+  "cat_finance": "Finances",
+  "cat_technology": "Technologie",
+  "cat_education": "Éducation",
+  "cat_housing": "Logement",
+  "cat_transport": "Transport",
+
+  "search_types_process": "Processus officiels",
+  "search_types_guide": "Guides pratiques",
+  "search_types_business": "Annuaire d'entreprises",
+  "search_types_alert": "Alertes",
+
+  "alert_expires": "Expire le : {date}",
+
+  "guide_not_verified": "Ce guide n'a pas encore été vérifié",
+  "guide_worked": "Cela a fonctionné pour moi",
+  "guide_report_outdated": "Signaler une info obsolète",
+  "guide_verified_today": "Aujourd'hui",
+  "guide_verified_days_ago": "Il y a {days} jour{plural}",
+  "guide_last_verified_by_community": "Dernière vérification par la communauté : {when}",
+  "guide_outdated_reports": "{count} signalement{plural} d'info obsolète",
+  "guide_report_reasons_cost": "Coût modifié",
+  "guide_report_reasons_documents": "Documents modifiés",
+  "guide_report_reasons_location": "Localisation modifiée",
+  "guide_report_reasons_other": "Autre",
+  "guide_report_what_changed": "Qu'est-ce qui a changé ?",
+
+  "guide_add_community_tip": "Ajouter un conseil communautaire",
+
+  "guide_share_title": "Partager ce guide"
 }

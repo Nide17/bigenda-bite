@@ -3,21 +3,9 @@
 import { useState, useCallback } from 'react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-
-interface GuideFeedbackProps {
-  guideId: string
-  lastVerifiedDate?: string
-  outdatedReportsCount?: number
-}
+import { useTranslations } from '@/components/I18nProvider'
 
 type ReportReason = 'cost' | 'documents' | 'location' | 'other'
-
-const REASONS: { value: ReportReason; label: string }[] = [
-  { value: 'cost', label: 'Cost changed' },
-  { value: 'documents', label: 'Documents changed' },
-  { value: 'location', label: 'Location changed' },
-  { value: 'other', label: 'Other' },
-]
 
 function daysAgo(dateString?: string): number | null {
   if (!dateString) return null
@@ -29,7 +17,14 @@ function daysAgo(dateString?: string): number | null {
   return diffDays
 }
 
+interface GuideFeedbackProps {
+  guideId: string
+  lastVerifiedDate?: string
+  outdatedReportsCount?: number
+}
+
 export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedReportsCount = 0 }: GuideFeedbackProps) {
+  const t = useTranslations()
   const [submitting, setSubmitting] = useState(false)
   const [showReportOptions, setShowReportOptions] = useState(false)
   const [selectedReason, setSelectedReason] = useState<ReportReason | null>(null)
@@ -37,6 +32,13 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
   const [errorMessage, setErrorMessage] = useState('')
 
   const days = daysAgo(lastVerifiedDate)
+
+  const REASONS: { value: ReportReason; label: string }[] = [
+    { value: 'cost', label: t('guide_report_reasons_cost') },
+    { value: 'documents', label: t('guide_report_reasons_documents') },
+    { value: 'location', label: t('guide_report_reasons_location') },
+    { value: 'other', label: t('guide_report_reasons_other') },
+  ]
 
   const handleVerify = useCallback(async () => {
     setSubmitting(true)
@@ -117,15 +119,15 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
           <p className="text-sm font-medium text-neutral-900">
             {days !== null && days >= 0 ? (
               <>
-                ✅ Last verified by community: <span className="font-semibold">{days === 0 ? 'Today' : `${days} day${days === 1 ? '' : 's'} ago`}</span>
+                ✅ {t('guide_last_verified_by_community', { when: days === 0 ? t('guide_verified_today') : t('guide_verified_days_ago', { days: days.toString(), plural: days === 1 ? '' : 's' }) })}
               </>
             ) : (
-              <>⚠️ This guide has not been verified yet</>
+              <>⚠️ {t('guide_not_verified')}</>
             )}
           </p>
           {outdatedReportsCount > 0 && (
             <p className="text-xs text-neutral-500 mt-1">
-              {outdatedReportsCount} report{outdatedReportsCount === 1 ? '' : 's'} of outdated info
+              {t('guide_outdated_reports', { count: outdatedReportsCount.toString(), plural: outdatedReportsCount === 1 ? '' : 's' })}
             </p>
           )}
         </div>
@@ -139,7 +141,7 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
             loading={submitting}
             disabled={submitting}
           >
-            👍 This worked for me
+            👍 {t('guide_worked')}
           </Button>
 
           <div className="relative">
@@ -150,13 +152,13 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
               onClick={() => setShowReportOptions(!showReportOptions)}
               disabled={submitting}
             >
-              👎 Report outdated info
+              👎 {t('guide_report_outdated')}
             </Button>
 
             {showReportOptions && (
               <div className="absolute right-0 mt-2 w-56 bg-white border border-neutral-200 rounded-lg shadow-lg z-10">
                 <div className="p-2">
-                  <p className="text-xs font-medium text-neutral-500 mb-2 px-2">What changed?</p>
+                  <p className="text-xs font-medium text-neutral-500 mb-2 px-2">{t('guide_report_what_changed')}</p>
                   {REASONS.map((reason) => (
                     <button
                       key={reason.value}

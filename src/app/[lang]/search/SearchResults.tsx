@@ -3,14 +3,8 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from '@/components/I18nProvider'
 import type { SearchResult, SearchResultType } from '@/types/search'
-
-const TYPE_LABELS: Record<SearchResultType, string> = {
-  process: 'Official Processes',
-  guide: 'How-To Guides',
-  business: 'Business Directory',
-  alert: 'Alerts',
-}
 
 const TYPE_ICONS: Record<SearchResultType, string> = {
   process: '🏛️',
@@ -34,6 +28,15 @@ interface SearchResultsProps {
 
 export default function SearchResults({ query, typeFilter, lang }: SearchResultsProps) {
   const router = useRouter()
+  const t = useTranslations()
+
+  const TYPE_LABELS: Record<SearchResultType, string> = {
+    process: t('search_types_process'),
+    guide: t('search_types_guide'),
+    business: t('search_types_business'),
+    alert: t('search_types_alert'),
+  }
+
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
