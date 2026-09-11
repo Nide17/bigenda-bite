@@ -32,7 +32,7 @@ export function I18nProvider({ children, messages, locale }: { children: ReactNo
 export function useTranslations() {
   const context = useContext(I18nContext)
   if (!context) {
-    return (key: string, params?: Record<string, string>) => key
+    return (_key: string, _params?: Record<string, string>) => _key
   }
   return context.t
 }

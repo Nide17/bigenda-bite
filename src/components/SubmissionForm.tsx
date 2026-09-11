@@ -27,6 +27,7 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
   const [text, setText] = useState('')
   const [rating, setRating] = useState(0)
   const [submitting, setSubmitting] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,8 +70,20 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
 
   return (
     <Card className="p-6">
-      <h3 className="text-lg font-semibold text-primary mb-4">{t('submission_contribute_title')}</h3>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {submitted ? (
+        <div className="text-center py-6">
+          <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-primary mb-2">{t('submission_thank_you')}</h3>
+          <p className="text-sm text-neutral-600">{t('submission_sent')}</p>
+        </div>
+      ) : (
+        <>
+          <h3 className="text-lg font-semibold text-primary mb-4">{t('submission_contribute_title')}</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-2">{t('submission_choose_action')}</label>
           <div className="grid grid-cols-2 gap-2">
@@ -140,6 +153,8 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
           {t('submission_submit_btn')}
         </Button>
       </form>
-    </Card>
+      </>
+    )}
+  </Card>
   )
 }
