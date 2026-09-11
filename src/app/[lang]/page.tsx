@@ -387,7 +387,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <p className="text-sm text-neutral-600">{t('home_organizations_subtitle')}</p>
                 </div>
                 <Link
-                  href="/membership"
+                  href={`/${lang}/membership`}
                   className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-xl transition-colors shadow-md min-h-[44px] w-full md:w-auto"
                 >
                   {t('home_become_member')}
