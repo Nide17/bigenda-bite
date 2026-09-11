@@ -1,15 +1,13 @@
 import type { Alert } from '@/types'
 import Badge from '@/components/ui/Badge'
 import Link from 'next/link'
-import { useTranslations } from '@/components/I18nProvider'
 
 interface AlertsSectionProps {
   alerts: Alert[]
   lang: string
   limit?: number
   variant?: 'compact' | 'list'
-  locale?: Record<string, string>
-  t?: (key: string) => string
+  t: (key: string, params?: Record<string, string>) => string
 }
 
 const severityColors: Record<string, 'error' | 'warning' | 'info' | 'success'> = {
@@ -41,8 +39,6 @@ export default function AlertsSection({
   variant = 'list',
   t,
 }: AlertsSectionProps) {
-  const hookT = useTranslations()
-  const translation = t || hookT
   const deduped = deduplicateAlerts(alerts)
   const displayAlerts = limit ? deduped.slice(0, limit) : deduped
 
@@ -50,14 +46,12 @@ export default function AlertsSection({
 
   return (
     <section aria-labelledby="alerts-heading">
-      {t && (
-        <h2
-          id="alerts-heading"
-          className="text-xl md:text-2xl font-bold text-primary mb-4"
-        >
-          {t('important_alerts_title')}
-        </h2>
-      )}
+      <h2
+        id="alerts-heading"
+        className="text-xl md:text-2xl font-bold text-primary mb-4"
+      >
+        {t('important_alerts_title')}
+      </h2>
       <div className="space-y-3">
         {displayAlerts.map((alert) => {
           const title =
@@ -104,7 +98,7 @@ export default function AlertsSection({
                   </div>
                   {alert.expiresAt && (
                     <p className="text-xs text-amber-700 mt-1">
-                      {translation('alert_expires', { date: new Date(alert.expiresAt).toLocaleDateString() })}
+                      {t('alert_expires', { date: new Date(alert.expiresAt).toLocaleDateString() })}
                     </p>
                   )}
                   {alert.type && variant === 'list' && (

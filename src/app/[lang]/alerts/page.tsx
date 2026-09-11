@@ -37,7 +37,7 @@ export default async function AlertsPage({ params }: { params: Promise<{ lang: s
           description={t('alerts_all_clear')}
         />
       ) : (
-        <AlertsSection alerts={alerts} lang={lang} variant="list" />
+        <AlertsSection alerts={alerts} lang={lang} variant="list" t={t} />
       )}
     </PageContainer>
   )
