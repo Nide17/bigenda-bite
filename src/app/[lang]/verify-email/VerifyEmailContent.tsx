@@ -38,7 +38,7 @@ function VerifyEmailContent({ lang }: { lang: string }) {
         setStatus('error')
         setMessage(t('verify_email_error'))
       })
-  }, [token])
+  }, [token, t])
 
   if (!token && status === 'loading') {
     return (

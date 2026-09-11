@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { connectToDatabase } from '@/lib/db/mongodb'
-import { parseJson } from '@/lib/api/validate'
 
 const MAX_WEBHOOK_PAYLOAD_SIZE = 1024 * 1024
 
@@ -59,7 +58,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ received: true })
-    } catch (parseError) {
+    } catch {
       return NextResponse.json({ error: 'Invalid JSON payload' }, { status: 400 })
     }
   } catch (error) {

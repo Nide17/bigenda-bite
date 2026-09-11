@@ -41,7 +41,8 @@ export default function AlertsSection({
   variant = 'list',
   t,
 }: AlertsSectionProps) {
-  const translation = t || useTranslations()
+  const hookT = useTranslations()
+  const translation = t || hookT
   const deduped = deduplicateAlerts(alerts)
   const displayAlerts = limit ? deduped.slice(0, limit) : deduped
 

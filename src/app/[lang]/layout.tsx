@@ -9,7 +9,7 @@ import { JsonLd } from '@/components/JsonLd'
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo'
 import { Toaster } from 'sonner'
 import '../globals.css'
-import { getMessages, messagesMap } from '@/lib/i18n'
+import { messagesMap } from '@/lib/i18n'
 
 const baseUrl = 'https://bigendabite.com'
 const locales = routing.locales
@@ -64,7 +64,6 @@ export default async function RootLayout({
   }
 
   const messages = messagesMap[lang as keyof typeof messagesMap] || messagesMap.en
-  const t = getMessages(lang)
 
   const headersList = await headers()
   const requestUrl = headersList.get('x-invoke-path') || `/${lang}`

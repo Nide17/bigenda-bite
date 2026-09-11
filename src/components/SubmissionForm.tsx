@@ -27,7 +27,6 @@ export default function SubmissionForm({ contentType, contentId, contentSlug, on
   const [text, setText] = useState('')
   const [rating, setRating] = useState(0)
   const [submitting, setSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {

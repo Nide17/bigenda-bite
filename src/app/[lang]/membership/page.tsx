@@ -1,8 +1,5 @@
 import Link from 'next/link'
 import PageContainer from '@/components/PageContainer'
-import Card from '@/components/ui/Card'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
 import { getMessages } from '@/lib/i18n'
 import type { Metadata } from 'next'
 import { pageMetadata } from '@/lib/seo'
