@@ -171,7 +171,7 @@
   "search_try_label": "Essayer :",
   "search_error": "Échec de la recherche",
   "search_no_results": "Aucun résultat trouvé",
-  "search_no_results_text": "Nous n'avons trouvé aucun résultat correspondant à votre recherche.",
+  "search_no_results_text": "Nous n'avons trouvé aucun résultat correspondant à \"{query}\". Essayez d'autres mots-clés ou supprimez des filtres.",
   "search_results_for": "résultats pour",
   "search_start_typing": "Commencez à taper pour rechercher",
   "search_start_typing_text": "Recherchez parmi les processus, guides, entreprises et alertes.",
@@ -430,5 +430,10 @@
 
   "guide_add_community_tip": "Ajouter un conseil communautaire",
 
-  "guide_share_title": "Partager ce guide"
+  "guide_share_title": "Partager ce guide",
+
+  "severity_critical": "Critique",
+  "severity_high": "Élevé",
+  "severity_medium": "Moyen",
+  "severity_low": "Faible"
 }

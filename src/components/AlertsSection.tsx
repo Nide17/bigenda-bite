@@ -17,6 +17,11 @@ const severityColors: Record<string, 'error' | 'warning' | 'info' | 'success'> =
   low: 'info',
 }
 
+function severityLabel(t: (key: string, params?: Record<string, string>) => string, severity?: string): string {
+  if (!severity) return ''
+  return t(`severity_${severity}`) || severity
+}
+
 export function deduplicateAlerts(alerts: Alert[]): Alert[] {
   const seen = new Set<string>()
   return alerts.filter((alert) => {
@@ -92,7 +97,7 @@ export default function AlertsSection({
                         variant={severityColors[alert.severity] || 'info'}
                         className="text-xs"
                       >
-                        {alert.severity}
+                        {severityLabel(t, alert.severity)}
                       </Badge>
                     )}
                   </div>

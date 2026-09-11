@@ -6,16 +6,14 @@ import type { SearchResult, SearchResultType } from '@/types/search'
 
 const DEBOUNCE_MS = 300
 
-const typeLabels: Record<SearchResultType, string> = {
-  process: 'Official Processes',
-  guide: 'How-To Guides',
-  business: 'Business Directory',
-  alert: 'Alerts',
+function categoryLabel(t: (key: string, params?: Record<string, string>) => string, category?: string): string {
+  if (!category) return ''
+  return t(`cat_${category}`) || category
 }
 
 interface SearchProps {
   lang: string
-  placeholder?: string
+  t: (key: string, params?: Record<string, string>) => string
   className?: string
   initialQuery?: string
   onSearch?: (query: string) => void
@@ -23,7 +21,13 @@ interface SearchProps {
   scenarios?: { label: string; query: string }[]
 }
 
-export default function Search({ lang, className = '', initialQuery = '', onSearch, placeholders, scenarios }: SearchProps) {
+export default function Search({ lang, t, className = '', initialQuery = '', onSearch, placeholders, scenarios }: SearchProps) {
+  const typeLabels: Record<SearchResultType, string> = {
+    process: t('search_types_process'),
+    guide: t('search_types_guide'),
+    business: t('search_types_business'),
+    alert: t('search_types_alert'),
+  }
   const [query, setQuery] = useState(initialQuery)
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -34,17 +38,18 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
   const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const conversationalPlaceholders = placeholders || [
-    'How do I get a SIM card?',
-    'Where to buy a fridge in Kigali?',
-    'Quiet cafes to work from in Kiyovu',
-    'How to use Tap&Go buses',
+    t('search_placeholder'),
+    t('search_placeholder_1'),
+    t('search_placeholder_2'),
+    t('search_placeholder_3'),
+    t('search_placeholder_4'),
   ]
 
   const quickScenarios = scenarios || [
-    { label: 'New to Rwanda', query: 'new to Rwanda' },
-    { label: 'I need a clinic', query: 'clinic near me' },
-    { label: 'Starting a business', query: 'register business' },
-    { label: 'Shopping & errands', query: 'shopping markets' },
+    { label: t('search_scenario_1'), query: t('search_scenario_1_query') },
+    { label: t('search_scenario_2'), query: t('search_scenario_2_query') },
+    { label: t('search_scenario_3'), query: t('search_scenario_3_query') },
+    { label: t('search_scenario_4'), query: t('search_scenario_4_query') },
   ]
 
   const performSearch = useCallback(async (searchQuery: string) => {
@@ -196,7 +201,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
 
       {!query && !loading && !hasSearched && (
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">Try:</span>
+          <span className="text-xs font-medium text-neutral-400 uppercase tracking-wide">{t('search_try_label')}</span>
           {quickScenarios.map((scenario) => (
             <button
               key={scenario.query}
@@ -256,7 +261,7 @@ export default function Search({ lang, className = '', initialQuery = '', onSear
                             )}
                             {result.category && (
                               <span className="inline-block mt-2 px-2 py-0.5 bg-neutral-100 text-neutral-700 text-xs font-medium rounded">
-                                {result.category}
+                                {categoryLabel(t, result.category)}
                               </span>
                             )}
                           </div>

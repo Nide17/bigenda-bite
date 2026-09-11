@@ -185,7 +185,7 @@
   "search_try_label": "Try:",
   "search_error": "Search failed",
   "search_no_results": "No results found",
-  "search_no_results_text": "We couldn't find anything matching your search.",
+  "search_no_results_text": "We couldn't find anything matching \"{query}\". Try different keywords or remove filters.",
   "search_results_for": "results for",
   "search_start_typing": "Start typing to search",
   "search_start_typing_text": "Search across processes, guides, businesses, and alerts.",
@@ -444,5 +444,10 @@
 
   "guide_add_community_tip": "Add a community tip",
 
-  "guide_share_title": "Share this guide"
+  "guide_share_title": "Share this guide",
+
+  "severity_critical": "Critical",
+  "severity_high": "High",
+  "severity_medium": "Medium",
+  "severity_low": "Low"
 }

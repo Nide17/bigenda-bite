@@ -6,6 +6,11 @@ import Link from 'next/link'
 import { useTranslations } from '@/components/I18nProvider'
 import type { SearchResult, SearchResultType } from '@/types/search'
 
+function categoryLabel(t: (key: string, params?: Record<string, string>) => string, category?: string): string {
+  if (!category) return ''
+  return t(`cat_${category}`) || category
+}
+
 const TYPE_ICONS: Record<SearchResultType, string> = {
   process: '🏛️',
   guide: '📖',
@@ -107,10 +112,8 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
       <div className="max-w-3xl mx-auto">
         <div className="bg-white border border-neutral-200 rounded-xl p-8 text-center">
           <div className="text-4xl mb-3 opacity-40">🔍</div>
-          <h3 className="text-lg font-semibold text-neutral-900 mb-2">Start typing to search</h3>
-          <p className="text-neutral-600 max-w-md mx-auto">
-            Search across processes, guides, businesses, and alerts.
-          </p>
+          <h3 className="text-lg font-semibold text-neutral-900 mb-2">{t('search_start_typing')}</h3>
+          <p className="text-neutral-600 max-w-md mx-auto">{t('search_start_typing_text')}</p>
         </div>
       </div>
     )
@@ -120,7 +123,7 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
     <div className="max-w-3xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm text-neutral-600">
-          {loading ? 'Searching...' : `${total} result${total !== 1 ? 's' : ''} for "${query}"`}
+          {loading ? t('search_searching') : `${total} ${t('search_results_for')} "${query}"`}
         </p>
         <div className="flex items-center gap-2">
           {(Object.keys(TYPE_LABELS) as SearchResultType[]).map(type => (
@@ -154,9 +157,9 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
       {!loading && total === 0 && (
         <div className="bg-white border border-neutral-200 rounded-xl p-8 text-center">
           <div className="text-4xl mb-3 opacity-40">🤷</div>
-          <h3 className="text-lg font-semibold text-neutral-900 mb-2">No results found</h3>
+          <h3 className="text-lg font-semibold text-neutral-900 mb-2">{t('search_no_results')}</h3>
           <p className="text-neutral-600 max-w-md mx-auto">
-            We couldn&apos;t find anything matching &quot;{query}&quot;. Try different keywords or remove filters.
+            {t('search_no_results_text', { query })}
           </p>
         </div>
       )}
@@ -188,11 +191,11 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
                               <h4 className="font-medium text-neutral-900 group-hover:text-primary transition-colors">
                                 {result.title}
                               </h4>
-                              {result.score && result.score >= 5 && (
-                                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
-                                  ★ Relevant
-                                </span>
-                              )}
+{result.score && result.score >= 5 && (
+                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+                                   ★ {t('search_relevant')}
+                                 </span>
+                               )}
                             </div>
                             {result.description && (
                               <p className="text-sm text-neutral-600 line-clamp-2">

@@ -171,7 +171,7 @@
   "search_try_label": "Gerageza:",
   "search_error": "Gushaka byanze",
   "search_no_results": "Nta bisubizo bibonetse",
-  "search_no_results_text": "Nta bisubizo byabonetse bihuye n'ishaka ryawe.",
+  "search_no_results_text": "Nta bisubizo byabonetse bihuye n\"{query}\". Gerageza amagambo atandaro cyangwa ingingo z'ubutekate.",
   "search_results_for": "ibisubizo by'",
   "search_start_typing": "Tangira kwandika kugira ngo ushake",
   "search_start_typing_text": "Shaka mu mirimo, ubusobanuro, ubucuruzi, n'amenyabose.",
@@ -430,5 +430,10 @@
 
   "guide_add_community_tip": "Ongera inama y'abaturage",
 
-  "guide_share_title": "Sangiza uyu busobanuro"
+  "guide_share_title": "Sangiza uyu busobanuro",
+
+  "severity_critical": "Kubire",
+  "severity_high": "Kireba",
+  "severity_medium": "Akabiri",
+  "severity_low": "Kabiri"
 }
