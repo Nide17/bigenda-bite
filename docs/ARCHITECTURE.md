@@ -10,7 +10,7 @@
 | i18n | Custom JSON-based provider (EN/FR/RW) |
 | Database | MongoDB (native driver) |
 | CMS | Sanity v3 |
-| Auth | NextAuth v5 (credentials + Google OAuth) |
+| Auth | Custom credentials auth + Google OAuth (session state in MongoDB) |
 | Payments | MTN MoMo API |
 | Notifications | Discord webhooks + Sonner |
 | Deployment | Vercel |

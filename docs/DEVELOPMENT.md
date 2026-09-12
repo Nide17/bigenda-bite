@@ -104,6 +104,16 @@ src/
 - Use `getMessages(lang)` for server components
 - Use `toast.success()` / `toast.error()` from `sonner` for feedback
 
+## i18n Conventions
+
+- Translation files live in `src/i18n/messages/{en,fr,rw}.json`
+- Client components call `useTranslations()` directly. Do **not** pass `t` from a server component into a client component — Next.js 15 blocks non-serializable function props across the server/client boundary. If a shared presentational component is used by both server and client, make it a client component and call `useTranslations()` inside it.
+- Pure presentational components that must stay server-renderable (e.g. `AlertsSection`) accept `t` as a **required** prop and never call `useTranslations()` themselves.
+- Category labels use the key pattern `cat_<slug>` (e.g. `cat_identity`, `cat_health`) with a fallback to the raw slug: `t(\`cat_${category}\`) || category`.
+- Alert severity labels use `severity_<value>` (e.g. `severity_warning`, `severity_critical`) with a fallback to the raw value.
+- Parametric translations use `{key}` placeholders: `t('alert_expires', { date: ... })`.
+- When adding a new string, add it to **all three** locales. Missing keys fall back to the raw key string, which is how untranslated UI often slips through.
+
 ## Commits
 
 ```

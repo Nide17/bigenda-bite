@@ -21,7 +21,7 @@
 
 ## Auth
 
-- Sessions stored as JWTs in HTTP-only cookies
+- Sessions stored in MongoDB `sessions` collection
 - CSRF protection on auth endpoints
 - Passwords hashed with bcrypt
 - Google OAuth users matched by email, auto-created if missing
