@@ -83,21 +83,21 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
       <form method="get" className="mb-8">
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <select name="city" defaultValue={filters.city} className="appearance-none pl-4 pr-10 py-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-medium text-neutral-900 shadow-sm hover:border-primary hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-150">
-            <option value="all">All Cities</option>
+            <option value="all">{t('all_cities')}</option>
             <option value="Kigali">Kigali</option>
             <option value="Musanze">Musanze</option>
             <option value="Rubavu">Rubavu</option>
             <option value="Huye">Huye</option>
           </select>
           <button type="submit" className="px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-colors">
-            Apply Filters
+            {t('apply_filters')}
           </button>
           {activeFilterCount > 0 && (
             <Link
               href={`/${lang}/directory`}
               className="px-6 py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-lg transition-colors"
             >
-              Clear ({activeFilterCount})
+              {t('clear_filters')} ({activeFilterCount})
             </Link>
           )}
         </div>
@@ -110,9 +110,9 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
               value="1"
               defaultChecked={filters.englishSpeaking}
               className="rounded border-neutral-300 text-primary focus:ring-primary"
-              aria-label="English-Speaking Staff"
+              aria-label={t('english_speaking_staff')}
             />
-            <span className="text-sm font-medium">🗣️ English-Speaking Staff</span>
+            <span className="text-sm font-medium">🗣️ {t('english_speaking_staff')}</span>
           </label>
 
           <label className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-colors ${filters.acceptsMomo ? 'bg-primary/10 border-primary text-primary' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}>
@@ -122,9 +122,9 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
               value="1"
               defaultChecked={filters.acceptsMomo}
               className="rounded border-neutral-300 text-primary focus:ring-primary"
-              aria-label="Accepts MTN/Airtel MoMo"
+              aria-label={t('accepts_momo')}
             />
-            <span className="text-sm font-medium">📱 Accepts MTN/Airtel MoMo</span>
+            <span className="text-sm font-medium">📱 {t('accepts_momo')}</span>
           </label>
 
           <label className={`flex items-center gap-2 px-4 py-2 rounded-full border cursor-pointer transition-colors ${filters.bigendaVerified ? 'bg-primary/10 border-primary text-primary' : 'border-neutral-300 text-neutral-700 hover:bg-neutral-50'}`}>
@@ -134,9 +134,9 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
               value="1"
               defaultChecked={filters.bigendaVerified}
               className="rounded border-neutral-300 text-primary focus:ring-primary"
-              aria-label="Bigenda Bite Verified"
+              aria-label={t('bigenda_verified')}
             />
-            <span className="text-sm font-medium">✅ Bigenda Bite Verified</span>
+            <span className="text-sm font-medium">✅ {t('bigenda_verified')}</span>
           </label>
         </div>
       </form>
@@ -144,8 +144,8 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
       {businesses.length === 0 ? (
         <EmptyState
           icon="🏢"
-          title="No businesses found"
-          description="Try adjusting your filters or check back later."
+          title={t('no_businesses_found')}
+          description={t('try_adjusting_filters')}
         />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -161,7 +161,7 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
                 </h2>
                 {business.bigendaVerified && (
                   <Badge variant="success" className="text-xs">
-                    ✅ Verified
+                    ✅ {t('verified')}
                   </Badge>
                 )}
               </div>
@@ -169,15 +169,15 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
                 {t(`cat_${business.category}`) || business.category}
               </p>
               <p className="text-sm text-neutral-500">
-                {business.city || 'Nationwide'}
+                {business.city || t('nationwide')}
               </p>
               {(business.englishSpeaking || business.acceptsMomo) && (
                 <div className="flex flex-wrap gap-1.5 mt-2">
                   {business.englishSpeaking && (
-                    <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full">🗣️ English</span>
+                    <span className="text-xs px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full">🗣️ {t('english_speaking_staff')}</span>
                   )}
                   {business.acceptsMomo && (
-                    <span className="text-xs px-2 py-0.5 bg-green-50 text-green-700 rounded-full">📱 MoMo</span>
+                    <span className="text-xs px-2 py-0.5 bg-green-50 text-green-700 rounded-full">📱 {t('accepts_momo')}</span>
                   )}
                 </div>
               )}

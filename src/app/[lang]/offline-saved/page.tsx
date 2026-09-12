@@ -27,19 +27,19 @@ export default function OfflineSavedPage() {
     <PageContainer>
       <div className="py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-primary mb-2">My Saved Guides</h1>
-          <p className="text-neutral-600">Guides you&apos;ve saved for offline access.</p>
+          <h1 className="text-3xl font-bold text-primary mb-2">{t('saved_guides')}</h1>
+          <p className="text-neutral-600">{t('saved_guides_subtitle')}</p>
         </div>
 
         {savedGuides.length === 0 ? (
           <Card className="p-8 text-center">
             <div className="text-4xl mb-3">📥</div>
-            <h2 className="text-lg font-semibold text-primary mb-2">No saved guides yet</h2>
+            <h2 className="text-lg font-semibold text-primary mb-2">{t('saved_guides_empty_title')}</h2>
             <p className="text-neutral-600 mb-4">
-              Save guides for offline access when you need them without internet.
+              {t('saved_guides_empty_text')}
             </p>
             <Link href={`/${lang}/guides`}>
-              <Button>Browse Guides</Button>
+              <Button>{t('browse_processes')}</Button>
             </Link>
           </Card>
         ) : (
@@ -55,13 +55,13 @@ export default function OfflineSavedPage() {
                       </span>
                     )}
                     <p className="text-xs text-neutral-500">
-                      Saved on {new Date(guide.savedAt).toLocaleDateString()}
+                      {t('saved_on')} {new Date(guide.savedAt).toLocaleDateString()}
                     </p>
 
                     <div className="mt-4 space-y-3">
                       {guide.data.estimatedTime && (guide.data.estimatedTime.online || guide.data.estimatedTime.inPerson) && (
                         <div>
-                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Time</p>
+                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">{t('time')}</p>
                           <p className="text-sm text-neutral-900">
                             {guide.data.estimatedTime.online && `Online: ${guide.data.estimatedTime.online}`}
                             {guide.data.estimatedTime.inPerson && `In Person: ${guide.data.estimatedTime.inPerson}`}
@@ -71,7 +71,7 @@ export default function OfflineSavedPage() {
 
                       {guide.data.costBreakdown && guide.data.costBreakdown.length > 0 && (
                         <div>
-                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Cost</p>
+                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">{t('cost')}</p>
                           <ul className="text-sm text-neutral-900 space-y-1">
                             {guide.data.costBreakdown.map((cost, index) => (
                               <li key={index} className="flex justify-between gap-2">
@@ -85,12 +85,12 @@ export default function OfflineSavedPage() {
 
                       {guide.data.documentChecklist && guide.data.documentChecklist.length > 0 && (
                         <div>
-                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Documents</p>
+                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">{t('documents')}</p>
                           <ul className="text-sm text-neutral-900 space-y-1">
                             {guide.data.documentChecklist.map((doc, index) => (
                               <li key={index}>
                                 <span className="font-medium">{doc.documentName}</span>
-                                {!doc.isRequired && <span className="text-neutral-500 ml-1">(optional)</span>}
+                                {!doc.isRequired && <span className="text-neutral-500 ml-1">({t('optional')})</span>}
                                 {doc.fallbackOption && <p className="text-xs text-neutral-500">{doc.fallbackOption}</p>}
                               </li>
                             ))}
@@ -100,13 +100,13 @@ export default function OfflineSavedPage() {
 
                       {guide.data.physicalLocation && (guide.data.physicalLocation.description || guide.data.physicalLocation.mapsLink) && (
                         <div>
-                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">Where</p>
+                          <p className="text-xs font-medium text-neutral-500 uppercase tracking-wide mb-1">{t('where')}</p>
                           {guide.data.physicalLocation.description && (
                             <p className="text-sm text-neutral-900">{guide.data.physicalLocation.description}</p>
                           )}
                           {guide.data.physicalLocation.mapsLink && (
                             <a href={guide.data.physicalLocation.mapsLink} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:text-primary-hover underline">
-                              View on Map
+                              {t('view_on_map')}
                             </a>
                           )}
                         </div>
@@ -117,7 +117,7 @@ export default function OfflineSavedPage() {
                   <div className="flex flex-col gap-2">
                     <Link href={`/${lang}/guides/${guide.category || ''}/${guide.id}`}>
                       <Button variant="secondary" size="sm" className="w-full">
-                        Open
+                        {t('open')}
                       </Button>
                     </Link>
                     <Button
@@ -126,7 +126,7 @@ export default function OfflineSavedPage() {
                       onClick={() => handleDelete(guide.id)}
                       className="w-full text-red-600 hover:text-red-700"
                     >
-                      Delete
+                      {t('delete')}
                     </Button>
                   </div>
                 </div>
