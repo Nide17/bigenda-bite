@@ -92,7 +92,6 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                 <div className="bg-white rounded-2xl p-2 shadow-2xl shadow-black/20">
                   <Search
                     lang={lang}
-                    t={t}
                     placeholders={[
                       t('search_placeholder_1'),
                       t('search_placeholder_2'),

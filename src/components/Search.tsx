@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
+import { useTranslations } from '@/components/I18nProvider'
 import type { SearchResult, SearchResultType } from '@/types/search'
 
 const DEBOUNCE_MS = 300
@@ -13,7 +14,6 @@ function categoryLabel(t: (key: string, params?: Record<string, string>) => stri
 
 interface SearchProps {
   lang: string
-  t: (key: string, params?: Record<string, string>) => string
   className?: string
   initialQuery?: string
   onSearch?: (query: string) => void
@@ -21,7 +21,8 @@ interface SearchProps {
   scenarios?: { label: string; query: string }[]
 }
 
-export default function Search({ lang, t, className = '', initialQuery = '', onSearch, placeholders, scenarios }: SearchProps) {
+export default function Search({ lang, className = '', initialQuery = '', onSearch, placeholders, scenarios }: SearchProps) {
+  const t = useTranslations()
   const typeLabels: Record<SearchResultType, string> = {
     process: t('search_types_process'),
     guide: t('search_types_guide'),

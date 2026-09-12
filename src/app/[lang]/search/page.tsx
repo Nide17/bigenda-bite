@@ -32,7 +32,6 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
           <p className="text-neutral-600 mb-6">{t('search_subtitle')}</p>
           <Search
             lang={lang}
-            t={t}
             initialQuery={q || ''}
             placeholders={[
               t('search_placeholder_1'),
