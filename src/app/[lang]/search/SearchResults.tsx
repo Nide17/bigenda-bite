@@ -6,11 +6,6 @@ import Link from 'next/link'
 import { useTranslations } from '@/components/I18nProvider'
 import type { SearchResult, SearchResultType } from '@/types/search'
 
-function categoryLabel(t: (key: string, params?: Record<string, string>) => string, category?: string): string {
-  if (!category) return ''
-  return t(`cat_${category}`) || category
-}
-
 const TYPE_ICONS: Record<SearchResultType, string> = {
   process: '🏛️',
   guide: '📖',
@@ -205,7 +200,7 @@ export default function SearchResults({ query, typeFilter, lang }: SearchResults
                             <div className="flex items-center gap-2 mt-2">
                               {result.category && (
                                 <span className="inline-block px-2 py-0.5 bg-neutral-100 text-neutral-700 text-xs font-medium rounded">
-                                  {result.category}
+                                  {t(`cat_${result.category}`) || result.category}
                                 </span>
                               )}
                               {(() => {

@@ -93,7 +93,6 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                   <Search
                     lang={lang}
                     t={t}
-                    placeholder={t('search_placeholder')}
                     placeholders={[
                       t('search_placeholder_1'),
                       t('search_placeholder_2'),
