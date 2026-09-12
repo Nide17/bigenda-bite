@@ -465,6 +465,11 @@
 
   "guide_share_title": "Share this guide",
 
+  "share": "Share",
+  "share_on_whatsapp": "Share on WhatsApp",
+  "copy_link": "Copy Link",
+  "copied": "Copied!",
+
   "severity_critical": "Critical",
   "severity_high": "High",
   "severity_medium": "Medium",

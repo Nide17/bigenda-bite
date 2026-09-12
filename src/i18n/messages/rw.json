@@ -451,6 +451,11 @@
 
   "guide_share_title": "Sangiza uyu busobanuro",
 
+  "share": "Sangiza",
+  "share_on_whatsapp": "Sangiza kuri WhatsApp",
+  "copy_link": "Kopiera umuheto",
+  "copied": "Kopijwe!",
+
   "severity_critical": "Kubire",
   "severity_high": "Kireba",
   "severity_medium": "Akabiri",

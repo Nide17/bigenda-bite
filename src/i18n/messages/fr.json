@@ -451,6 +451,11 @@
 
   "guide_share_title": "Partager ce guide",
 
+  "share": "Partager",
+  "share_on_whatsapp": "Partager sur WhatsApp",
+  "copy_link": "Copier le lien",
+  "copied": "Copié !",
+
   "severity_critical": "Critique",
   "severity_high": "Élevé",
   "severity_medium": "Moyen",
