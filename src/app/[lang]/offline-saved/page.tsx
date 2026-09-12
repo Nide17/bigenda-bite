@@ -6,11 +6,13 @@ import { usePathname } from 'next/navigation'
 import PageContainer from '@/components/PageContainer'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useTranslations } from '@/components/I18nProvider'
 import { getSavedGuides, removeGuide, type SavedGuide } from '@/lib/offline-guides'
 
 export default function OfflineSavedPage() {
   const pathname = usePathname() || ''
   const lang = pathname.split('/')[1] || 'en'
+  const t = useTranslations()
   const [savedGuides, setSavedGuides] = useState<SavedGuide[]>(() => {
     if (typeof window === 'undefined') return []
     return getSavedGuides()
@@ -49,7 +51,7 @@ export default function OfflineSavedPage() {
                     <h3 className="font-semibold text-primary mb-1">{guide.title}</h3>
                     {guide.category && (
                       <span className="inline-block mb-2 px-2.5 py-1 bg-accent-light text-amber-700 text-xs font-medium rounded-full">
-                        {guide.category}
+                        {t(`cat_${guide.category}`) || guide.category}
                       </span>
                     )}
                     <p className="text-xs text-neutral-500">

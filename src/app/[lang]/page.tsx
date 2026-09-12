@@ -254,7 +254,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                     )}
                     {guide.category && (
                       <span className="inline-block mt-3 px-2.5 py-1 bg-accent-light text-amber-700 text-xs font-medium rounded-full">
-                        {guide.category}
+                        {t(`cat_${guide.category}`) || guide.category}
                       </span>
                     )}
                   </Link>
@@ -371,7 +371,7 @@ export default async function HomePage({ params, searchParams }: { params: Promi
                     href={`/${lang}/processes?category=${encodeURIComponent(category)}`}
                     className="px-4 py-3 bg-white border border-neutral-200 rounded-xl text-sm font-medium text-neutral-700 hover:border-primary hover:text-primary transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary min-h-[44px] inline-flex items-center"
                   >
-                    {category}
+                    {t(`cat_${category}`) || category}
                   </Link>
                 ))}
               </div>

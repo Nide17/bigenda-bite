@@ -113,7 +113,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
 
         {guide.category && (
           <span className="inline-block px-3 py-1 bg-accent-light text-amber-700 text-sm font-medium rounded-full">
-            {guide.category}
+            {t(`cat_${guide.category}`) || guide.category}
           </span>
         )}
       </div>

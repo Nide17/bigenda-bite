@@ -166,7 +166,7 @@ export default async function DirectoryPage({ params, searchParams }: { params: 
                 )}
               </div>
               <p className="text-sm text-neutral-600 mb-1">
-                {business.category}
+                {t(`cat_${business.category}`) || business.category}
               </p>
               <p className="text-sm text-neutral-500">
                 {business.city || 'Nationwide'}
