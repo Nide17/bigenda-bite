@@ -449,5 +449,7 @@
   "severity_critical": "Critical",
   "severity_high": "High",
   "severity_medium": "Medium",
-  "severity_low": "Low"
+  "severity_warning": "Warning",
+  "severity_low": "Low",
+  "severity_info": "Info"
 }

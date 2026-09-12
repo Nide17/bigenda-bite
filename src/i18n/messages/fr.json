@@ -435,5 +435,7 @@
   "severity_critical": "Critique",
   "severity_high": "Élevé",
   "severity_medium": "Moyen",
-  "severity_low": "Faible"
+  "severity_warning": "Avertissement",
+  "severity_low": "Faible",
+  "severity_info": "Information"
 }
