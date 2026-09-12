@@ -89,8 +89,8 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
       </div>
 
       <div className="mb-8">
-        <div className="flex items-start justify-between gap-4 mb-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary">{data?.title}</h1>
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary leading-tight">{data?.title}</h1>
           {guide.lastReviewedDate && (
             <Badge variant="success" className="flex-shrink-0">
               <svg className="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -102,20 +102,21 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
         </div>
         <p className="text-lg text-neutral-600 leading-relaxed mb-6">{data?.summary}</p>
 
-        {guide.lastReviewedDate && (
-          <div className="flex items-center gap-2 text-sm text-neutral-600 mb-6">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {t('guide_last_reviewed', { date: new Date(guide.lastReviewedDate).toLocaleDateString() })}
-          </div>
-        )}
-
-        {guide.category && (
-          <span className="inline-block px-3 py-1 bg-accent-light text-amber-700 text-sm font-medium rounded-full">
-            {t(`cat_${guide.category}`) || guide.category}
-          </span>
-        )}
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-600">
+          {guide.lastReviewedDate && (
+            <span className="flex items-center gap-1.5">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t('guide_last_reviewed', { date: new Date(guide.lastReviewedDate).toLocaleDateString() })}
+            </span>
+          )}
+          {guide.category && (
+            <span className="inline-block px-3 py-1 bg-accent-light text-amber-700 text-sm font-medium rounded-full">
+              {t(`cat_${guide.category}`) || guide.category}
+            </span>
+          )}
+        </div>
       </div>
 
       <GuideTaskBlueprintClient
@@ -218,23 +219,35 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ la
       )}
 
       <div className="border-t border-neutral-200 pt-8">
-        <Link
-          href={'/' + lang + '/guides/' + guide.category + '/' + toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id) + '/contribute'}
-          className="inline-flex items-center gap-2 px-5 py-3 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:shadow-lg"
-        >
-          {t('guide_add_community_tip')}
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-        </Link>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-neutral-900 mb-1">{t('guide_add_community_tip')}</h2>
+            <p className="text-sm text-neutral-600">{t('guide_contribute_subtitle')}</p>
+          </div>
+          <Link
+            href={'/' + lang + '/guides/' + guide.category + '/' + toSlug(guide.slug?.current || guide.translations?.en?.title || guide._id) + '/contribute'}
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-hover text-white font-semibold rounded-lg transition-all duration-150 shadow-md hover:shadow-lg min-h-[44px]"
+          >
+            {t('guide_add_community_tip')}
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+          </Link>
+        </div>
       </div>
 
       <div className="mt-8 pt-8 border-t border-neutral-200">
-        <h2 className="text-xl font-semibold text-neutral-700 mb-4">{t('guide_share_title')}</h2>
-        <ShareButton
-          title={data?.title || 'Bigenda Bite Guide'}
-          url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : `/guides/${guide.category}/${slug}`}`}
-        />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-semibold text-neutral-900 mb-1">{t('guide_share_title')}</h2>
+            <p className="text-sm text-neutral-600">{t('guide_share_subtitle')}</p>
+          </div>
+          <ShareButton
+            title={data?.title || 'Bigenda Bite Guide'}
+            url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://bigendabite.com'}/${lang}${guide.slug?.current ? `/guides/${guide.category}/${guide.slug.current}` : `/guides/${guide.category}/${slug}`}`}
+            className="sm:justify-end"
+          />
+        </div>
       </div>
 
       <SubmissionsSection contentType="guide" contentId={guide._id} contentSlug={guide.slug?.current} />

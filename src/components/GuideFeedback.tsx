@@ -106,7 +106,7 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          <p className="text-sm font-medium">Thank you for your feedback!</p>
+          <p className="text-sm font-medium">{t('guide_feedback_thank_you')}</p>
         </div>
       </Card>
     )
@@ -140,6 +140,7 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
             onClick={handleVerify}
             loading={submitting}
             disabled={submitting}
+            className="min-h-[44px]"
           >
             👍 {t('guide_worked')}
           </Button>
@@ -151,12 +152,13 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
               size="sm"
               onClick={() => setShowReportOptions(!showReportOptions)}
               disabled={submitting}
+              className="min-h-[44px]"
             >
               👎 {t('guide_report_outdated')}
             </Button>
 
             {showReportOptions && (
-              <div className="absolute right-0 mt-2 w-56 bg-white border border-neutral-200 rounded-lg shadow-lg z-10">
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-neutral-200 rounded-xl shadow-lg z-10 overflow-hidden">
                 <div className="p-2">
                   <p className="text-xs font-medium text-neutral-500 mb-2 px-2">{t('guide_report_what_changed')}</p>
                   {REASONS.map((reason) => (
@@ -167,13 +169,18 @@ export default function GuideFeedback({ guideId, lastVerifiedDate, outdatedRepor
                         setSelectedReason(reason.value)
                         handleReport()
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
+                      className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors min-h-[44px] flex items-center justify-between ${
                         selectedReason === reason.value
                           ? 'bg-primary text-white'
                           : 'text-neutral-700 hover:bg-neutral-50'
                       }`}
                     >
-                      {reason.label}
+                      <span>{reason.label}</span>
+                      {selectedReason === reason.value && (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
                     </button>
                   ))}
                 </div>

@@ -451,6 +451,11 @@
 
   "guide_share_title": "Partager ce guide",
 
+  "guide_feedback_thank_you": "Merci pour votre retour !",
+
+  "guide_contribute_subtitle": "Vous avez quelque chose à ajouter ? Partagez un conseil ou signalez un problème.",
+  "guide_share_subtitle": "Partagez ce guide avec des amis ou enregistrez-le pour plus tard.",
+
   "share": "Partager",
   "share_on_whatsapp": "Partager sur WhatsApp",
   "copy_link": "Copier le lien",
