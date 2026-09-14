@@ -6,7 +6,6 @@ import {
   DocumentsIcon,
   HomeIcon,
 } from '@sanity/icons'
-import { route } from 'sanity/router'
 
 export default defineConfig({
   name: 'bigenda-bite',
@@ -21,14 +20,12 @@ export default defineConfig({
       title: 'Dashboard',
       icon: HomeIcon,
       component: StudioDashboard,
-      router: route.create('/', [route.create('/')]),
     },
     {
       name: 'content',
       title: 'Content',
       icon: DocumentsIcon,
       component: StudioListTool,
-      router: route.create('/content', [route.create('/')]),
     },
     ...prev,
   ],
