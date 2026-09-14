@@ -52,6 +52,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, documents: docs })
     }
 
+    if (action === 'delete') {
+      const idMissing = requireFields(parsed.data, ['id'])
+      if (idMissing) return NextResponse.json(idMissing, { status: idMissing.status })
+      await sanityClient.delete(parsed.data.id as string)
+      return NextResponse.json({ success: true })
+    }
+
     return NextResponse.json(fail('Unsupported action'), { status: 400 })
   } catch (error) {
     console.error('Sanity studio tool proxy error:', error)

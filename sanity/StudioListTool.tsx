@@ -114,7 +114,7 @@ export default function StudioListTool() {
               {filtered.map((doc) => (
                 <a
                   key={doc._id}
-                  href={`/studio/content/${selectedType};${doc._id}?mode=edit`}
+                  href={`/studio/structure/${selectedType}/${doc._id}`}
                   className="flex items-center justify-between px-4 py-3 hover:bg-neutral-50 transition-colors"
                 >
                   <div className="min-w-0">
@@ -123,11 +123,18 @@ export default function StudioListTool() {
                     </p>
                     <p className="truncate text-xs text-neutral-500">{doc._id}</p>
                   </div>
-                  {doc.status && (
-                    <span className="ml-3 inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize">
-                      {doc.status}
-                    </span>
-                  )}
+                  <div className="ml-3 flex items-center gap-2">
+                    {doc.status && (
+                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium capitalize">
+                        {doc.status}
+                      </span>
+                    )}
+                    <DeleteButton
+                      docId={doc._id}
+                      docType={selectedType}
+                      onDelete={() => loadDocuments(selectedType)}
+                    />
+                  </div>
                 </a>
               ))}
             </div>
@@ -184,6 +191,65 @@ function CreateButton({ selectedType, onCreated }: { selectedType: string; onCre
     >
       <AddIcon className="h-4 w-4" />
       {creating ? 'Creating...' : 'Create new'}
+    </button>
+  )
+}
+
+function DeleteButton({ docId, docType, onDelete }: { docId: string; docType: string; onDelete: () => void }) {
+  const [deleting, setDeleting] = useState(false)
+  const [confirming, setConfirming] = useState(false)
+
+  async function deleteDocument() {
+    setDeleting(true)
+    try {
+      const res = await fetch('/api/sanity/studio-tool', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', type: docType, id: docId }),
+      })
+      if (res.ok) {
+        onDelete()
+      } else {
+        alert('Failed to delete document')
+      }
+    } catch (e) {
+      console.error('Failed to delete document', e)
+      alert('Failed to delete document')
+    } finally {
+      setDeleting(false)
+      setConfirming(false)
+    }
+  }
+
+  if (confirming) {
+    return (
+      <div className="flex items-center gap-1">
+        <button
+          onClick={deleteDocument}
+          disabled={deleting}
+          className="rounded-md bg-red-600 px-2 py-1 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-60"
+        >
+          {deleting ? 'Deleting...' : 'Confirm'}
+        </button>
+        <button
+          onClick={() => setConfirming(false)}
+          disabled={deleting}
+          className="rounded-md border border-neutral-300 px-2 py-1 text-xs font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-60"
+        >
+          Cancel
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <button
+      onClick={() => setConfirming(true)}
+      disabled={deleting}
+      className="rounded-md border border-red-200 px-2 py-1 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+      aria-label={`Delete ${docId}`}
+    >
+      Delete
     </button>
   )
 }
