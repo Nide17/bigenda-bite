@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: auth.error }, { status: auth.status })
     }
 
-    const parsed = await parseJson<{ action?: string; type?: string; data?: Record<string, unknown> }>(request)
+    const parsed = await parseJson<{ action?: string; type?: string; data?: Record<string, unknown>; id?: string }>(request)
     if (!parsed.ok) return parsed.response
 
     const { action, type, data } = parsed.data
