@@ -74,14 +74,17 @@ const ALERT_LIST_PROJECTION = `{
     status
   }`
 
+// Soft-deleted documents (deletedAt set) are hidden from all public queries.
+const NOT_DELETED = ' && !defined(deletedAt)'
+
 export const getProcesses = cache(
   async (locale: string, category?: string): Promise<Process[]> => {
     const client = getSanityClient()
     if (!client) return []
     try {
       const baseQuery = category
-        ? `*[_type == "process" && status == "published" && category == $category] | order(_createdAt desc)[0...100]`
-        : `*[_type == "process" && status == "published"] | order(_createdAt desc)[0...100]`
+        ? `*[_type == "process" && status == "published" && category == $category${NOT_DELETED}] | order(_createdAt desc)[0...100]`
+        : `*[_type == "process" && status == "published"${NOT_DELETED}] | order(_createdAt desc)[0...100]`
       const params = category ? { category } : {}
       const result = await client.fetch<Process[]>(`${baseQuery} ${PROCESS_LIST_PROJECTION}`, params)
       if (process.env.NODE_ENV === 'production') {
@@ -101,7 +104,7 @@ export const getProcessBySlug = cache(
     if (!client) return null
     try {
       return await client.fetch<Process | null>(
-        `*[_type == "process" && (slug.current == $slug || _id == $slug) && status == "published"][0] ${PROCESS_LIST_PROJECTION}`,
+        `*[_type == "process" && (slug.current == $slug || _id == $slug) && status == "published"${NOT_DELETED}][0] ${PROCESS_LIST_PROJECTION}`,
         { slug }
       )
     } catch (error) {
@@ -117,8 +120,8 @@ export const getGuides = cache(
     if (!client) return []
     try {
       const baseQuery = category
-        ? `*[_type == "guide" && status == "published" && category == $category] | order(_createdAt desc)[0...100]`
-        : `*[_type == "guide" && status == "published"] | order(_createdAt desc)[0...100]`
+        ? `*[_type == "guide" && status == "published" && category == $category${NOT_DELETED}] | order(_createdAt desc)[0...100]`
+        : `*[_type == "guide" && status == "published"${NOT_DELETED}] | order(_createdAt desc)[0...100]`
       const params = category ? { category } : {}
       const result = await client.fetch<Guide[]>(`${baseQuery} ${GUIDE_LIST_PROJECTION}`, params)
       if (process.env.NODE_ENV === 'production') {
@@ -138,7 +141,7 @@ export const getGuideBySlug = cache(
     if (!client) return null
     try {
       return await client.fetch<Guide | null>(
-        `*[_type == "guide" && (slug.current == $slug || _id == $slug) && status == "published"][0] ${GUIDE_LIST_PROJECTION}`,
+        `*[_type == "guide" && (slug.current == $slug || _id == $slug) && status == "published"${NOT_DELETED}][0] ${GUIDE_LIST_PROJECTION}`,
         { slug }
       )
     } catch (error) {
@@ -153,7 +156,7 @@ export const getAlerts = cache(async (): Promise<Alert[]> => {
   if (!client) return []
   try {
       const result = await client.fetch<Alert[]>(
-        `*[_type == "alert" && status == "published" && expiresAt > now()] | order(severity desc, _createdAt desc)[0...50] ${ALERT_LIST_PROJECTION}`
+        `*[_type == "alert" && status == "published" && expiresAt > now()${NOT_DELETED}] | order(severity desc, _createdAt desc)[0...50] ${ALERT_LIST_PROJECTION}`
       )
     if (process.env.NODE_ENV === 'production') {
       console.log(`Sanity fetch: ${result.length} alerts returned`)

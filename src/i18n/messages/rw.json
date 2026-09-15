@@ -471,5 +471,14 @@
   "studio_config_missing": "Ikibazo cy'umurimo wa CMS",
   "studio_config_fix": "Tanga amakuru y'ibihingwa mu buryo bwa Vercel → Settings → Environment Variables:",
   "studio_config_fix_token": "NEXT_PUBLIC_SANITY_API_TOKEN — token y'andikisha Sanity n'umwirabura w'Editeur",
-  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID na NEXT_PUBLIC_SANITY_DATASET — kuvya mu buringanira bw'uburezi bwawe"
+  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID na NEXT_PUBLIC_SANITY_DATASET — kuvya mu buringanira bw'uburezi bwawe",
+
+  "trash_title": "Imfashanyo",
+  "trash_subtitle": "Ongera utangire cyangwa bura butsire bw'ibyo bwabitswe.",
+  "trash_loading": "Gutanga imfashanyo…",
+  "trash_empty": "Nta bibi bwabitswe.",
+  "trash_deleted_at": "Bwabitswe ku {date}",
+  "trash_restore": "Ongera utangire",
+  "trash_hard_delete": "Bura butsire",
+  "trash_hard_delete_confirm": "Bura butsire uyu bintu? Nta gihindurwa."
 }

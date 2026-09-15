@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const parsed = await parseJson<{ action?: string; type?: string; data?: Record<string, unknown>; id?: string }>(request)
     if (!parsed.ok) return parsed.response
 
-    const { action, type, data } = parsed.data
+    const { action, type } = parsed.data
 
     const missing = requireFields(parsed.data, ['action', 'type'])
     if (missing) return NextResponse.json(missing, { status: missing.status })
@@ -49,10 +49,9 @@ export async function POST(request: NextRequest) {
     if (action === 'create') {
       const dataMissing = requireFields(parsed.data, ['data'])
       if (dataMissing) return NextResponse.json(dataMissing, { status: dataMissing.status })
-
       const doc = await sanityClient.create({
         _type: parsed.data.type!,
-        ...data,
+        ...parsed.data.data,
       })
       return NextResponse.json({ success: true, document: doc })
     }
@@ -63,6 +62,21 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'delete') {
+      const idMissing = requireFields(parsed.data, ['id'])
+      if (idMissing) return NextResponse.json(idMissing, { status: idMissing.status })
+      // Soft-delete: set deletedAt instead of removing the document, so it can be restored.
+      await sanityClient.patch(parsed.data.id as string).set({ deletedAt: new Date().toISOString() }).commit()
+      return NextResponse.json({ success: true })
+    }
+
+    if (action === 'restore') {
+      const idMissing = requireFields(parsed.data, ['id'])
+      if (idMissing) return NextResponse.json(idMissing, { status: idMissing.status })
+      await sanityClient.patch(parsed.data.id as string).unset(['deletedAt']).commit()
+      return NextResponse.json({ success: true })
+    }
+
+    if (action === 'hard_delete') {
       const idMissing = requireFields(parsed.data, ['id'])
       if (idMissing) return NextResponse.json(idMissing, { status: idMissing.status })
       await sanityClient.delete(parsed.data.id as string)

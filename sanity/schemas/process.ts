@@ -300,6 +300,13 @@ export const processType = defineType({
       description: 'Tips specific to non-Rwandan users (e.g. "Mutuelle de Sante is Rwanda\'s public health insurance")',
       of: [{ type: 'string' }],
     }),
+    defineField({
+      name: 'deletedAt',
+      type: 'datetime',
+      title: 'Deleted At',
+      description: 'Soft-delete timestamp. When set, the document is hidden from queries but retained for recovery.',
+      hidden: true,
+    }),
   ],
   validation: (Rule) => Rule.required(),
 })

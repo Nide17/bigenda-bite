@@ -82,6 +82,13 @@ export const alertType = defineType({
       initialValue: 'draft',
       validation: (Rule) => Rule.required(),
     }),
+    defineField({
+      name: 'deletedAt',
+      type: 'datetime',
+      title: 'Deleted At',
+      description: 'Soft-delete timestamp. When set, the document is hidden from queries but retained for recovery.',
+      hidden: true,
+    }),
   ],
   validation: (Rule) => Rule.required(),
 })

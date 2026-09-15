@@ -485,5 +485,14 @@
   "studio_config_missing": "CMS configuration error",
   "studio_config_fix": "Set the following environment variables in your deployment (Vercel → Settings → Environment Variables):",
   "studio_config_fix_token": "NEXT_PUBLIC_SANITY_API_TOKEN — a Sanity write token with Editor role",
-  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET — from your Sanity project settings"
+  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET — from your Sanity project settings",
+
+  "trash_title": "Trash",
+  "trash_subtitle": "Restore or permanently remove soft-deleted content.",
+  "trash_loading": "Loading trash…",
+  "trash_empty": "No deleted content.",
+  "trash_deleted_at": "Deleted on {date}",
+  "trash_restore": "Restore",
+  "trash_hard_delete": "Delete Forever",
+  "trash_hard_delete_confirm": "Permanently delete this document? This cannot be undone."
 }

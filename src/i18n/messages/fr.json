@@ -471,5 +471,14 @@
   "studio_config_missing": "Configuration CMS erronée",
   "studio_config_fix": "Définissez les variables d'environnement suivantes dans votre déploiement (Vercel → Settings → Environment Variables) :",
   "studio_config_fix_token": "NEXT_PUBLIC_SANITY_API_TOKEN — un token d'écriture Sanity avec le rôle Éditeur",
-  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID et NEXT_PUBLIC_SANITY_DATASET — depuis les paramètres de votre projet Sanity"
+  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID et NEXT_PUBLIC_SANITY_DATASET — depuis les paramètres de votre projet Sanity",
+
+  "trash_title": "Corbeille",
+  "trash_subtitle": "Restaurer ou supprimer définitivement le contenu effacé.",
+  "trash_loading": "Chargement de la corbeille…",
+  "trash_empty": "Aucun contenu effacé.",
+  "trash_deleted_at": "Effacé le {date}",
+  "trash_restore": "Restaurer",
+  "trash_hard_delete": "Supprimer définitivement",
+  "trash_hard_delete_confirm": "Supprimer définitivement ce document ? Cette action est irréversible."
 }
