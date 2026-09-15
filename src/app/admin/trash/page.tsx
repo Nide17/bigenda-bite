@@ -19,31 +19,21 @@ export default function AdminTrashPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     let cancelled = false
-    setLoading(true)
-    setError('')
-
-    async function load() {
+    ;(async () => {
       try {
         const res = await fetch('/api/sanity/trash', { method: 'GET' })
         if (!res.ok) throw new Error('Failed to load trash')
         const data = await res.json()
-        if (!cancelled) {
-          setDocs(data.documents || [])
-        }
+        if (!cancelled) setDocs(data.documents || [])
       } catch (e) {
-        if (!cancelled) {
-          setError(e instanceof Error ? e.message : 'Failed to load trash')
-        }
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Failed to load trash')
       } finally {
-        if (!cancelled) {
-          setLoading(false)
-        }
+        if (!cancelled) setLoading(false)
       }
-    }
-
-    load()
+    })()
     return () => {
       cancelled = true
     }
@@ -85,8 +75,6 @@ export default function AdminTrashPage() {
   }
 
   function refresh() {
-    setLoading(true)
-    setError('')
     fetch('/api/sanity/trash', { method: 'GET' })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed to load trash'))))
       .then((data) => {
