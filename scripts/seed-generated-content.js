@@ -20,7 +20,7 @@ function readGeneratedEntries() {
   return JSON.parse(raw)
 }
 
-async function existsByTitle(type: string, title: string) {
+async function existsByTitle(type, title) {
   const doc = await client.fetch(
     `*[_type == $type && translations.en.title == $title][0]`,
     { type, title }
