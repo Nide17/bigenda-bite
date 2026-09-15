@@ -10,6 +10,7 @@ import {
   UsersIcon,
   SettingsIcon,
   LogOutIcon,
+  Trash2Icon,
 } from 'lucide-react'
 
 export const dynamic = 'force-dynamic'
@@ -21,6 +22,7 @@ const navItems = [
   { href: '/admin/users', label: 'Users', icon: UsersIcon },
   { href: '/admin/content', label: 'Content', icon: FileTextIcon },
   { href: '/admin/ads', label: 'Ads', icon: SettingsIcon },
+  { href: '/admin/trash', label: 'Trash', icon: Trash2Icon },
 ]
 
 export default async function AdminLayout({
