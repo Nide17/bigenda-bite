@@ -19,7 +19,6 @@ export default function AdminTrashPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => {
     let cancelled = false
     ;(async () => {
