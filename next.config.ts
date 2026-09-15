@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ['@sanity/client'],
+  async rewrites() {
+    return [
+      {
+        source: '/studio/dashboard',
+        destination: '/studio',
+      },
+    ]
+  },
   async headers() {
     return [
       {

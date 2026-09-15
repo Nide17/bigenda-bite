@@ -15,6 +15,12 @@ export default function StudioClient() {
   const [configError, setConfigError] = useState<string | null>(null)
 
   useEffect(() => {
+    // The default Sanity Studio has no "dashboard" tool. Redirect any stale
+    // /studio/dashboard URL (pushed by an old custom tool) back to the Studio root.
+    if (typeof window !== 'undefined' && window.location.pathname === '/studio/dashboard') {
+      window.history.replaceState(null, '', '/studio')
+    }
+
     const missing: string[] = []
     if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) missing.push('NEXT_PUBLIC_SANITY_PROJECT_ID')
     if (!process.env.NEXT_PUBLIC_SANITY_DATASET) missing.push('NEXT_PUBLIC_SANITY_DATASET')
