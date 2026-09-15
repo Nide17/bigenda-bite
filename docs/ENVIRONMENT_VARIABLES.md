@@ -15,7 +15,8 @@
 | `NEXTAUTH_SECRET` | Session encryption key (`openssl rand -base64 32`) |
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
 | `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (e.g. `production`) |
-| `SANITY_API_TOKEN` | Sanity write token |
+| `NEXT_PUBLIC_SANITY_API_TOKEN` | Sanity **write** token for the embedded Studio (Editor role). Must be `NEXT_PUBLIC_*` so it is inlined into the browser bundle — the non-prefixed `SANITY_API_TOKEN` is server-only and invisible to the client-side Studio. |
+| `SANITY_API_TOKEN` | Server-only Sanity token for API routes (seeds, scrapers, admin proxies) |
 | `NEXT_PUBLIC_BASE_URL` | App base URL for emails and links |
 
 > **Production:** `NEXTAUTH_URL` must match your domain exactly.

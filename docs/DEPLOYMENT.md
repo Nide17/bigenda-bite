@@ -65,7 +65,8 @@ NEXTAUTH_URL=https://yourdomain.com
 NEXTAUTH_SECRET=your_secret
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
-SANITY_API_TOKEN=your_token
+NEXT_PUBLIC_SANITY_API_TOKEN=your_studio_token
+SANITY_API_TOKEN=your_api_token
 NEXT_PUBLIC_BASE_URL=https://yourdomain.com
 
 # Optional — Google OAuth

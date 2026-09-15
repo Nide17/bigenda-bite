@@ -5,6 +5,7 @@ export function validateProductionConfig() {
     'NEXTAUTH_URL',
     'NEXT_PUBLIC_SANITY_PROJECT_ID',
     'NEXT_PUBLIC_SANITY_DATASET',
+    'NEXT_PUBLIC_SANITY_API_TOKEN',
     'SANITY_API_TOKEN',
     'NEXT_PUBLIC_BASE_URL',
   ]
