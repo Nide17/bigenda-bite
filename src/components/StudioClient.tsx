@@ -5,13 +5,6 @@ import dynamic from 'next/dynamic'
 import { toast } from 'sonner'
 import { useTranslations } from '@/components/I18nProvider'
 
-// `sanity` ships no TypeScript export for the Studio component, so we type the
-// dynamic import loosely and cast at the call site.
-const Studio = dynamic(
-  () => import('sanity').then((mod) => mod.Studio as unknown as React.ComponentType<{ config: StudioProps }>),
-  { ssr: false, loading: () => <p>Loading Studio...</p> },
-)
-
 interface StudioProps {
   name: string
   title: string
@@ -21,6 +14,15 @@ interface StudioProps {
   basePath: string
   token?: string
 }
+
+// `sanity` ships no typed export for the Studio component, so we load it
+// dynamically and cast the result to a component that accepts a `config` prop.
+type StudioComponent = React.ComponentType<{ config: StudioProps }>
+
+const Studio = dynamic(
+  () => import('sanity').then((mod) => mod.Studio as unknown as StudioComponent),
+  { ssr: false, loading: () => <p>Loading Studio...</p> },
+) as unknown as StudioComponent
 
 function missingEnvVars(): string[] {
   const missing: string[] = []
