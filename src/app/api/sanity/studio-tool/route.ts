@@ -6,9 +6,18 @@ import { createClient } from '@sanity/client'
 const ALLOWED_TYPES = ['process', 'guide', 'alert'] as const
 
 function createSanityClient() {
+  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+    throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID')
+  }
+  if (!process.env.NEXT_PUBLIC_SANITY_DATASET) {
+    throw new Error('Missing NEXT_PUBLIC_SANITY_DATASET')
+  }
+  if (!process.env.SANITY_API_TOKEN) {
+    throw new Error('Missing SANITY_API_TOKEN')
+  }
   return createClient({
     projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
     apiVersion: '2024-01-01',
     token: process.env.SANITY_API_TOKEN,
     useCdn: false,
@@ -19,7 +28,8 @@ export async function POST(request: NextRequest) {
   try {
     const auth = await requireEditor()
     if (auth.error) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status })
+      const message = auth.status === 401 ? 'You must be signed in as an editor or admin.' : 'You do not have permission to manage content.'
+      return NextResponse.json({ error: message }, { status: auth.status })
     }
 
     const parsed = await parseJson<{ action?: string; type?: string; data?: Record<string, unknown>; id?: string }>(request)
@@ -61,7 +71,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(fail('Unsupported action'), { status: 400 })
   } catch (error) {
+    const message = error instanceof Error ? error.message : 'Sanity operation failed'
     console.error('Sanity studio tool proxy error:', error)
-    return NextResponse.json({ error: 'Sanity operation failed' }, { status: 500 })
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
