@@ -466,5 +466,10 @@
   "severity_medium": "Akabiri",
   "severity_warning": "Igenzwe",
   "severity_low": "Kabiri",
-  "severity_info": "Ubutumwa"
+  "severity_info": "Ubutumwa",
+
+  "studio_config_missing": "Ikibazo cy'umurimo wa CMS",
+  "studio_config_fix": "Tanga amakuru y'ibihingwa mu buryo bwa Vercel → Settings → Environment Variables:",
+  "studio_config_fix_token": "NEXT_PUBLIC_SANITY_API_TOKEN — token y'andikisha Sanity n'umwirabura w'Editeur",
+  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID na NEXT_PUBLIC_SANITY_DATASET — kuvya mu buringanira bw'uburezi bwawe"
 }

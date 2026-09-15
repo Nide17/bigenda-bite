@@ -480,5 +480,10 @@
   "severity_medium": "Medium",
   "severity_warning": "Warning",
   "severity_low": "Low",
-  "severity_info": "Info"
+  "severity_info": "Info",
+
+  "studio_config_missing": "CMS configuration error",
+  "studio_config_fix": "Set the following environment variables in your deployment (Vercel → Settings → Environment Variables):",
+  "studio_config_fix_token": "NEXT_PUBLIC_SANITY_API_TOKEN — a Sanity write token with Editor role",
+  "studio_config_fix_deploy": "NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET — from your Sanity project settings"
 }
