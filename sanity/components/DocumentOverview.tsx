@@ -1,11 +1,18 @@
 import type { UserViewComponent } from 'sanity/structure'
 
+type Doc = {
+  title?: string
+  translations?: { en?: { title?: string } }
+  slug?: { current?: string }
+  _createdAt?: string
+}
+
 export const DocumentOverview: UserViewComponent = ({ document, documentId, schemaType }) => {
-  const doc = document.displayed || document.published || document.draft
+  const doc = (document.displayed || document.published || document.draft) as Doc | null
   const title =
-    (doc?.title as string) ||
-    (doc?.translations as any)?.en?.title ||
-    (doc?.slug as any)?.current ||
+    doc?.title ||
+    doc?.translations?.en?.title ||
+    doc?.slug?.current ||
     'Untitled'
 
   return (
