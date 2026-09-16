@@ -22,7 +22,23 @@ export const processType = defineType({
       type: 'slug',
       title: 'Slug',
       options: { source: 'translations.en.title', maxLength: 96 },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.custom(async (slug, context) => {
+          const ctx = context as {
+            document?: { _type?: string; _id?: string; status?: string }
+            getClient?: (options: { apiVersion: string }) => { fetch: (q: string, p: Record<string, unknown>) => Promise<unknown> }
+          }
+          if (ctx.document?.status === 'draft') return true
+          const client = ctx.getClient?.({ apiVersion: '2024-01-01' })
+          if (!client || !slug) return true
+          const existing = await client.fetch(
+            `*[_type == $type && slug.current == $slug && _id != $id][0]`,
+            { type: ctx.document?._type, slug, id: ctx.document?._id || '' },
+          )
+          return existing ? 'A document with this slug already exists' : true
+        }),
+      ],
     }),
     defineField({
       name: 'sourceType',
