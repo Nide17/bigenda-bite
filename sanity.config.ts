@@ -8,7 +8,6 @@ export default defineConfig({
   dataset: process.env.SANITY_DATASET || process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   basePath: '/studio',
-  token: process.env.NEXT_PUBLIC_SANITY_API_TOKEN,
   schema: {
     types: schemaTypes,
   },
