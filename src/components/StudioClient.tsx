@@ -28,13 +28,19 @@ export default function StudioClient() {
   const missing = missingEnvVars()
 
   useEffect(() => {
-    // The default Sanity Studio has no "dashboard" or "content" tool. Redirect
-    // any stale URLs (left over from the old custom tools) back to the Studio
-    // root so the SPA doesn't try to render a non-existent tool.
+    // The embedded Sanity Studio defaults to the "releases" tool, which is not
+    // useful for day-to-day content editing. Redirect to the structure tool
+    // (the default document editor) instead, and handle any stale URLs left
+    // over from the old custom tools.
     if (typeof window !== 'undefined') {
       const path = window.location.pathname
-      if (path === '/studio/dashboard' || path === '/studio/content') {
-        window.history.replaceState(null, '', '/studio')
+      if (
+        path === '/studio' ||
+        path === '/studio/' ||
+        path === '/studio/dashboard' ||
+        path === '/studio/content'
+      ) {
+        window.history.replaceState(null, '', '/studio/structure')
       }
     }
 
