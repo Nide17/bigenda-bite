@@ -12,10 +12,14 @@ export default defineConfig({
   plugins: [
     structureTool({
       title: 'Content',
-      defaultStructure: {
-        type: 'documentList',
-        options: { type: 'process' },
-      },
+      structure: (S) =>
+        S.list()
+          .title('Content')
+          .items([
+            S.documentTypeListItem('process').title('Official Processes'),
+            S.documentTypeListItem('guide').title('How-To Guides'),
+            S.documentTypeListItem('alert').title('Alerts'),
+          ]),
     }),
   ],
   schema: {

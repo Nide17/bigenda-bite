@@ -4,11 +4,12 @@ import { useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { toast } from 'sonner'
 import { useTranslations } from '@/components/I18nProvider'
+import type { Config } from 'sanity'
 import sanityConfig from '../../sanity.config'
 
 // `sanity` ships no typed export for the Studio component, so we load it
 // dynamically and cast the result to a component that accepts a `config` prop.
-type StudioComponent = React.ComponentType<{ config: any }>
+type StudioComponent = React.ComponentType<{ config: Config }>
 
 const Studio = dynamic(
   () => import('sanity').then((mod) => mod.Studio as unknown as StudioComponent),
