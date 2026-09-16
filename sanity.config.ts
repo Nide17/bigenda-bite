@@ -1,6 +1,8 @@
 ﻿import { defineConfig } from 'sanity'
 import { schemaTypes } from './sanity/schemas/index'
 import { structureTool } from 'sanity/structure'
+import { FileText, BookOpen, Bell } from 'lucide-react'
+import { DocumentOverview } from './sanity/components/DocumentOverview'
 
 export default defineConfig({
   name: 'bigenda-bite',
@@ -16,10 +18,21 @@ export default defineConfig({
         S.list()
           .title('Content')
           .items([
-            S.documentTypeListItem('process').title('Official Processes'),
-            S.documentTypeListItem('guide').title('How-To Guides'),
-            S.documentTypeListItem('alert').title('Alerts'),
+            S.documentTypeListItem('process')
+              .title('Official Processes')
+              .icon(FileText),
+            S.documentTypeListItem('guide')
+              .title('How-To Guides')
+              .icon(BookOpen),
+            S.documentTypeListItem('alert')
+              .title('Alerts')
+              .icon(Bell),
           ]),
+      defaultDocumentNode: (S) =>
+        S.document().views([
+          S.view.form(),
+          S.view.component(DocumentOverview).title('Overview'),
+        ]),
     }),
   ],
   schema: {
