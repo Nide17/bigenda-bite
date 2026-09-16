@@ -4,6 +4,18 @@ export const processType = defineType({
   name: 'process',
   type: 'document',
   title: 'Official Process',
+  preview: {
+    select: {
+      title: 'translations.en.title',
+      category: 'category',
+      status: 'status',
+      officialSource: 'officialSource',
+    },
+    prepare: ({ title, category, status, officialSource }) => ({
+      title: title || 'Untitled Process',
+      subtitle: `${status} · ${officialSource || 'No source'} · ${category || 'No category'}`,
+    }),
+  },
   fields: [
     defineField({
       name: 'slug',

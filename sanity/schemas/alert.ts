@@ -4,6 +4,19 @@ export const alertType = defineType({
   name: 'alert',
   type: 'document',
   title: 'Alert',
+  preview: {
+    select: {
+      title: 'translations.en.title',
+      type: 'type',
+      severity: 'severity',
+      status: 'status',
+      sourceName: 'sourceName',
+    },
+    prepare: ({ title, type, severity, status, sourceName }) => ({
+      title: title || type || 'Untitled Alert',
+      subtitle: `${status} · ${severity} · ${sourceName || 'No source'}`,
+    }),
+  },
   fields: [
     defineField({
       name: 'type',

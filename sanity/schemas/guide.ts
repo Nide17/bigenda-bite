@@ -4,6 +4,17 @@ export const guideType = defineType({
   name: 'guide',
   type: 'document',
   title: 'How-To Guide',
+  preview: {
+    select: {
+      title: 'translations.en.title',
+      category: 'category',
+      status: 'status',
+    },
+    prepare: ({ title, category, status }) => ({
+      title: title || 'Untitled Guide',
+      subtitle: `${status} · ${category || 'No category'}`,
+    }),
+  },
   fields: [
     defineField({
       name: 'slug',
