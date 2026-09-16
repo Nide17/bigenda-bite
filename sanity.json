@@ -1,0 +1,8 @@
+{
+  "api": {
+    "projectId": "55et5l4p",
+    "dataset": "production"
+  },
+  "apiVersion": "2024-01-01",
+  "useCdn": false
+}
