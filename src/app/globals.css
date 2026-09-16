@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sanity Studio embedded in the app must fill its container so the editor
+   viewport uses the full window instead of leaving dead space below. */
+#sanity-studio,
+#sanity-studio > * {
+  height: 100%;
+  width: 100%;
+}
+
+#sanity-studio {
+  display: flex;
+  flex-direction: column;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

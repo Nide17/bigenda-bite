@@ -72,7 +72,7 @@ export default function StudioClient() {
   }
 
   return (
-    <div id="sanity-studio">
+    <div id="sanity-studio" className="fixed inset-0 w-full h-full">
       <Studio config={sanityConfig} />
     </div>
   )
